@@ -549,7 +549,7 @@ document.getElementById('overviewGrid').innerHTML = periods.map(p => {
         const evts = (p.dynastyEvents||{})[d.name]||[];
         return `<div class="oc-dynasty-block">
           <div class="oc-dynasty-row"><strong>${d.name}</strong><span>${fmtYear(d.start)} — ${fmtYear(d.end)}</span></div>
-          ${evts.length ? `<div class="oc-dynasty-events">${evts.map(e => `<span class="oc-event-tag oc-event-sm"><b>${fmtYear(e.y)}</b> · ${e.t}</span>`).join('')}</div>` : ''}
+          ${evts.length ? `<div class="oc-dynasty-events">${evts.map(e => `<span class="oc-event-tag oc-event-sm">${e.t}</span>`).join('')}</div>` : ''}
         </div>`;
       }).join('')}</div>
       <div style="font-size:12px;color:var(--text-muted);margin-top:12px">${p.desc}</div>
