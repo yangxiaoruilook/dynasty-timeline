@@ -622,18 +622,17 @@ rows.forEach((rowDef, ri) => {
       const bar = document.createElement('div');
       bar.className = 'dynasty-bar';
       bar.style.cssText = `left:${left}px;width:${width}px;background:${p.color};`;
-      bar.innerHTML = `<span class="bar-label-inner">\${d.name}</span>`;
-      bar._tipHTML = `
-        <h3 style="color:\${p.color}">\${d.name}</h3>
-        <div class="tt-era">\${p.emoji} \${periods.find(pp=>pp.id===d.period)?.name||''} · \${durLabel(d.start, d.end)}</div>
-        <div class="tt-row"><b>时间：</b>\${fmtYear(d.start)} — \${fmtYear(d.end)}</div>
-        <div class="tt-row"><b>建立者：</b>\${d.founder}</div>
-        <div class="tt-row"><b>都城：</b>\${d.capital}</div>
-      `;
+      bar.innerHTML = `<span class="bar-label-inner">${d.name}</span>`;
 
       bar.addEventListener('mouseenter', function(e) {
         const tt = document.getElementById('tooltip');
-        tt.innerHTML = bar._tipHTML;
+        tt.innerHTML = `
+          <h3 style="color:${p.color}">${d.name}</h3>
+          <div class="tt-era">${p.emoji} ${periods.find(pp=>pp.id===d.period)?.name||''} · ${durLabel(d.start, d.end)}</div>
+          <div class="tt-row"><b>时间：</b>${fmtYear(d.start)} — ${fmtYear(d.end)}</div>
+          <div class="tt-row"><b>建立者：</b>${d.founder}</div>
+          <div class="tt-row"><b>都城：</b>${d.capital}</div>
+        `;
         tt.classList.add('on');
       });
       bar.addEventListener('mousemove', function(e) {
@@ -695,7 +694,6 @@ document.querySelectorAll('.dynasty-bar').forEach(function(bar) {
       tooltipPinned = null;
     } else {
       tooltipPinned = bar;
-      tt.innerHTML = bar._tipHTML || tt.innerHTML;
       tt.classList.add('on');
       var cx = e.clientX, cy = e.clientY;
       var tx = cx + 16, ty = cy - 12;
