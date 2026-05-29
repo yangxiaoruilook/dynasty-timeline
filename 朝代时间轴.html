@@ -540,7 +540,7 @@ document.getElementById('legend').innerHTML = periods.map(p =>
 
 // ── Overview Cards ──
 document.getElementById('overviewGrid').innerHTML = periods.map(p => {
-  const ds = dynasties.filter(d => d.period === p.id && d.layer === 'main');
+  const ds = dynasties.filter(d => d.period === p.id);
   return `
     <div class="overview-card" id="period-${p.id}" style="border-left-color:${palette[p.id].color}">
       <h3><span class="ch">${palette[p.id].emoji}</span>${p.name}<span style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:4px;">· ${palette[p.id].symbol}</span></h3>
