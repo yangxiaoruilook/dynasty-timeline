@@ -549,7 +549,7 @@ document.getElementById('overviewGrid').innerHTML = periods.map(p => {
         const evts = (p.dynastyEvents||{})[d.name]||[];
         return `<div class="oc-dynasty-block">
           <div class="oc-dynasty-row"><strong>${d.name}</strong><span>${fmtYear(d.start)} — ${fmtYear(d.end)}</span></div>
-          ${evts.length ? `<div class="oc-dynasty-events">${evts.map(e => `<span class="oc-event-tag oc-event-sm">${e.t}</span>`).join('')}</div>` : ''}
+          ${evts.length ? `<div class="oc-dynasty-events">${evts.map(e => `<span class="oc-event-tag oc-event-sm" data-year="${fmtYear(e.y)}">${e.t}</span>`).join('')}</div>` : ''}
         </div>`;
       }).join('')}</div>
       <div style="font-size:12px;color:var(--text-muted);margin-top:12px">${p.desc}</div>
@@ -709,6 +709,35 @@ document.querySelectorAll('.dynasty-bar').forEach(function(bar) {
     }
   });
 });
+// Event tag tap: show year tooltip on mobile
+document.querySelectorAll('.oc-event-tag').forEach(function(tag) {
+  tag.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var tt = document.getElementById('tooltip');
+    var year = this.getAttribute('data-year');
+    if (tt.classList.contains('on') && tt._tagEl === this) {
+      tt.classList.remove('on');
+      tt._tagEl = null;
+    } else {
+      tt.innerHTML = '<div style="font-size:15px;font-weight:700;">' + year + '</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + this.textContent + '</div>';
+      tt.classList.add('on');
+      tt._tagEl = this;
+      var rect = this.getBoundingClientRect();
+      var tx = rect.left, ty = rect.bottom + 6;
+      if (tx + 280 > window.innerWidth) tx = window.innerWidth - 290;
+      if (ty + 80 > window.innerHeight) ty = rect.top - 80;
+      tt.style.left = tx + 'px';
+      tt.style.top = ty + 'px';
+    }
+  });
+});
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.oc-event-tag')) {
+    var tt = document.getElementById('tooltip');
+    if (tt._tagEl) { tt.classList.remove('on'); tt._tagEl = null; }
+  }
+});
+
 </script>
 </body>
 </html>
