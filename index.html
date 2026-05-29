@@ -478,6 +478,8 @@ const dynasties = [
   { name:'中华人民共和国', start:1949, end:2026, founder:'毛泽东',        capital:'北京',                 period:'modern',       layer:'main' },
 ];
 
+let tooltipPinned = null;
+
 const keyEvents = [
   { year:-1046, text:'牧野之战·商亡周立' },
   { year:-841,  text:'共和行政·中国历史确切纪年开始' },
@@ -675,6 +677,38 @@ setTimeout(() => {
   bodyScroll.scrollLeft = Math.max(0, sx);
   headerScroll.scrollLeft = bodyScroll.scrollLeft;
 }, 200);
+
+// Mobile: click-to-toggle tooltips on dynasty bars
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dynasty-bar')) {
+    document.getElementById('tooltip').classList.remove('on');
+    tooltipPinned = null;
+  }
+});
+document.querySelectorAll('.dynasty-bar').forEach(function(bar) {
+  bar.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var tt = document.getElementById('tooltip');
+    if (tooltipPinned === bar) {
+      tt.classList.remove('on');
+      tooltipPinned = null;
+    } else {
+      tooltipPinned = bar;
+      tt.classList.add('on');
+      var cx = e.clientX, cy = e.clientY;
+      var tx = cx + 16, ty = cy - 12;
+      if (tx + 350 > window.innerWidth) tx = cx - 360;
+      if (ty + 200 > window.innerHeight) ty = cy - 200;
+      tt.style.left = tx + 'px';
+      tt.style.top = ty + 'px';
+    }
+  });
+  bar.addEventListener('mouseleave', function() {
+    if (tooltipPinned !== bar) {
+      document.getElementById('tooltip').classList.remove('on');
+    }
+  });
+});
 </script>
 </body>
 </html>
