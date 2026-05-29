@@ -18,7 +18,6 @@
     --radius: 16px;
     --shadow-card: 0 20px 60px -20px rgba(0,0,0,.6);
     --shadow-glow: 0 0 40px hsl(45 90% 55% / .3);
-    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -29,40 +28,68 @@
   body::before {
     content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
     background-image:
-      linear-gradient(hsl(45 90% 55% / .03) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(45 90% 55% / .03) 1px, transparent 1px);
+      linear-gradient(hsl(45 90% 55% / .025) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(45 90% 55% / .025) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
   /* ── Hero ── */
   .hero {
     position:relative; z-index:1;
-    text-align:center; padding:56px 24px 32px;
+    text-align:center; padding:48px 24px 28px;
   }
   .hero h1 {
-    font-size:clamp(32px,7vw,56px); font-weight:900; letter-spacing:.06em;
-    background:linear-gradient(135deg, hsl(45 90% 55%), hsl(45 100% 70%), hsl(35 80% 50%));
+    font-size:clamp(28px,5vw,42px); font-weight:800; letter-spacing:.12em;
+    background:linear-gradient(135deg, hsl(45 85% 58%), hsl(42 100% 72%), hsl(35 75% 55%));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    filter:drop-shadow(0 0 40px hsl(45 90% 55% / .35));
-    margin-bottom:8px;
+    filter:drop-shadow(0 0 30px hsl(45 90% 55% / .3));
+    margin-bottom:10px;
+    text-indent:.05em;
   }
-  .hero p { color:var(--text-secondary); font-size:16px; letter-spacing:.04em; }
+  .hero .subtitle {
+    color:var(--text-secondary); font-size:15px; letter-spacing:.08em;
+    margin-bottom:14px;
+  }
+  .hero .stats {
+    display:inline-flex; align-items:center; gap:16px;
+    font-size:13px; color:var(--text-muted); letter-spacing:.05em;
+  }
+  .hero .stats span {
+    padding:5px 16px; border-radius:20px;
+    background:hsl(var(--primary) / .06);
+    border:1px solid hsl(var(--primary) / .12);
+    color:hsl(var(--primary) / .8);
+    font-weight:600;
+  }
 
-  /* ── Era Tabs ── */
+  /* ── Era Tabs with arrows ── */
   .era-tabs-wrap {
     position:sticky; top:0; z-index:100;
     background:hsl(30 15% 10% / .88);
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     border-bottom:1px solid var(--border);
-    padding:12px 20px;
+    display:flex; align-items:center; gap:0;
+    padding:0;
   }
+  .tab-arrow {
+    flex-shrink:0; width:36px; height:36px; border-radius:50%;
+    border:1px solid var(--border); background:var(--card);
+    color:var(--text-secondary); font-size:14px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    transition:all .25s ease; user-select:none;
+    margin:0 4px;
+  }
+  .tab-arrow:hover {
+    border-color:hsl(var(--primary)); color:hsl(var(--primary));
+    box-shadow:0 0 16px hsl(var(--primary) / .15);
+  }
+  .tab-arrow:active { transform:scale(.92); }
   .era-tabs {
-    display:flex; gap:4px; overflow-x:auto; justify-content:center;
+    flex:1; display:flex; gap:4px; overflow-x:auto;
     -webkit-overflow-scrolling:touch; scroll-behavior:smooth;
+    padding:10px 0; scrollbar-width:none;
   }
-  .era-tabs::-webkit-scrollbar { height:2px; }
-  .era-tabs::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
+  .era-tabs::-webkit-scrollbar { display:none; }
   .era-tab {
     flex-shrink:0; padding:8px 18px; border-radius:24px;
     border:1px solid transparent; font-size:13px; font-weight:600;
@@ -81,8 +108,6 @@
     position:relative; z-index:1;
     max-width:1280px; margin:0 auto; padding:32px 24px 80px;
   }
-
-  /* Two-column grid */
   .main-grid {
     display:grid; grid-template-columns:1fr;
     gap:24px;
@@ -99,80 +124,85 @@
     animation:fadeInUp .5s ease-out;
   }
   .card h2 {
-    font-size:26px; font-weight:900; margin-bottom:6px;
+    font-size:24px; font-weight:800; margin-bottom:6px;
     background:linear-gradient(135deg, hsl(var(--primary)), hsl(35 80% 55%));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
   .card .period-label {
-    display:inline-block; font-size:13px; color:hsl(var(--primary));
-    background:hsl(var(--primary) / .1); padding:4px 14px;
+    display:inline-block; font-size:12px; color:hsl(var(--primary));
+    background:hsl(var(--primary) / .08); padding:4px 14px;
     border-radius:20px; margin-bottom:16px; font-weight:600;
+    letter-spacing:.04em;
   }
   @keyframes fadeInUp {
     from { opacity:0; transform:translateY(16px); }
     to { opacity:1; transform:translateY(0); }
   }
   @keyframes slideInRight {
-    from { opacity:0; transform:translateX(30px); }
+    from { opacity:0; transform:translateX(24px); }
     to { opacity:1; transform:translateX(0); }
   }
 
   /* ── Section titles ── */
   .section-title {
-    font-size:18px; font-weight:700; margin-bottom:16px;
+    font-size:16px; font-weight:700; margin-bottom:14px; margin-top:24px;
     display:flex; align-items:center; gap:8px;
-    background:linear-gradient(135deg, var(--text), hsl(var(--primary)));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    color:var(--text);
   }
   .section-title::before {
     content:''; display:inline-block;
-    width:4px; height:18px; border-radius:2px;
+    width:3px; height:16px; border-radius:2px;
     background:hsl(var(--primary));
     flex-shrink:0;
+    box-shadow:0 0 8px hsl(var(--primary) / .4);
+  }
+
+  /* ── Era description ── */
+  .era-desc {
+    font-size:15px; line-height:1.95; color:var(--text-secondary);
+    margin-bottom:4px;
   }
 
   /* ── Event list ── */
-  .event-list { display:flex; flex-direction:column; gap:6px; }
+  .event-list { display:flex; flex-direction:column; gap:5px; }
   .event-item {
-    display:flex; align-items:center; gap:12px;
-    padding:10px 16px; border-radius:8px;
+    display:flex; align-items:flex-start; gap:10px;
+    padding:10px 14px; border-radius:8px;
     border:1px solid transparent;
-    font-size:14px; cursor:pointer;
-    transition:all .25s ease;
+    font-size:13.5px; cursor:pointer;
+    transition:all .25s ease; line-height:1.5;
   }
   .event-item:hover {
     background:var(--card-hover);
     border-color:var(--border);
-    transform:translateX(6px);
+    transform:translateX(5px);
     box-shadow:0 4px 16px rgba(0,0,0,.3);
   }
   .event-dot {
-    flex-shrink:0; width:8px; height:8px; border-radius:50%;
+    flex-shrink:0; width:7px; height:7px; border-radius:50%;
     background:hsl(var(--primary));
-    box-shadow:0 0 8px hsl(var(--primary) / .5);
+    box-shadow:0 0 6px hsl(var(--primary) / .4);
+    margin-top:6px;
   }
 
   /* ── Figure tags ── */
   .tag-list { display:flex; flex-wrap:wrap; gap:8px; }
   .tag {
     display:inline-block; padding:6px 14px; border-radius:20px;
-    font-size:13px; font-weight:500; cursor:default;
-    background:hsl(var(--primary) / .08);
-    color:hsl(var(--primary)); border:1px solid hsl(var(--primary) / .2);
-    transition:all .25s ease;
+    font-size:13px; font-weight:500;
+    background:hsl(var(--primary) / .06);
+    color:hsl(var(--primary) / .85); border:1px solid hsl(var(--primary) / .15);
+    transition:all .25s ease; cursor:default;
   }
   .tag:hover {
-    background:hsl(var(--primary) / .15);
-    border-color:hsl(var(--primary) / .4);
-    box-shadow:0 0 12px hsl(var(--primary) / .15);
+    background:hsl(var(--primary) / .12);
+    border-color:hsl(var(--primary) / .35);
+    box-shadow:0 0 10px hsl(var(--primary) / .12);
   }
 
-  /* ── Invention cards ── */
+  /* ── Invention grid ── */
   .invention-grid {
-    display:grid; grid-template-columns:repeat(2,1fr); gap:10px;
-  }
-  @media (min-width:640px) {
-    .invention-grid { grid-template-columns:repeat(4,1fr); }
+    display:grid; grid-template-columns:repeat(2,1fr); gap:8px;
   }
   .invention-item {
     background:var(--card-hover); border:1px solid var(--border);
@@ -194,63 +224,49 @@
     border-left:3px solid hsl(var(--primary) / .4);
   }
   .tp-card:hover {
-    border-color:hsl(var(--primary) / .3);
-    box-shadow:0 0 20px hsl(var(--primary) / .1);
+    border-color:hsl(var(--primary) / .25);
+    box-shadow:0 0 18px hsl(var(--primary) / .08);
   }
-  .tp-year {
-    font-size:12px; font-weight:700; color:hsl(var(--primary));
-    margin-bottom:4px;
-  }
-  .tp-event { font-size:15px; font-weight:700; margin-bottom:4px; }
-  .tp-desc { font-size:13px; color:var(--text-secondary); margin-bottom:4px; }
+  .tp-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; letter-spacing:.05em; }
+  .tp-event { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .tp-desc { font-size:13px; color:var(--text-secondary); margin-bottom:4px; line-height:1.5; }
   .tp-sig { font-size:12px; color:var(--text-muted); font-style:italic; }
-
-  /* ── Description text ── */
-  .era-desc {
-    font-size:15px; line-height:1.9; color:var(--text-secondary);
-    margin-bottom:24px;
-  }
 
   /* ── Detail overlay ── */
   .detail-overlay {
     position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,.7);
+    background:rgba(0,0,0,.75);
     backdrop-filter:blur(4px);
     display:flex; align-items:center; justify-content:center;
     padding:20px;
-    animation:fadeIn .2s ease-out;
-  }
-  @keyframes fadeIn {
-    from { opacity:0; }
-    to { opacity:1; }
   }
   .detail-panel {
+    position:relative;
     background:var(--card); border:1px solid var(--border);
     border-radius:var(--radius); padding:32px;
-    max-width:640px; width:100%; max-height:85vh; overflow-y:auto;
-    box-shadow:0 20px 60px rgba(0,0,0,.8), 0 0 0 1px hsl(var(--primary) / .1);
+    max-width:600px; width:100%; max-height:82vh; overflow-y:auto;
+    box-shadow:0 24px 80px rgba(0,0,0,.8), 0 0 0 1px hsl(var(--primary) / .08);
     animation:slideUp .3s ease-out;
   }
   @keyframes slideUp {
-    from { opacity:0; transform:translateY(40px); }
+    from { opacity:0; transform:translateY(32px); }
     to { opacity:1; transform:translateY(0); }
   }
   .detail-panel h3 {
-    font-size:22px; margin-bottom:12px;
+    font-size:20px; margin-bottom:12px;
     background:linear-gradient(135deg, var(--text), hsl(var(--primary)));
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
   }
-  .detail-panel .close-btn {
-    position:absolute; top:16px; right:16px;
-    width:32px; height:32px; border-radius:50%;
+  .detail-close {
+    position:sticky; top:0; float:right;
+    width:34px; height:34px; border-radius:50%;
     border:1px solid var(--border); background:var(--card);
-    color:var(--text-secondary); font-size:16px; cursor:pointer;
+    color:var(--text-secondary); font-size:18px; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
-    transition:all .2s ease;
+    transition:all .2s ease; z-index:1;
   }
-  .detail-panel .close-btn:hover {
-    border-color:hsl(var(--primary)); color:hsl(var(--primary));
-  }
+  .detail-close:hover { border-color:hsl(var(--primary)); color:hsl(var(--primary)); }
+  .detail-body { font-size:14px; line-height:2; color:var(--text-secondary); }
 
   /* ── Footer ── */
   footer {
@@ -259,25 +275,30 @@
     font-size:12px; border-top:1px solid var(--border);
   }
 
-  /* ── Responsive ── */
   @media (max-width:768px) {
     .card { padding:20px 18px; }
-    .card h2 { font-size:22px; }
-    .era-tabs { justify-content:flex-start; }
+    .card h2 { font-size:21px; }
+    .era-tabs-wrap { padding:0; }
     .invention-grid { grid-template-columns:repeat(2,1fr); }
-    .detail-panel { padding:24px 18px; max-width:95vw; }
+    .detail-panel { padding:24px 18px; max-width:94vw; }
   }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <h1>中国全历史</h1>
-  <p>穿越千年时光轴，纵览中国历史脉络，沉浸探索每个时代的文明印记</p>
+  <h1>中 国 全 历 史</h1>
+  <p class="subtitle">穿越五千年时光轴，纵览中国历史脉络，沉浸探索每个时代的文明印记</p>
+  <div class="stats">
+    <span>19个历史时期</span>
+    <span>5000+年历史跨度</span>
+  </div>
 </div>
 
 <div class="era-tabs-wrap">
+  <button class="tab-arrow" id="tabLeft" title="向左滑动">&#8249;</button>
   <div class="era-tabs" id="eraTabs"></div>
+  <button class="tab-arrow" id="tabRight" title="向右滑动">&#8250;</button>
 </div>
 
 <div class="container">
@@ -286,266 +307,247 @@
 
 <footer>数据来源：百度百科 · 中国历史年表 &nbsp;|&nbsp; 基于中国全历史网架构重建</footer>
 
-<div id="detailOverlay" style="display:none;"></div>
+<div class="detail-overlay" id="detailOverlay" style="display:none;"></div>
 
 <script>
-// ── Complete Era Data ──
 const eras = [
-  {
-    name:'上古时期', period:'史前 — 前2070年',
-    start:-3000, end:-2070,
+  { name:'上古时期', period:'史前 — 约前2070年', start:-3000, end:-2070,
     desc:'此时期是人类社会发展的初级阶段，也是中华文明的孕育期。北京猿人、蓝田人等古人类的发现，展示了中国早期人类的智慧与生存状态。随着石器工具的进步和火的使用，人类社会逐渐进入新石器时代，农业、畜牧业开始兴起，定居生活成为可能。',
     events:['北京猿人生活（约70万年前）','仰韶文化兴起（约前5000年）','大汶口文化发展（约前4300年）','三皇五帝传说时期'],
     figures:['黄帝','炎帝','尧','舜','禹'],
     inventions:['石器工具','火的使用','彩陶制作','农业种植'],
-    turningPoints:[{y:'约前5000年',e:'仰韶文化兴起',d:'以彩陶为特色的新石器时代文化',s:'标志着中国进入定居农业社会'}]
+    turningPoints:[{y:'约前5000年',e:'仰韶文化兴起',d:'以彩陶为特色的新石器时代文化，分布在黄河中游地区',s:'标志着中国进入定居农业社会，文明曙光初现'}]
   },
-  {
-    name:'夏朝', period:'约前2070年 — 约前1600年',
-    start:-2070, end:-1600,
-    desc:'夏朝是中国历史上第一个世袭制王朝，标志着中国由原始社会向奴隶制社会的过渡。大禹治水成功后建立夏朝，开创了"家天下"的政治格局。夏朝虽然文献记载较少，但考古发现的二里头文化被认为与夏朝有关。',
-    events:['大禹治水建立夏朝（约前2070年）','启继承王位，开创世袭制','太康失国','少康中兴','桀暴政，夏朝灭亡（约前1600年）'],
+  { name:'夏朝', period:'约前2070年 — 约前1600年', start:-2070, end:-1600,
+    desc:'夏朝是中国历史上第一个世袭制王朝，标志着中国由原始社会向奴隶制社会的过渡。大禹治水成功后建立夏朝，开创了"家天下"的政治格局。夏朝虽然文献记载较少，但考古发现的二里头文化被认为与夏朝有关，出土了宫殿基址、青铜器等重要遗迹遗物。',
+    events:['大禹治水建立夏朝（约前2070年）','启继承王位，开创世袭制','太康失国，后羿夺权','少康中兴，恢复夏朝统治','桀暴政，夏朝灭亡（约前1600年）'],
     figures:['大禹','启','太康','少康','桀'],
     inventions:['世袭制度','历法雏形','青铜器初现','城市规划'],
     turningPoints:[
-      {y:'约前2070年',e:'夏朝建立',d:'大禹治水成功，建立中国第一个王朝',s:'标志着中国进入王朝时代，原始社会结束'},
-      {y:'约前1600年',e:'夏朝灭亡',d:'商汤灭夏桀，夏朝覆灭',s:'暴政导致王朝更替，开启商朝时代'}
+      {y:'约前2070年',e:'夏朝建立',d:'大禹治水成功，受舜禅让建立中国历史上第一个王朝',s:'标志着中国进入王朝时代，原始社会结束'},
+      {y:'约前1600年',e:'夏朝灭亡',d:'夏桀暴虐无道，商汤起兵灭夏，鸣条之战夏军大败',s:'暴政导致王朝更替，开启商朝时代'}
     ]
   },
-  {
-    name:'商朝', period:'约前1600年 — 约前1046年',
-    start:-1600, end:-1046,
-    desc:'商朝是中国历史上第二个王朝，以青铜器文明和甲骨文闻名于世。商朝的青铜冶炼技术达到了很高的水平，甲骨文的出现标志着中国文字的成熟。商朝实行神权政治，占卜活动频繁，为后世留下了大量珍贵的甲骨文资料。',
-    events:['商汤灭夏建立商朝（约前1600年）','盘庚迁殷（约前1300年）','武丁中兴','帝辛（纣王）暴政','牧野之战，商朝灭亡（约前1046年）'],
+  { name:'商朝', period:'约前1600年 — 约前1046年', start:-1600, end:-1046,
+    desc:'商朝是中国历史上第二个王朝，以青铜器文明和甲骨文闻名于世。商朝的青铜冶炼技术达到了很高的水平，司母戊鼎是世界最大的青铜器。甲骨文的出现标志着中国文字的成熟，为后世留下了大量珍贵的甲骨文资料。商朝实行神权政治，占卜活动频繁。',
+    events:['商汤灭夏建立商朝（约前1600年）','盘庚迁殷（约前1300年）','武丁中兴，商朝鼎盛','妇好出征，中国最早女将军','帝辛（纣王）暴政','牧野之战，商朝灭亡（约前1046年）'],
     figures:['商汤','伊尹','盘庚','武丁','妇好','纣王','比干'],
     inventions:['甲骨文','青铜器','历法','占卜术'],
     turningPoints:[
-      {y:'约前1300年',e:'盘庚迁殷',d:'商王盘庚将都城迁至殷（今河南安阳）',s:'商朝进入稳定发展期，殷墟成为重要考古遗址'},
-      {y:'约前1046年',e:'商朝灭亡',d:'周武王伐纣，牧野之战商朝覆灭',s:'青铜文明达到顶峰后衰落，周朝建立'}
+      {y:'约前1300年',e:'盘庚迁殷',d:'商王盘庚力排众议将都城迁至殷（今河南安阳），此后273年不再迁都',s:'商朝进入稳定发展期，殷墟成为重要考古遗址'},
+      {y:'约前1046年',e:'商朝灭亡',d:'周武王伐纣，牧野之战商军阵前倒戈，纣王自焚于鹿台',s:'青铜文明达到顶峰后衰落，周朝建立'}
     ]
   },
-  {
-    name:'西周', period:'约前1046年 — 前771年',
-    start:-1046, end:-771,
-    desc:'西周建立了完善的分封制和宗法制度，形成了"天子—诸侯—卿大夫—士"的等级体系。周公制礼作乐，确立了礼乐文化的基础。西周时期农业、手工业都有很大发展，青铜器铭文成为重要的历史资料。',
-    events:['武王伐纣建立周朝（约前1046年）','周公东征平定叛乱','周公制礼作乐','成康之治','国人暴动（前841年）','烽火戏诸侯，西周灭亡（前771年）'],
+  { name:'西周', period:'约前1046年 — 前771年', start:-1046, end:-771,
+    desc:'西周建立了完善的分封制和宗法制度，形成了"天子—诸侯—卿大夫—士"的等级体系。周公制礼作乐，确立了礼乐文化的基础，对中国后世政治制度和文化传统产生了深远影响。西周时期农业、手工业都有很大发展，青铜器铭文成为重要的历史资料。',
+    events:['武王伐纣建立周朝（约前1046年）','周公东征平定三监之乱','周公制礼作乐，确立宗法制','成康之治，四十余年不用刑罚','国人暴动（前841年），中国历史确切纪年之始','烽火戏诸侯，西周灭亡（前771年）'],
     figures:['周武王','周公旦','姜子牙','周成王','周康王','周幽王'],
     inventions:['分封制','宗法制','礼乐制度','井田制'],
     turningPoints:[
-      {y:'约前1046年',e:'西周建立',d:'周武王伐纣成功，建立周朝',s:'分封制和宗法制确立，礼乐文化形成'},
-      {y:'前771年',e:'西周灭亡',d:'犬戎攻破镐京，周幽王被杀',s:'西周结束，东周开始，进入春秋时期'}
+      {y:'约前1046年',e:'西周建立',d:'周武王伐纣成功，建立周朝，定都镐京',s:'分封制和宗法制确立，礼乐文化形成'},
+      {y:'前771年',e:'西周灭亡',d:'犬戎攻破镐京，周幽王被杀于骊山之下',s:'西周结束，平王东迁洛邑，进入春秋时期'}
     ]
   },
-  {
-    name:'春秋时期', period:'前770年 — 前476年',
-    start:-770, end:-476,
-    desc:'春秋时期是东周的前半期，周王室权威衰落，诸侯争霸成为主旋律。齐桓公、晋文公、楚庄王、吴王阖闾、越王勾践先后称霸。这一时期，铁器开始使用，生产力提高，社会经济发展，思想文化空前活跃。',
-    events:['平王东迁（前770年）','齐桓公称霸（前685—前643年）','晋文公称霸（前636—前628年）','楚庄王问鼎中原（前613—前591年）','吴越争霸','孔子周游列国'],
+  { name:'春秋时期', period:'前770年 — 前476年', start:-770, end:-476,
+    desc:'春秋时期是东周的前半期，周王室权威衰落，诸侯争霸成为主旋律。齐桓公、晋文公、楚庄王、吴王阖闾、越王勾践先后称霸，史称"春秋五霸"。这一时期，铁器开始使用，生产力提高，社会经济发展，思想文化空前活跃，出现了百家争鸣的萌芽。',
+    events:['平王东迁（前770年），东周开始','齐桓公称霸（前685—前643年），春秋第一霸主','晋文公称霸（前636—前628年），城濮之战','楚庄王问鼎中原（前613—前591年）','吴越争霸，勾践卧薪尝胆','孔子周游列国，创立儒家学派'],
     figures:['齐桓公','管仲','晋文公','楚庄王','孔子','老子','孙武'],
-    inventions:['铁器','牛耕','私学兴起','诸子百家思想'],
+    inventions:['铁器','牛耕','私学兴起','诸子百家思想萌芽'],
     turningPoints:[
-      {y:'前770年',e:'平王东迁',d:'周平王迁都洛邑，东周开始',s:'周王室权威衰落，诸侯争霸时代来临'},
-      {y:'前551年',e:'孔子诞生',d:'儒家学派创始人孔子出生',s:'儒家思想诞生，影响中国两千多年'}
+      {y:'前770年',e:'平王东迁',d:'周平王在晋、郑等诸侯护卫下迁都洛邑，东周开始',s:'周王室权威衰落，诸侯争霸时代来临'},
+      {y:'前551年',e:'孔子诞生',d:'儒家学派创始人孔子出生于鲁国陬邑（今山东曲阜）',s:'儒家思想诞生，影响中国两千多年'}
     ]
   },
-  {
-    name:'战国时期', period:'前475年 — 前221年',
-    start:-475, end:-221,
-    desc:'战国时期是中国历史上最为动荡的时期之一，七雄并立，战争频繁。各国纷纷变法图强，商鞅变法使秦国强大。这一时期，铁器广泛使用，农业生产力大幅提高，诸子百家思想达到鼎盛，为中华文化奠定了基础。',
-    events:['三家分晋（前403年）','商鞅变法（前356年）','长平之战（前260年）','荆轲刺秦王（前227年）','秦灭六国统一天下（前230—前221年）'],
-    figures:['商鞅','孟子','庄子','荀子','韩非子','墨子','白起','廉颇','赵括'],
-    inventions:['都江堰','郡县制雏形','兵法著作','诸子百家学说'],
+  { name:'战国时期', period:'前475年 — 前221年', start:-475, end:-221,
+    desc:'战国时期是中国历史上最为动荡的时期之一，七雄并立，战争频繁，但也催生了空前活跃的思想文化。各国纷纷变法图强，商鞅变法使秦国由弱变强。这一时期，铁器广泛使用，农业生产力大幅提高，诸子百家思想达到鼎盛，为中华文化奠定了坚实基础。',
+    events:['三家分晋（前403年），战国开端','商鞅变法（前356年），秦国崛起','长平之战（前260年），白起坑杀赵军四十万','荆轲刺秦王（前227年），图穷匕见','秦灭六国统一天下（前230—前221年）'],
+    figures:['商鞅','孟子','庄子','荀子','韩非子','墨子','屈原','白起','廉颇','赵括'],
+    inventions:['都江堰水利工程','郡县制雏形','兵法著作','诸子百家学说'],
     turningPoints:[
-      {y:'前356年',e:'商鞅变法',d:'秦国实行商鞅变法，国力大增',s:'秦国崛起，为统一六国奠定基础'},
-      {y:'前260年',e:'长平之战',d:'秦国大败赵国，坑杀赵军40万',s:'东方六国再无力抗衡秦国'}
+      {y:'前356年',e:'商鞅变法',d:'秦孝公任用商鞅推行变法，废井田开阡陌，奖励军功和农耕',s:'秦国崛起，为统一六国奠定基础'},
+      {y:'前260年',e:'长平之战',d:'秦将白起大败赵军，坑杀降卒四十万，赵国元气大伤',s:'东方六国再无力独立抗衡秦国'}
     ]
   },
-  {
-    name:'秦朝', period:'前221年 — 前207年',
-    start:-221, end:-207,
-    desc:'秦朝是中国历史上第一个统一的中央集权制封建王朝。秦始皇统一六国后，实行郡县制，统一文字、货币、度量衡，修建长城和驰道，建立了强大的中央集权体系。虽然秦朝仅存在15年，但其制度影响深远。',
-    events:['秦始皇统一六国（前221年）','统一文字、货币、度量衡','修建长城','焚书坑儒（前213年）','秦始皇巡游病逝（前210年）','陈胜吴广起义（前209年）','刘邦项羽灭秦（前207年）'],
-    figures:['秦始皇','李斯','蒙恬','赵高','陈胜','吴广'],
+  { name:'秦朝', period:'前221年 — 前207年', start:-221, end:-207,
+    desc:'秦朝是中国历史上第一个统一的中央集权制封建王朝，奠定了中国两千多年政治制度的基本格局。秦始皇统一六国后，推行郡县制，统一文字、货币、度量衡，修建万里长城和驰道。虽然秦朝仅存在短短15年，但其制度创新影响极为深远。"百代皆行秦政制"即是对其历史地位的准确概括。',
+    events:['秦始皇统一六国（前221年），自称"始皇帝"','统一文字（小篆）、货币（半两钱）、度量衡','蒙恬北逐匈奴，修筑万里长城','焚书坑儒（前213—前212年）','秦始皇第五次巡游途中病逝沙丘（前210年）','陈胜吴广起义（前209年），"王侯将相宁有种乎"','刘邦项羽攻入咸阳，秦朝灭亡（前207年）'],
+    figures:['秦始皇','李斯','蒙恬','赵高','陈胜','吴广','项羽'],
     inventions:['郡县制','统一文字（小篆）','统一货币（半两钱）','统一度量衡'],
     turningPoints:[
-      {y:'前221年',e:'秦朝建立',d:'秦始皇统一六国，建立中国第一个统一王朝',s:'结束分裂，建立中央集权制度，影响后世两千年'},
-      {y:'前207年',e:'秦朝灭亡',d:'刘邦项羽攻入咸阳，秦朝覆灭',s:'暴政导致速亡，楚汉相争开始'}
+      {y:'前221年',e:'秦朝建立',d:'秦王嬴政灭掉六国中最后的齐国，完成统一大业，自号始皇帝',s:'结束五百余年分裂，建立中国第一个大一统中央集权帝国'},
+      {y:'前207年',e:'秦朝灭亡',d:'刘邦率先攻入咸阳，秦王子婴素车白马出降',s:'暴政导致中国第一个统一王朝仅存15年便速亡'}
     ]
   },
-  {
-    name:'汉朝', period:'前202年 — 公元220年',
-    start:-202, end:220,
-    desc:'汉朝分为西汉和东汉两个时期，是中国历史上最强盛的王朝之一。汉武帝时期，国力达到鼎盛，开辟丝绸之路，独尊儒术。汉朝在政治、经济、文化、科技等方面都取得了辉煌成就，"汉族"、"汉字"等称谓由此而来。',
-    events:['刘邦建立汉朝（前202年）','文景之治（前180—前141年）','汉武帝独尊儒术（前134年）','张骞出使西域（前138年）','王莽篡汉（公元8年）','光武中兴（公元25年）','黄巾起义（公元184年）','汉朝灭亡（公元220年）'],
-    figures:['刘邦','汉武帝','张骞','司马迁','董仲舒','王莽','光武帝','班固','蔡伦'],
-    inventions:['造纸术','地动仪','浑天仪','丝绸之路'],
+  { name:'汉朝', period:'前202年 — 公元220年', start:-202, end:220,
+    desc:'汉朝分为西汉和东汉两个时期，是中国历史上最强盛的王朝之一，与同时期的罗马帝国并列为世界两大帝国。汉武帝时期国力达到鼎盛，北击匈奴，开辟丝绸之路，独尊儒术。汉朝在政治、经济、文化、科技等方面都取得了辉煌成就，"汉族""汉字""汉语"等称谓皆由此而来。',
+    events:['刘邦建立汉朝（前202年），定都长安','文景之治（前180—前141年），轻徭薄赋','汉武帝独尊儒术（前134年），儒学成为正统','张骞出使西域（前138年），开辟丝绸之路','司马迁完成《史记》（约前91年）','王莽篡汉建立新朝（公元8年）','光武中兴（公元25年），东汉建立','蔡伦改进造纸术（公元105年）','黄巾起义（公元184年），天下大乱'],
+    figures:['刘邦','汉武帝','张骞','司马迁','董仲舒','卫青','霍去病','王莽','光武帝','班超','蔡伦'],
+    inventions:['造纸术','地动仪','浑天仪','《史记》','丝绸之路','《汉书》'],
     turningPoints:[
-      {y:'前202年',e:'汉朝建立',d:'刘邦战胜项羽，建立汉朝',s:'开创汉族文化，奠定中华文明基础'},
-      {y:'前134年',e:'独尊儒术',d:'汉武帝采纳董仲舒建议，罢黜百家，独尊儒术',s:'儒家思想成为正统，影响中国两千年'},
-      {y:'公元105年',e:'蔡伦改进造纸术',d:'蔡伦改进造纸技术，纸张开始普及',s:'促进文化传播，影响世界文明'}
+      {y:'前202年',e:'汉朝建立',d:'刘邦在垓下之战中击败项羽，于定陶称帝建立汉朝',s:'开创汉族文化，奠定中华文明基础，汉成为民族代称'},
+      {y:'前134年',e:'独尊儒术',d:'汉武帝采纳董仲舒建议，"罢黜百家，独尊儒术"',s:'儒家思想成为此后两千年中国社会的正统思想'},
+      {y:'公元105年',e:'蔡伦改进造纸术',d:'宦官蔡伦用树皮、麻头、破布等原料造出轻便廉价的纸张',s:'造纸术成为中国古代四大发明之一，深刻影响世界文明进程'}
     ]
   },
-  {
-    name:'三国时期', period:'220年 — 280年',
-    start:220, end:280,
-    desc:'三国时期是中国历史上的分裂时期，魏、蜀、吴三国鼎立。这一时期战争频繁，但也涌现出许多杰出的政治家、军事家和文学家。三国时期的历史被后世演绎成《三国演义》，成为中国文化的重要组成部分。',
-    events:['曹丕称帝建立魏国（220年）','刘备称帝建立蜀汉（221年）','孙权称帝建立吴国（229年）','诸葛亮六出祁山','司马懿发动高平陵之变（249年）','司马炎建立晋朝，三国归晋（280年）'],
-    figures:['曹操','刘备','孙权','诸葛亮','关羽','张飞','赵云','周瑜','司马懿'],
-    inventions:['木牛流马','连弩','诸葛连弩','屯田制'],
+  { name:'三国时期', period:'220年 — 280年', start:220, end:280,
+    desc:'三国时期是中国历史上的著名分裂时期，魏、蜀、吴三国鼎立。这一时期虽战争频繁，但也涌现出诸葛亮、曹操、关羽等一大批杰出的政治家、军事家和文学家。三国故事被后世演绎成《三国演义》，成为中国文学瑰宝，在世界范围内都有广泛影响。',
+    events:['曹丕称帝建立魏国（220年），东汉灭亡','刘备称帝建立蜀汉（221年）','孙权称帝建立吴国（229年）','诸葛亮六出祁山北伐（228—234年）','司马懿发动高平陵之变（249年），掌控曹魏大权','邓艾偷渡阴平灭蜀汉（263年）','司马炎代魏建晋，三国归晋（280年）'],
+    figures:['曹操','刘备','孙权','诸葛亮','关羽','张飞','赵云','周瑜','司马懿','陆逊'],
+    inventions:['木牛流马','连弩','屯田制','《出师表》'],
     turningPoints:[
-      {y:'208年',e:'赤壁之战',d:'孙刘联军大败曹操，奠定三国鼎立格局',s:'三国鼎立局面形成'},
-      {y:'280年',e:'三国归晋',d:'晋武帝司马炎灭吴，统一全国',s:'结束分裂，短暂统一'}
+      {y:'208年',e:'赤壁之战',d:'孙权刘备联军在赤壁以火攻大败曹操八十万大军',s:'奠定三国鼎立格局，曹操统一天下的梦想破灭'},
+      {y:'280年',e:'三国归晋',d:'晋武帝司马炎派王濬率水军顺长江而下灭吴，统一全国',s:'结束六十年分裂，中国重归统一'}
     ]
   },
-  {
-    name:'两晋时期', period:'265年 — 420年',
-    start:265, end:420,
-    desc:'两晋分为西晋和东晋。西晋短暂统一后，因八王之乱和永嘉之乱而灭亡。东晋偏安江南，北方陷入五胡十六国的混乱。这一时期，士族门阀势力强大，玄学盛行，书法艺术达到高峰。',
-    events:['司马炎建立西晋（265年）','八王之乱（291—306年）','永嘉之乱（311年）','司马睿建立东晋（317年）','淝水之战（383年）','刘裕灭东晋（420年）'],
-    figures:['司马炎','司马睿','王羲之','陶渊明','谢安','刘裕'],
-    inventions:['行书、草书发展','玄学思想','山水诗','田园诗'],
+  { name:'两晋时期', period:'265年 — 420年', start:265, end:420,
+    desc:'两晋分为西晋和东晋。西晋短暂统一后，因八王之乱和永嘉之乱而迅速灭亡。东晋偏安江南，北方陷入五胡十六国的混乱局面。这一时期，士族门阀势力极度强大，"王与马共天下"是当时的真实写照。玄学盛行，王羲之的书法、顾恺之的绘画、陶渊明的诗歌均达到了艺术高峰。',
+    events:['司马炎建立西晋（265年），定都洛阳','八王之乱（291—306年），宗室自相残杀','永嘉之乱（311年），匈奴攻破洛阳','司马睿建立东晋（317年），"王与马共天下"','淝水之战（383年），谢安以八万大败前秦八十万大军','刘裕代晋建宋（420年），东晋灭亡'],
+    figures:['司马炎','司马睿','王导','王羲之','陶渊明','顾恺之','谢安','刘裕'],
+    inventions:['行书与草书','山水诗','田园诗','玄学思想'],
     turningPoints:[
-      {y:'316年',e:'西晋灭亡',d:'匈奴攻陷长安，西晋覆灭',s:'北方陷入五胡十六国混乱，汉族南迁'},
-      {y:'383年',e:'淝水之战',d:'东晋以少胜多击败前秦',s:'保住了江南汉族政权，延续了中华文明'}
+      {y:'316年',e:'西晋灭亡',d:'匈奴首领刘曜攻破长安，俘虏晋愍帝，西晋覆灭',s:'北方陷入五胡十六国大混乱，汉族士民大规模南迁'},
+      {y:'383年',e:'淝水之战',d:'谢安坐镇建康指挥，其弟谢石、侄谢玄在淝水大败苻坚',s:'保住了江南汉族政权，延续了中华文明的正朔'}
     ]
   },
-  {
-    name:'南北朝时期', period:'420年 — 589年',
-    start:420, end:589,
-    desc:'南北朝时期，南方经历了宋、齐、梁、陈四个朝代，北方则先后有北魏、东魏、西魏、北齐、北周。这一时期，佛教盛行，石窟艺术发达，民族融合加速。北魏孝文帝改革促进了民族融合。',
-    events:['刘裕建立宋朝（420年）','北魏统一北方（439年）','北魏孝文帝改革（490年代）','梁武帝萧衍即位（502年）','侯景之乱（548年）','隋文帝统一全国（589年）'],
-    figures:['刘裕','北魏孝文帝','梁武帝','陈霸先','祖冲之','郦道元'],
-    inventions:['均田制','三长制','石窟艺术','《水经注》'],
+  { name:'南北朝时期', period:'420年 — 589年', start:420, end:589,
+    desc:'南北朝时期是中国历史上又一个大分裂时期。南方经历了宋、齐、梁、陈四个朝代，北方则先后有北魏、东魏、西魏、北齐、北周五个政权。这一时期，佛教在中国广泛传播，石窟艺术（云冈、龙门石窟）达到鼎盛，民族融合加速推进。北魏孝文帝的汉化改革对中华文明发展具有里程碑意义。',
+    events:['刘裕建立宋朝（420年），南朝开始','北魏统一北方（439年），南北朝对峙格局确立','北魏孝文帝迁都洛阳，全面推行汉化改革（494年）','梁武帝萧衍即位（502年），南朝佛教极盛','侯景之乱（548年），江南遭受毁灭性打击','北周武帝灭北齐统一北方（577年）','杨坚代周建隋（581年），后灭陈统一全国（589年）'],
+    figures:['刘裕','北魏孝文帝','梁武帝萧衍','陈霸先','祖冲之','郦道元','贾思勰'],
+    inventions:['均田制','三长制','石窟艺术','《水经注》','《齐民要术》'],
     turningPoints:[
-      {y:'490年代',e:'孝文帝改革',d:'北魏孝文帝推行汉化改革',s:'促进民族融合，为隋唐统一奠定基础'},
-      {y:'589年',e:'隋朝统一',d:'隋文帝灭陈，结束南北朝分裂',s:'结束近300年分裂，中国再次统一'}
+      {y:'494年',e:'孝文帝改革',d:'北魏孝文帝拓跋宏迁都洛阳，禁胡服胡语，改鲜卑姓为汉姓',s:'极大促进了民族大融合，为隋唐大一统奠定文化和制度基础'},
+      {y:'589年',e:'隋朝统一',d:'隋文帝杨坚派晋王杨广率五十一万大军南下灭陈，俘虏陈后主',s:'结束自东汉末年以来近四百年的分裂局面，中国重归统一'}
     ]
   },
-  {
-    name:'隋朝', period:'581年 — 618年',
-    start:581, end:618,
-    desc:'隋朝结束了长期分裂，重新统一中国。隋文帝开创了科举制度，隋炀帝修建大运河，沟通南北经济。虽然隋朝仅存在37年，但其制度创新和基础建设对后世影响深远。',
-    events:['杨坚建立隋朝（581年）','隋灭陈统一全国（589年）','开创科举制度（605年）','修建大运河（605—610年）','三征高句丽失败','隋炀帝被杀，隋朝灭亡（618年）'],
-    figures:['隋文帝杨坚','隋炀帝杨广','独孤皇后','李渊'],
+  { name:'隋朝', period:'581年 — 618年', start:581, end:618,
+    desc:'隋朝虽然国祚短暂仅37年，但它结束了近三百年的分裂局面，重新统一了中国。隋文帝开创了科举制度，隋炀帝修建了贯通南北的大运河。这些制度创新和重大工程建设对后世影响极为深远。科举制打破了门阀士族对政治权力的垄断，大运河则成为此后千年中国经济的大动脉。',
+    events:['杨坚建立隋朝（581年），定都大兴（长安）','隋灭南陈统一全国（589年）','开创科举制度（587年），设进士科取士','开凿大运河（605—610年），沟通南北五大水系','完善三省六部制','三征高句丽（612—614年），均以失败告终','隋炀帝在江都被宇文化及缢杀（618年），隋朝灭亡'],
+    figures:['隋文帝杨坚','隋炀帝杨广','独孤皇后','宇文化及'],
     inventions:['科举制度','大运河','赵州桥','三省六部制'],
     turningPoints:[
-      {y:'605年',e:'开创科举制',d:'隋炀帝正式设立进士科',s:'打破门阀垄断，选拔人才制度化'},
-      {y:'605-610年',e:'修建大运河',d:'开凿贯通南北的大运河',s:'促进南北经济文化交流，影响千年'}
+      {y:'605年',e:'开创科举制',d:'隋炀帝正式设立进士科，以考试选拔人才代替门第荐举',s:'打破门阀垄断，开辟了平民通过读书入仕的道路，影响中国一千三百年'},
+      {y:'605—610年',e:'修建大运河',d:'以洛阳为中心，南起余杭北至涿郡，全长两千余公里',s:'促进南北经济文化交流，成为此后千年中国经济的大动脉'}
     ]
   },
-  {
-    name:'唐朝', period:'618年 — 907年',
-    start:618, end:907,
-    desc:'唐朝是中国历史上最强盛的王朝之一，国力强盛，文化繁荣，对外开放。贞观之治、开元盛世是中国封建社会的巅峰时期。唐朝在诗歌、绘画、音乐、舞蹈等方面都达到了很高的成就，对周边国家影响深远。',
-    events:['李渊建立唐朝（618年）','玄武门之变（626年）','贞观之治（627—649年）','武则天称帝（690年）','开元盛世（713—741年）','安史之乱（755—763年）','黄巢起义（875—884年）','唐朝灭亡（907年）'],
-    figures:['李世民','武则天','李白','杜甫','白居易','玄奘','鉴真','颜真卿'],
-    inventions:['雕版印刷术','火药','唐诗','飞钱（纸币雏形）'],
+  { name:'唐朝', period:'618年 — 907年', start:618, end:907,
+    desc:'唐朝是中国历史上最强盛的王朝之一，国力强盛、文化繁荣、对外开放，是当时世界上最强大的国家。贞观之治和开元盛世是中国封建社会的巅峰时期。唐朝在诗歌、绘画、音乐、舞蹈等方面都达到了极高的成就，李白、杜甫、王维等诗人的作品至今广为传诵。唐朝对日本、朝鲜半岛、越南等周边地区影响深远。',
+    events:['李渊称帝建唐（618年），定都长安','玄武门之变（626年），李世民杀兄夺位','贞观之治（627—649年），"天可汗"时代','玄奘西行取经（629—645年），历时十七年','武则天称帝改国号为周（690年），中国唯一女皇帝','开元盛世（713—741年），唐朝国力达到巅峰','安史之乱（755—763年），唐朝由盛转衰','黄巢起义（875—884年），"冲天香阵透长安"','朱温篡唐（907年），唐朝灭亡'],
+    figures:['李世民','武则天','李白','杜甫','白居易','玄奘','鉴真','狄仁杰','颜真卿','韩愈'],
+    inventions:['雕版印刷术','火药','唐诗','飞钱（早期汇票）'],
     turningPoints:[
-      {y:'627-649年',e:'贞观之治',d:'唐太宗李世民开创盛世',s:'政治清明，经济繁荣，文化昌盛'},
-      {y:'755年',e:'安史之乱',d:'安禄山、史思明发动叛乱',s:'唐朝由盛转衰的转折点'}
+      {y:'627—649年',e:'贞观之治',d:'唐太宗李世民虚心纳谏，任用魏征、房玄龄等贤臣治理国家',s:'政治清明，经济繁荣，文化昌盛，被后世奉为治国典范'},
+      {y:'755年',e:'安史之乱',d:'范阳节度使安禄山以讨伐杨国忠为名起兵叛乱，战火遍及大半个中国',s:'唐朝由盛转衰的转折点，此后藩镇割据局面持续一百五十余年'}
     ]
   },
-  {
-    name:'五代十国时期', period:'907年 — 960年',
-    start:907, end:960,
-    desc:'五代十国是唐朝灭亡后的分裂时期。北方先后出现后梁、后唐、后晋、后汉、后周五个朝代，南方则有十个割据政权。这一时期战乱频繁，但经济文化仍有发展，为宋朝统一奠定了基础。',
-    events:['朱温建立后梁（907年）','李存勖建立后唐（923年）','石敬瑭建立后晋，割让燕云十六州（936年）','郭威建立后周（951年）','赵匡胤陈桥兵变（960年）'],
-    figures:['朱温','李存勖','石敬瑭','郭威','柴荣','赵匡胤'],
-    inventions:['火药武器应用','活字印刷雏形','词的发展'],
+  { name:'五代十国时期', period:'907年 — 960年', start:907, end:960,
+    desc:'五代十国是唐朝灭亡后中国再次陷入的分裂时期。北方中原地区先后经历了后梁、后唐、后晋、后汉、后周五个朝代，南方和山西则有十个割据政权。这一时期虽然战乱频繁，但经济文化仍有重要发展，后周世宗柴荣的改革尤为突出，为后来宋朝统一奠定了坚实基础。',
+    events:['朱温灭唐建立后梁（907年），五代开始','李存勖灭后梁建立后唐（923年）','石敬瑭建立后晋，割让燕云十六州给契丹（936年）','郭威建立后周（951年）','柴荣即位（954年），推行改革，后周国力大增','赵匡胤陈桥兵变黄袍加身建立宋朝（960年）'],
+    figures:['朱温','李存勖','石敬瑭','郭威','柴荣（周世宗）','赵匡胤','李煜'],
+    inventions:['火药武器开始实战应用','活字印刷技术萌芽','词的发展成熟'],
     turningPoints:[
-      {y:'936年',e:'割让燕云十六州',d:'后晋石敬瑭割让燕云十六州给契丹',s:'失去北方屏障，影响后世数百年'},
-      {y:'960年',e:'宋朝建立',d:'赵匡胤陈桥兵变，建立宋朝',s:'结束五代十国分裂，中国再次统一'}
+      {y:'936年',e:'割让燕云十六州',d:'后晋石敬瑭为换取契丹出兵支持，将燕云十六州割让给辽朝',s:'中原王朝失去北方天然屏障，对后世数百年军事格局产生深远影响'},
+      {y:'960年',e:'宋朝建立',d:'赵匡胤在陈桥驿发动兵变，被将士黄袍加身拥立为帝',s:'结束五代十国分裂局面，中国再次走向统一'}
     ]
   },
-  {
-    name:'宋朝', period:'960年 — 1279年',
-    start:960, end:1279,
-    desc:'宋朝分为北宋和南宋，是中国历史上经济、文化、科技最发达的朝代之一。虽然军事上较弱，但经济繁荣，商业发达，科技领先世界。宋朝的理学、词、书画、瓷器等都达到了很高的成就。',
-    events:['赵匡胤建立宋朝（960年）','杯酒释兵权（961年）','王安石变法（1069年）','靖康之变（1127年）','岳飞抗金','蒙古灭宋（1279年）'],
-    figures:['赵匡胤','王安石','苏轼','岳飞','文天祥','朱熹','沈括'],
-    inventions:['活字印刷术','指南针','火药武器','纸币（交子）'],
+  { name:'宋朝', period:'960年 — 1279年', start:960, end:1279,
+    desc:'宋朝分为北宋和南宋两个阶段，是中国历史上经济、文化、科技最发达的朝代之一。北宋都城汴京（开封）是当时世界上最大的城市。宋朝虽然军事上较为弱势，但经济极度繁荣，商业高度发达，出现了世界上最早的纸币"交子"。指南针、火药、活字印刷术三大发明都在宋朝得到重大发展或广泛应用。',
+    events:['赵匡胤建立宋朝（960年），定都汴京','杯酒释兵权（961年），确立重文轻武国策','王安石变法（1069年），富国强兵改革','毕昇发明活字印刷术（约1040年）','靖康之变（1127年），金兵攻破汴京，北宋灭亡','岳飞郾城大捷（1140年），大破金兵','"绍兴和议"与岳飞冤狱（1141年）','文天祥抗元，崖山海战（1279年），南宋灭亡'],
+    figures:['赵匡胤','王安石','苏轼','岳飞','文天祥','朱熹','沈括','辛弃疾','李清照'],
+    inventions:['活字印刷术','指南针','火药武器','纸币（交子）','《梦溪笔谈》'],
     turningPoints:[
-      {y:'1044年',e:'火药配方记载',d:'《武经总要》记载火药配方',s:'火药开始用于军事，改变战争形态'},
-      {y:'1127年',e:'靖康之变',d:'金国攻陷开封，北宋灭亡',s:'宋朝南迁，进入南宋时期'}
+      {y:'1044年',e:'火药配方正式记载',d:'曾公亮《武经总要》首次详细记载了火药的三种配方',s:'火药开始用于军事领域，逐步改变了世界战争形态'},
+      {y:'1127年',e:'靖康之变',d:'金国大军南下攻破汴京，俘虏宋徽宗、宋钦宗二帝北去',s:'北宋灭亡，宋室南迁临安，进入南宋时期'}
     ]
   },
-  {
-    name:'元朝', period:'1271年 — 1368年',
-    start:1271, end:1368,
-    desc:'元朝是由蒙古族建立的统一王朝，疆域空前辽阔。元朝促进了多民族融合，开辟了横跨欧亚的陆上丝绸之路。虽然统治时间较短，但在天文、数学、戏曲等方面都有重要成就。',
-    events:['忽必烈建立元朝（1271年）','元灭南宋统一全国（1279年）','马可·波罗游历中国','红巾军起义（1351年）','朱元璋建立明朝（1368年）'],
-    figures:['忽必烈','郭守敬','关汉卿','马致远','朱元璋'],
-    inventions:['授时历','元曲','回回炮','行省制度'],
+  { name:'元朝', period:'1271年 — 1368年', start:1271, end:1368,
+    desc:'元朝是由蒙古族建立的中国历史上疆域最辽阔的统一王朝，其版图横跨欧亚大陆。元朝定都大都（今北京），首次将西藏、云南等地正式纳入中国版图。元朝时期，中外交流空前活跃，马可·波罗等西方旅行家来到中国。元曲（关汉卿《窦娥冤》等）和杂剧是中国文学史上的璀璨明珠。',
+    events:['铁木真统一蒙古各部，称成吉思汗（1206年）','忽必烈改国号为"大元"，定都大都（1271年）','元军攻破临安，灭南宋统一全国（1279年）','马可·波罗来华（1275年），留居中国十七年','行省制度确立，影响中国行政区划至今','红巾军起义爆发（1351年）','朱元璋派徐达北伐，攻克大都，元朝灭亡（1368年）'],
+    figures:['忽必烈','成吉思汗','郭守敬','关汉卿','马致远','马可·波罗'],
+    inventions:['《授时历》（精确到365.2425天）','元曲','行省制度','回回炮'],
     turningPoints:[
-      {y:'1279年',e:'元朝统一',d:'元军灭南宋，完成统一',s:'首次由少数民族统一全国'},
-      {y:'1368年',e:'元朝灭亡',d:'朱元璋攻占大都，元朝覆灭',s:'蒙古族退回草原，明朝建立'}
+      {y:'1279年',e:'元朝统一全国',d:'元军在崖山海战中击败南宋残部，陆秀夫背幼帝跳海殉国',s:'中国历史上首次由少数民族政权完成全国统一'},
+      {y:'1368年',e:'元朝灭亡',d:'朱元璋部下徐达、常遇春率明军攻克大都，元顺帝北逃',s:'蒙古势力退回草原，汉人重新建立统一王朝'}
     ]
   },
-  {
-    name:'明朝', period:'1368年 — 1644年',
-    start:1368, end:1644,
-    desc:'明朝是中国历史上最后一个由汉族建立的统一王朝。明朝前期国力强盛，郑和七下西洋展示了中国的海上实力。明朝在政治、经济、文化、科技等方面都有重要成就，但后期政治腐败，最终被李自成起义军和清军所灭。',
-    events:['朱元璋建立明朝（1368年）','靖难之役（1399—1402年）','郑和下西洋（1405—1433年）','土木堡之变（1449年）','张居正改革（1572—1582年）','李自成攻占北京（1644年）'],
-    figures:['朱元璋','朱棣','郑和','王阳明','张居正','李时珍','徐光启'],
-    inventions:['《永乐大典》','《本草纲目》','《天工开物》','紫禁城'],
+  { name:'明朝', period:'1368年 — 1644年', start:1368, end:1644,
+    desc:'明朝是中国历史上最后一个由汉族建立的大一统王朝。明初国力强盛，郑和七下西洋展示了中国强大的海上实力。永乐年间编纂的《永乐大典》是当时世界上最大的百科全书。明朝中后期出现了资本主义萌芽，王阳明心学影响深远。但明朝后期宦官专权、党争激烈、财政危机，最终被农民起义推翻。',
+    events:['朱元璋称帝建明（1368年），定都应天（南京）','靖难之役（1399—1402年），朱棣夺位','永乐迁都北京（1421年），"天子守国门"','郑和七下西洋（1405—1433年），最远到达非洲东海岸','土木堡之变（1449年），明英宗被瓦剌俘虏','张居正改革（1572—1582年），推行一条鞭法','戚继光抗倭，组建"戚家军"','李自成攻破北京（1644年），崇祯帝煤山自缢'],
+    figures:['朱元璋','朱棣','郑和','王阳明','张居正','戚继光','李时珍','海瑞','徐光启'],
+    inventions:['《永乐大典》','《本草纲目》','《天工开物》','紫禁城','明代青花瓷'],
     turningPoints:[
-      {y:'1405-1433年',e:'郑和下西洋',d:'郑和率领船队七次远航',s:'展示中国海上实力，促进中外交流'},
-      {y:'1644年',e:'明朝灭亡',d:'李自成攻占北京，崇祯帝自缢',s:'汉族王朝结束，清朝入主中原'}
+      {y:'1405—1433年',e:'郑和下西洋',d:'郑和率领两万七千余人的庞大船队七次远航，访问三十多个国家和地区',s:'展示了明朝强大的海上实力，促进了中国与亚非各国的经济文化交流'},
+      {y:'1644年',e:'明朝灭亡',d:'李自成农民军攻入北京，崇祯帝在万岁山（煤山）自缢殉国',s:'最后一个汉族大一统王朝结束，清军随即入关定鼎中原'}
     ]
   },
-  {
-    name:'清朝', period:'1636年 — 1912年',
-    start:1636, end:1912,
-    desc:'清朝是中国历史上最后一个封建王朝，由满族建立。清朝前期国力强盛，康乾盛世达到封建社会的最后辉煌。但清朝后期闭关锁国，落后于世界潮流，在列强侵略下逐渐衰落，最终被辛亥革命推翻。',
-    events:['皇太极建立清朝（1636年）','清军入关（1644年）','康熙平定三藩（1673—1681年）','康乾盛世（1661—1795年）','鸦片战争（1840—1842年）','太平天国运动（1851—1864年）','洋务运动（1861—1894年）','甲午战争（1894—1895年）','戊戌变法（1898年）','辛亥革命（1911年）','清朝灭亡（1912年）'],
-    figures:['康熙','雍正','乾隆','曾国藩','李鸿章','慈禧太后','孙中山'],
-    inventions:['《四库全书》','《红楼梦》','京剧','圆明园'],
+  { name:'清朝', period:'1636年 — 1912年', start:1636, end:1912,
+    desc:'清朝是中国历史上最后一个封建王朝，由满族建立。康雍乾三朝国力达到鼎盛，康乾盛世时期中国疆域超过1300万平方公里，人口突破三亿。但清朝中后期闭关锁国，与工业革命失之交臂，在西方列强的侵略下逐渐沦为半殖民地半封建社会。1911年辛亥革命推翻帝制，终结了中国延续两千多年的封建君主专制制度。',
+    events:['努尔哈赤建立后金（1616年），皇太极改国号为清（1636年）','清军入关定鼎北京（1644年）','康熙擒鳌拜、平三藩、收台湾','康乾盛世（1661—1795年），疆域和国力达到封建王朝巅峰','鸦片战争（1840年），《南京条约》割让香港','太平天国运动（1851—1864年）','洋务运动（1861—1894年），"师夷长技以自强"','甲午中日战争（1894年），北洋水师全军覆没','戊戌变法（1898年），百日维新失败','辛亥革命（1911年），清帝退位（1912年）'],
+    figures:['康熙','雍正','乾隆','林则徐','曾国藩','李鸿章','左宗棠','慈禧太后','孙中山','康有为'],
+    inventions:['《四库全书》','《红楼梦》','京剧','圆明园','《康熙字典》'],
     turningPoints:[
-      {y:'1840年',e:'鸦片战争',d:'英国发动鸦片战争，清朝战败',s:'中国开始沦为半殖民地半封建社会'},
-      {y:'1911年',e:'辛亥革命',d:'武昌起义爆发，推翻清朝统治',s:'结束两千年封建帝制，建立共和国'}
+      {y:'1840年',e:'鸦片战争',d:'英国以林则徐虎门销烟为借口发动侵华战争，清朝战败签订《南京条约》',s:'中国开始沦为半殖民地半封建社会，被迫打开国门'},
+      {y:'1911年',e:'辛亥革命',d:'武昌起义爆发，各省纷纷响应宣布独立，成立中华民国',s:'结束延续两千余年的封建帝制，中国进入共和时代'}
     ]
   },
-  {
-    name:'近现代时期', period:'1912年 — 至今',
-    start:1912, end:2026,
-    desc:'辛亥革命后，中国进入近现代时期。经历了北洋政府、国民政府时期，抗日战争，解放战争，最终在1949年建立中华人民共和国。新中国成立后，经过改革开放，中国逐步发展成为世界第二大经济体。',
-    events:['中华民国成立（1912年）','五四运动（1919年）','中国共产党成立（1921年）','抗日战争（1937—1945年）','中华人民共和国成立（1949年）','改革开放（1978年）','香港回归（1997年）','澳门回归（1999年）','北京奥运会（2008年）'],
-    figures:['孙中山','毛泽东','周恩来','邓小平','鲁迅','钱学森','袁隆平'],
-    inventions:['两弹一星','杂交水稻','高铁技术','5G通信'],
+  { name:'近现代时期', period:'1912年 — 至今', start:1912, end:2026,
+    desc:'辛亥革命推翻帝制后，中国经历了北洋政府、国民政府、抗日战争、解放战争等重大历史阶段。1949年中华人民共和国成立，标志着中国人民站起来了。1978年改革开放后，中国经济持续高速发展，到21世纪初已成为世界第二大经济体。今天的中国，正在实现中华民族伟大复兴的道路上坚定前行。',
+    events:['中华民国成立（1912年），孙中山就任临时大总统','五四运动（1919年），新民主主义革命开端','中国共产党成立（1921年），"开天辟地的大事变"','抗日战争全面爆发（1937年），全民族浴血抗战','中华人民共和国成立（1949年），"中国人民站起来了"','抗美援朝（1950—1953年）','改革开放（1978年），中国经济腾飞','香港回归（1997年），澳门回归（1999年）','北京奥运会（2008年）','全面建成小康社会（2020年）'],
+    figures:['孙中山','毛泽东','周恩来','邓小平','鲁迅','钱学森','袁隆平','邓稼先'],
+    inventions:['两弹一星','杂交水稻','高铁技术','5G通信','载人航天'],
     turningPoints:[
-      {y:'1949年',e:'新中国成立',d:'中华人民共和国成立',s:'中国人民站起来了，开启新纪元'},
-      {y:'1978年',e:'改革开放',d:'中国开始实行改革开放政策',s:'中国经济腾飞，综合国力大幅提升'}
+      {y:'1949年',e:'新中国成立',d:'毛泽东在天安门城楼宣告中华人民共和国中央人民政府成立',s:'中国历史翻开了崭新的一页，中国人民从此站起来了'},
+      {y:'1978年',e:'改革开放',d:'中共十一届三中全会决定将工作重心转移到经济建设上来',s:'中国开始了人类历史上规模最大的经济腾飞'}
     ]
   }
 ];
 
-let activeEraIdx = 6; // 秦朝 default
+let activeIdx = 7; // 秦朝默认
 
-// ── Render era tabs ──
+// ── Render ──
 function renderEraTabs() {
   document.getElementById('eraTabs').innerHTML = eras.map((e,i) => {
-    const cls = i === activeEraIdx ? 'era-tab active' : 'era-tab';
+    const cls = i === activeIdx ? 'era-tab active' : 'era-tab';
     return `<span class="${cls}" data-idx="${i}">${e.name}</span>`;
   }).join('');
-  // scroll active into view
+  scrollActiveIntoView();
+}
+
+function scrollActiveIntoView() {
   setTimeout(() => {
     const t = document.querySelector('#eraTabs .era-tab.active');
     if (t) t.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
-  }, 100);
+  }, 80);
 }
 
-// ── Render main content ──
+// ── Arrow buttons ──
+document.getElementById('tabLeft').addEventListener('click', () => {
+  document.getElementById('eraTabs').scrollBy({ left:-200, behavior:'smooth' });
+});
+document.getElementById('tabRight').addEventListener('click', () => {
+  document.getElementById('eraTabs').scrollBy({ left:200, behavior:'smooth' });
+});
+
+// ── Tab click ──
+document.getElementById('eraTabs').addEventListener('click', function(e) {
+  const tab = e.target.closest('.era-tab');
+  if (!tab) return;
+  activeIdx = parseInt(tab.dataset.idx);
+  renderEraTabs();
+  renderContent();
+  document.getElementById('mainContent').scrollIntoView({ behavior:'smooth', block:'start' });
+});
+
 function renderContent() {
-  const era = eras[activeEraIdx];
+  const era = eras[activeIdx];
   if (!era) return;
 
   document.getElementById('mainContent').innerHTML = `
-    <!-- Left Column: Overview + Events -->
+    <!-- Left Column -->
     <div style="display:flex;flex-direction:column;gap:24px;">
-      <div class="card" style="animation:fadeInUp .5s ease-out;">
+      <div class="card">
         <span class="period-label">${era.period}</span>
         <h2>${era.name}</h2>
-        <p class="era-desc" style="margin-top:16px;">${era.desc}</p>
+        <p class="era-desc" style="margin-top:14px;">${era.desc}</p>
 
         <div class="section-title">重大事件</div>
         <div class="event-list">
@@ -559,19 +561,17 @@ function renderContent() {
       </div>
     </div>
 
-    <!-- Right Column: Figures + Inventions + Turning Points -->
+    <!-- Right Column -->
     <div style="display:flex;flex-direction:column;gap:24px;animation:slideInRight .5s ease-out;">
-      <!-- Famous Figures -->
       <div class="card">
-        <div class="section-title">著名人物</div>
+        <div class="section-title" style="margin-top:0;">著名人物</div>
         <div class="tag-list">
           ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
         </div>
       </div>
 
-      <!-- Inventions & Achievements -->
       <div class="card">
-        <div class="section-title">重要成就</div>
+        <div class="section-title" style="margin-top:0;">重要成就</div>
         <div class="invention-grid">
           ${era.inventions.map(inv => `
             <div class="invention-item">${inv}</div>
@@ -579,9 +579,8 @@ function renderContent() {
         </div>
       </div>
 
-      <!-- Turning Points -->
       <div class="card">
-        <div class="section-title">关键转折</div>
+        <div class="section-title" style="margin-top:0;">关键转折</div>
         ${era.turningPoints.map(tp => `
           <div class="tp-card">
             <div class="tp-year">${tp.y}</div>
@@ -595,14 +594,45 @@ function renderContent() {
   `;
 }
 
-// ── Tab click ──
-document.getElementById('eraTabs').addEventListener('click', function(e) {
-  const tab = e.target.closest('.era-tab');
-  if (!tab) return;
-  activeEraIdx = parseInt(tab.dataset.idx);
-  renderEraTabs();
-  renderContent();
-  window.scrollTo({ top:0, behavior:'smooth' });
+// ── Event detail click ──
+document.getElementById('mainContent').addEventListener('click', function(e) {
+  const item = e.target.closest('.event-item');
+  if (!item) return;
+  const idx = parseInt(item.dataset.eventIdx);
+  if (isNaN(idx)) return;
+  const era = eras[activeIdx];
+  const ev = era.events[idx];
+  showDetail(era, ev, idx);
+});
+
+function showDetail(era, ev, idx) {
+  const overlay = document.getElementById('detailOverlay');
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div class="detail-panel">
+      <button class="detail-close" onclick="closeDetail()">&times;</button>
+      <span class="period-label">${era.period}</span>
+      <h3>${ev}</h3>
+      <div class="detail-body">
+        <p>${era.desc}</p>
+        ${era.turningPoints.length > 0 ? `
+          <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">相关转折：</strong></p>
+          ${era.turningPoints.map(tp => `
+            <p style="margin-bottom:8px;">· ${tp.y} — <strong>${tp.e}</strong>：${tp.d}（${tp.s}）</p>
+          `).join('')}
+        ` : ''}
+        <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">著名人物：</strong>${era.figures.join('、')}</p>
+        <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">重要成就：</strong>${era.inventions.join('、')}</p>
+      </div>
+    </div>
+  `;
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').style.display = 'none';
+}
+document.getElementById('detailOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDetail();
 });
 
 // ── Init ──
