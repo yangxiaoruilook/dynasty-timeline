@@ -6,18 +6,19 @@
 <title>中国全历史</title>
 <style>
   :root {
-    --bg: #1a1812;
-    --card: #242118;
-    --card-hover: #2a2720;
-    --text: #e8dfcf;
-    --text-secondary: #a09880;
-    --text-muted: #6b6258;
-    --border: #3a3428;
-    --primary: 45 90% 55%;
-    --accent: 35 80% 50%;
+    --bg: #faf8f5;
+    --card: #ffffff;
+    --card-hover: #f8f4ed;
+    --text: #2c2416;
+    --text-secondary: #6b5e4a;
+    --text-muted: #a09888;
+    --border: #e8e0d5;
+    --primary: 30 60% 38%;
+    --accent: 25 80% 42%;
     --radius: 16px;
-    --shadow-card: 0 20px 60px -20px rgba(0,0,0,.6);
-    --shadow-glow: 0 0 40px hsl(45 90% 55% / .3);
+    --shadow-card: 0 4px 24px rgba(60,40,20,.07);
+    --shadow-glow: 0 0 28px rgba(200,160,100,.2);
+    --hero-gradient: linear-gradient(135deg, #c9a445, #c0392b, #e67e22, #8e44ad, #2980b9);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
@@ -28,8 +29,8 @@
   body::before {
     content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
     background-image:
-      linear-gradient(hsl(45 90% 55% / .025) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(45 90% 55% / .025) 1px, transparent 1px);
+      linear-gradient(rgba(180,160,130,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(180,160,130,.05) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 
@@ -40,9 +41,9 @@
   }
   .hero h1 {
     font-size:clamp(28px,5vw,42px); font-weight:800; letter-spacing:.12em;
-    background:linear-gradient(135deg, hsl(45 85% 58%), hsl(42 100% 72%), hsl(35 75% 55%));
+    background:var(--hero-gradient);
     -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-    filter:drop-shadow(0 0 30px hsl(45 90% 55% / .3));
+    filter:drop-shadow(0 2px 8px rgba(180,140,80,.2));
     margin-bottom:10px;
     text-indent:.05em;
   }
@@ -56,16 +57,14 @@
   }
   .hero .stats span {
     padding:5px 16px; border-radius:20px;
-    background:hsl(var(--primary) / .06);
-    border:1px solid hsl(var(--primary) / .12);
-    color:hsl(var(--primary) / .8);
-    font-weight:600;
+    background:#fff; border:1px solid var(--border);
+    color:var(--text-secondary); font-weight:600;
   }
 
   /* ── Era Tabs with arrows ── */
   .era-tabs-wrap {
     position:sticky; top:0; z-index:100;
-    background:hsl(30 15% 10% / .88);
+    background:hsla(40,20%,96%,.92);
     backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
     border-bottom:1px solid var(--border);
     display:flex; align-items:center; gap:0;
@@ -73,16 +72,13 @@
   }
   .tab-arrow {
     flex-shrink:0; width:36px; height:36px; border-radius:50%;
-    border:1px solid var(--border); background:var(--card);
+    border:1px solid var(--border); background:#fff;
     color:var(--text-secondary); font-size:14px; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     transition:all .25s ease; user-select:none;
     margin:0 4px;
   }
-  .tab-arrow:hover {
-    border-color:hsl(var(--primary)); color:hsl(var(--primary));
-    box-shadow:0 0 16px hsl(var(--primary) / .15);
-  }
+  .tab-arrow:hover { border-color:#c9a445; color:#c9a445; }
   .tab-arrow:active { transform:scale(.92); }
   .era-tabs {
     flex:1; display:flex; gap:4px; overflow-x:auto;
@@ -92,15 +88,15 @@
   .era-tabs::-webkit-scrollbar { display:none; }
   .era-tab {
     flex-shrink:0; padding:8px 18px; border-radius:24px;
-    border:1px solid transparent; font-size:13px; font-weight:600;
-    cursor:pointer; color:var(--text-muted);
+    border:1px solid var(--border); font-size:13px; font-weight:600;
+    cursor:pointer; color:var(--text-muted); background:#fff;
     transition:all .3s ease; user-select:none; white-space:nowrap;
   }
-  .era-tab:hover { color:var(--text); background:var(--card); }
+  .era-tab:hover { color:var(--text); border-color:#c9a445; }
   .era-tab.active {
-    color:var(--bg); background:hsl(var(--primary));
-    box-shadow:0 0 24px hsl(var(--primary) / .35);
-    border-color:hsl(var(--primary));
+    color:#fff; background:linear-gradient(135deg, #c9a445, #b8943a);
+    box-shadow:0 4px 16px rgba(180,140,70,.3);
+    border-color:#c9a445;
   }
 
   /* ── Main Content ── */
@@ -125,12 +121,11 @@
   }
   .card h2 {
     font-size:24px; font-weight:800; margin-bottom:6px;
-    background:linear-gradient(135deg, hsl(var(--primary)), hsl(35 80% 55%));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    color:var(--text);
   }
   .card .period-label {
-    display:inline-block; font-size:12px; color:hsl(var(--primary));
-    background:hsl(var(--primary) / .08); padding:4px 14px;
+    display:inline-block; font-size:12px; color:#8b6914;
+    background:#fdf3d0; padding:4px 14px;
     border-radius:20px; margin-bottom:16px; font-weight:600;
     letter-spacing:.04em;
   }
@@ -152,9 +147,8 @@
   .section-title::before {
     content:''; display:inline-block;
     width:3px; height:16px; border-radius:2px;
-    background:hsl(var(--primary));
+    background:#c9a445;
     flex-shrink:0;
-    box-shadow:0 0 8px hsl(var(--primary) / .4);
   }
 
   /* ── Era description ── */
@@ -168,20 +162,18 @@
   .event-item {
     display:flex; align-items:flex-start; gap:10px;
     padding:10px 14px; border-radius:8px;
-    border:1px solid transparent;
+    border:1px solid transparent; background:#fdfaf5;
     font-size:13.5px; cursor:pointer;
     transition:all .25s ease; line-height:1.5;
   }
   .event-item:hover {
-    background:var(--card-hover);
-    border-color:var(--border);
+    background:#fff; border-color:#d4c8a8;
     transform:translateX(5px);
-    box-shadow:0 4px 16px rgba(0,0,0,.3);
+    box-shadow:0 2px 12px rgba(60,40,20,.06);
   }
   .event-dot {
     flex-shrink:0; width:7px; height:7px; border-radius:50%;
-    background:hsl(var(--primary));
-    box-shadow:0 0 6px hsl(var(--primary) / .4);
+    background:#c9a445;
     margin-top:6px;
   }
 
@@ -190,14 +182,11 @@
   .tag {
     display:inline-block; padding:6px 14px; border-radius:20px;
     font-size:13px; font-weight:500;
-    background:hsl(var(--primary) / .06);
-    color:hsl(var(--primary) / .85); border:1px solid hsl(var(--primary) / .15);
+    background:#fdf3d0; color:#8b6914; border:1px solid #e8d590;
     transition:all .25s ease; cursor:default;
   }
   .tag:hover {
-    background:hsl(var(--primary) / .12);
-    border-color:hsl(var(--primary) / .35);
-    box-shadow:0 0 10px hsl(var(--primary) / .12);
+    background:#fcebb5; border-color:#c9a445;
   }
 
   /* ── Invention grid ── */
@@ -205,29 +194,27 @@
     display:grid; grid-template-columns:repeat(2,1fr); gap:8px;
   }
   .invention-item {
-    background:var(--card-hover); border:1px solid var(--border);
+    background:#fdfaf5; border:1px solid var(--border);
     border-radius:12px; padding:14px; text-align:center;
     font-size:13px; font-weight:500;
     transition:all .3s ease;
   }
   .invention-item:hover {
-    border-color:hsl(var(--primary) / .3);
-    box-shadow:0 0 20px hsl(var(--primary) / .1);
+    border-color:#c9a445; box-shadow:0 2px 12px rgba(180,140,70,.12);
     transform:translateY(-2px);
   }
 
   /* ── Turning points ── */
   .tp-card {
-    background:var(--card-hover); border:1px solid var(--border);
+    background:#fdfaf5; border:1px solid var(--border);
     border-radius:12px; padding:16px;
     transition:all .3s ease; margin-bottom:8px;
-    border-left:3px solid hsl(var(--primary) / .4);
+    border-left:3px solid #c9a445;
   }
   .tp-card:hover {
-    border-color:hsl(var(--primary) / .25);
-    box-shadow:0 0 18px hsl(var(--primary) / .08);
+    border-color:#c9a445; box-shadow:0 2px 12px rgba(180,140,70,.1);
   }
-  .tp-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; letter-spacing:.05em; }
+  .tp-year { font-size:11px; font-weight:700; color:#8b6914; margin-bottom:4px; letter-spacing:.05em; }
   .tp-event { font-size:14px; font-weight:700; margin-bottom:4px; }
   .tp-desc { font-size:13px; color:var(--text-secondary); margin-bottom:4px; line-height:1.5; }
   .tp-sig { font-size:12px; color:var(--text-muted); font-style:italic; }
@@ -235,17 +222,17 @@
   /* ── Detail overlay ── */
   .detail-overlay {
     position:fixed; inset:0; z-index:200;
-    background:rgba(0,0,0,.75);
+    background:rgba(0,0,0,.4);
     backdrop-filter:blur(4px);
     display:flex; align-items:center; justify-content:center;
     padding:20px;
   }
   .detail-panel {
     position:relative;
-    background:var(--card); border:1px solid var(--border);
+    background:#fff; border:1px solid var(--border);
     border-radius:var(--radius); padding:32px;
     max-width:600px; width:100%; max-height:82vh; overflow-y:auto;
-    box-shadow:0 24px 80px rgba(0,0,0,.8), 0 0 0 1px hsl(var(--primary) / .08);
+    box-shadow:0 24px 80px rgba(60,40,20,.15);
     animation:slideUp .3s ease-out;
   }
   @keyframes slideUp {
@@ -253,19 +240,17 @@
     to { opacity:1; transform:translateY(0); }
   }
   .detail-panel h3 {
-    font-size:20px; margin-bottom:12px;
-    background:linear-gradient(135deg, var(--text), hsl(var(--primary)));
-    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    font-size:20px; margin-bottom:12px; color:var(--text);
   }
   .detail-close {
     position:sticky; top:0; float:right;
     width:34px; height:34px; border-radius:50%;
-    border:1px solid var(--border); background:var(--card);
+    border:1px solid var(--border); background:#fff;
     color:var(--text-secondary); font-size:18px; cursor:pointer;
     display:flex; align-items:center; justify-content:center;
     transition:all .2s ease; z-index:1;
   }
-  .detail-close:hover { border-color:hsl(var(--primary)); color:hsl(var(--primary)); }
+  .detail-close:hover { border-color:#c9a445; color:#c9a445; }
   .detail-body { font-size:14px; line-height:2; color:var(--text-secondary); }
 
   /* ── Footer ── */
@@ -616,13 +601,13 @@ function showDetail(era, ev, idx) {
       <div class="detail-body">
         <p>${era.desc}</p>
         ${era.turningPoints.length > 0 ? `
-          <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">相关转折：</strong></p>
+          <p style="margin-top:16px;"><strong style="color:#8b6914">相关转折：</strong></p>
           ${era.turningPoints.map(tp => `
             <p style="margin-bottom:8px;">· ${tp.y} — <strong>${tp.e}</strong>：${tp.d}（${tp.s}）</p>
           `).join('')}
         ` : ''}
-        <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">著名人物：</strong>${era.figures.join('、')}</p>
-        <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">重要成就：</strong>${era.inventions.join('、')}</p>
+        <p style="margin-top:16px;"><strong style="color:#8b6914">著名人物：</strong>${era.figures.join('、')}</p>
+        <p style="margin-top:8px;"><strong style="color:#8b6914">重要成就：</strong>${era.inventions.join('、')}</p>
       </div>
     </div>
   `;
