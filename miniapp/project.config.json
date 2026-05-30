@@ -1,0 +1,14 @@
+{
+  "appid": "填写你的小程序AppID",
+  "projectname": "中国全历史",
+  "description": "穿越千年时光轴，纵览中国历史脉络",
+  "miniprogramRoot": "./",
+  "compileType": "miniprogram",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": true,
+    "minified": true
+  },
+  "libVersion": "3.3.4"
+}
