@@ -1,1 +1,106 @@
-<web-view src="{{url}}" bindmessage="onMessage" bindload="onLoad" binderror="onError"></web-view>
+<scroll-view scroll-y enable-flex class="page">
+
+  <!-- Hero -->
+  <view class="hero">
+    <view class="hero-inner">
+      <view class="hero-badge">中华文明 · 上下五千年</view>
+      <view class="hero-title">中国全历史</view>
+      <view class="hero-sub">穿越千年时光轴，纵览中国历史脉络</view>
+      <view class="hero-sub2">沉浸探索每个时代的文明印记</view>
+      <view class="hero-cta" bindtap="scrollToTimeline">开始探索 ↓</view>
+    </view>
+  </view>
+
+  <!-- Stats -->
+  <view class="stats">
+    <view class="stat-card" wx:for="{{stats}}" wx:key="label">
+      <view class="stat-num">{{item.num}}<text class="stat-unit">{{item.unit}}</text></view>
+      <view class="stat-label">{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- Timeline -->
+  <view class="timeline-section" id="timeline">
+    <view class="timeline-title">历史时间轴</view>
+    <view class="timeline-sub">点击朝代卡片，查看详细信息</view>
+    <view class="timeline-wrap">
+      <view class="timeline-line"></view>
+      <view
+        class="dynasty-item {{index % 2 === 0 ? 'left' : 'right'}}"
+        wx:for="{{dynasties}}"
+        wx:key="id"
+        data-index="{{index}}"
+        bindtap="openDetail"
+      >
+        <view class="dynasty-dot" style="background:{{item.color}};"></view>
+        <view class="dynasty-card">
+          <view class="dynasty-bar" style="background:{{item.color}};height:5px;"></view>
+          <view class="dynasty-img">
+            <image src="{{item.backgroundImage}}" mode="aspectFill" class="dynasty-img-src"></image>
+            <view class="dynasty-img-overlay"></view>
+            <view class="dynasty-img-name">{{item.name}}</view>
+          </view>
+          <view class="dynasty-body">
+            <view class="dynasty-header">
+              <view>
+                <view class="dynasty-name">{{item.name}}</view>
+                <view class="dynasty-period">{{item.period}}</view>
+              </view>
+              <view class="dynasty-badge" style="background:{{item.color}}20;color:{{item.color}};">{{item.years}}年</view>
+            </view>
+            <view class="dynasty-desc">{{item.description}}</view>
+            <view class="tag-row">
+              <view class="tag-chip" wx:for="{{item.majorEvents.slice(0,3)}}" wx:for-item="ev" wx:key="*this">{{ev}}</view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Footer -->
+  <view class="footer">中国全历史网 · 探索中华五千年文明</view>
+
+</scroll-view>
+
+<!-- Detail Modal -->
+<view class="modal-mask {{showModal ? 'show' : ''}}" bindtap="closeModal">
+  <view class="modal-box" catchtap="noop">
+    <view class="modal-close" bindtap="closeModal">✕</view>
+    <scroll-view scroll-y class="modal-scroll" wx:if="{{detail}}">
+      <view class="modal-bar" style="background:{{detail.color}};height:5px;border-radius:3px 3px 0 0;margin:-20px -20px 0;"></view>
+      <view class="modal-img-wrap">
+        <image src="{{detail.backgroundImage}}" mode="aspectFill" class="modal-img"></image>
+        <view class="modal-img-overlay"></view>
+        <view class="modal-img-title">{{detail.name}}</view>
+      </view>
+      <view class="modal-period">{{detail.period}}<text class="modal-years"> · {{detail.years}}年</text></view>
+      <view class="modal-desc">{{detail.description}}</view>
+
+      <view class="modal-section-title">重大事件</view>
+      <view class="event-item" wx:for="{{detail.majorEvents}}" wx:key="*this">
+        <view class="event-dot" style="background:{{detail.color}};"></view>
+        <text>{{item}}</text>
+      </view>
+
+      <view class="modal-section-title">著名人物</view>
+      <view class="chip-row">
+        <view class="figure-chip" wx:for="{{detail.famousFigures}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <view class="modal-section-title">重要成就</view>
+      <view class="chip-row">
+        <view class="invention-chip" wx:for="{{detail.inventions}}" wx:key="*this">{{item}}</view>
+      </view>
+
+      <view class="modal-section-title">历史转折</view>
+      <view class="tp-item" wx:for="{{detail.turningPoints}}" wx:key="year">
+        <view class="tp-year">{{item.year}}  {{item.event}}</view>
+        <view class="tp-desc">{{item.description}}</view>
+        <view class="tp-sig">{{item.significance}}</view>
+      </view>
+
+      <view style="height:24px;"></view>
+    </scroll-view>
+  </view>
+</view>
