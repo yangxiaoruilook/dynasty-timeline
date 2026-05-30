@@ -435,23 +435,42 @@ a { color: inherit; text-decoration: none; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Mobile */
+/* Mobile — proportional scaling, keep two-column layout */
 @media (max-width: 768px) {
-  .hero h1 { font-size: 36px; }
-  .hero .subtitle { font-size: 16px; }
-  .stats { grid-template-columns: repeat(2, 1fr); }
-  .timeline-line { left: 20px; }
-  .dynasty-item.left,
-  .dynasty-item.right { flex-direction: column; }
-  .dynasty-dot {
-    left: 20px;
-    top: 0;
-    transform: translate(-50%, 0);
-  }
-  .dynasty-card { width: 100%; margin-left: 40px !important; margin-right: 0 !important; }
-  .modal { padding: 24px; }
-  .modal h2 { font-size: 22px; }
-  .dynasty-dot { border-color: #f5f0e8; }
+  .hero { padding: 48px 16px; }
+  .hero h1 { font-size: 32px; }
+  .hero .subtitle { font-size: 15px; }
+  .hero .sub2 { font-size: 12px; }
+  .hero-cta { padding: 10px 24px; font-size: 12px; }
+  .stats { grid-template-columns: repeat(2, 1fr); padding: 24px 12px; gap: 10px; }
+  .stat-card { padding: 14px 8px; }
+  .stat-number { font-size: 22px; }
+  .timeline-section { padding: 40px 12px; }
+  .timeline-title { font-size: 22px; }
+  .timeline-sub { font-size: 12px; margin-bottom: 40px; }
+  .dynasty-item { margin-bottom: 32px; }
+  .dynasty-dot { width: 14px; height: 14px; border-width: 2px; }
+  .dynasty-card { width: 44%; }
+  .dynasty-img { height: 80px; }
+  .dynasty-img-name { font-size: 16px; left: 10px; bottom: 6px; }
+  .dynasty-body { padding: 10px 14px 14px; }
+  .dynasty-name { font-size: 16px; }
+  .dynasty-period { font-size: 10px; }
+  .dynasty-badge { font-size: 9px; padding: 2px 7px; }
+  .dynasty-desc { font-size: 11px; line-height: 1.5; -webkit-line-clamp: 2; }
+  .tag-chip { font-size: 10px; padding: 2px 7px; }
+  .event-item { padding: 6px 10px; font-size: 11px; margin-bottom: 4px; }
+  .event-dot { width: 6px; height: 6px; flex-shrink: 0; }
+  .figure-chip, .invention-chip { font-size: 11px; padding: 5px 12px; }
+  .tp-item { padding-left: 16px; margin-bottom: 10px; }
+  .tp-item::before { width: 8px; height: 8px; top: 5px; }
+  .tp-year { font-size: 12px; }
+  .tp-desc { font-size: 11px; }
+  .tp-sig { font-size: 10px; }
+  .modal { padding: 20px; }
+  .modal h2 { font-size: 20px; }
+  .modal .dynasty-desc { font-size: 13px; }
+  .footer { padding: 20px 12px; font-size: 11px; }
 }
 </style>
 </head>
