@@ -395,15 +395,15 @@ input[type=range]::-webkit-slider-thumb:hover {
 .detail-panel-inner { padding:24px 28px 28px; }
 .detail-panel h3 {
   display:inline-block;
-  font-size:20px; font-weight:700; margin:0 0 14px;
-  color:hsl(var(--foreground));
+  font-size:20px; font-weight:700; margin:0 0 12px;
+  color:hsl(38 25% 84%);
   letter-spacing:0.02em;
   padding:6px 18px; border-radius:9999px;
   background:hsl(var(--card)); border:1px solid hsl(var(--primary) / .25);
   box-shadow:0 2px 12px hsl(var(--primary) / .06);
 }
 .detail-panel .period-label {
-  display:inline-block; margin-bottom:10px;
+  display:inline-block; margin-bottom:14px;
   font-size:11px; letter-spacing:0.05em;
   padding:4px 14px; border-radius:9999px;
   background:hsl(var(--primary) / .08); color:hsl(var(--primary));
@@ -1260,8 +1260,8 @@ function showDetail(era, type, idx) {
     <div class="detail-panel">
       <button class="detail-close" onclick="closeDetail()">&times;</button>
       <div class="detail-panel-inner">
-        <span class="period-label">${era.period}</span>
         <h3>${title}</h3>
+        <span class="period-label">${era.period}</span>
         <div class="detail-body">${bodyContent}</div>
       </div>
     </div>
