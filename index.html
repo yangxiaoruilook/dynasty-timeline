@@ -3,823 +3,741 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>中国全历史网</title>
+<title>中国历史朝代时间轴</title>
 <style>
-:root {
-  --bg: #1c1915;
-  --card-bg: #24201a;
-  --card-hover: #2d2820;
-  --text: #e8dfcf;
-  --text-secondary: #a09880;
-  --text-muted: #6b6258;
-  --border: #3d3528;
-  --primary: 45 90% 55%;
-  --primary-glow: 45 95% 62%;
-  --primary-hex: #e6c444;
-  --muted: 30 20% 22%;
-  --muted-foreground: 40 20% 70%;
-  --radius: 16px;
-  --shadow-card: 0 8px 32px rgba(0,0,0,.5);
-  --shadow-elegant: 0 20px 60px -20px rgba(0,0,0,.9);
-  --shadow-glow: 0 0 40px hsl(45 90% 55% / .2);
-  --transition: all .3s cubic-bezier(.4,0,.2,1);
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
-  font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
-  background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
-}
+  :root {
+    --bg: #faf8f5;
+    --card-bg: #ffffff;
+    --text: #2c2416;
+    --text-secondary: #6b5e4a;
+    --text-muted: #a09888;
+    --border: #e8e0d5;
+    --shadow-sm: 0 1px 3px rgba(60,40,20,0.05);
+    --shadow-md: 0 4px 20px rgba(60,40,20,0.08);
+    --shadow-lg: 0 12px 40px rgba(60,40,20,0.12);
+    --radius: 12px;
+    --radius-lg: 18px;
+    --label-width: 120px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1814;
+      --card-bg: #242118;
+      --text: #e8dfcf;
+      --text-secondary: #a09880;
+      --text-muted: #6b6258;
+      --border: #3a3428;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.3);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.4);
+    }
+  }
 
-/* Background — grid + architecture pattern + warm glow */
-.bg-layer {
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-}
-.bg-layer.grid {
-  background-image:
-    linear-gradient(hsl(var(--primary) / .04) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--primary) / .04) 1px, transparent 1px);
-  background-size: 56px 56px;
-}
-.bg-layer.pattern {
-  background-image:
-    /* roof tile pattern */
-    repeating-linear-gradient(0deg, transparent, transparent 4px, hsl(var(--primary) / .015) 4px, hsl(var(--primary) / .015) 5px),
-    /* vertical columns */
-    repeating-linear-gradient(90deg, transparent, transparent 80px, hsl(var(--primary) / .02) 80px, hsl(var(--primary) / .02) 81px);
-  opacity:0.7;
-}
-.bg-layer.glow {
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, hsl(42 70% 45% / .07) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 30% 70%, hsl(35 50% 35% / .04) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 40% at 70% 70%, hsl(35 50% 35% / .04) 0%, transparent 50%);
-}
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+  }
 
-/* ── Header ── */
-header {
-  position:sticky; top:0; z-index:100;
-  background:linear-gradient(180deg, hsl(var(--bg)), hsl(var(--card-bg)));
-  border-bottom:1px solid hsl(var(--border) / 0.5);
-  box-shadow:var(--shadow-elegant);
-  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
-}
-.header-inner {
-  max-width:1200px; margin:0 auto; padding:20px 32px;
-  text-align:center;
-}
-.header-deco {
-  display:flex; align-items:center; justify-content:center; gap:14px;
-  margin-bottom:6px;
-}
-.header-bar {
-  width:4px; height:40px; border-radius:2px;
-  background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 16px hsl(var(--primary) / 0.5);
-}
-header h1 {
-  font-size:clamp(24px,4vw,36px); font-weight:800; letter-spacing:.1em;
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-  filter:drop-shadow(0 0 20px hsl(var(--primary) / 0.5)) drop-shadow(0 0 40px hsl(var(--primary) / 0.3));
-  cursor:pointer;
-}
-header .subtitle {
-  color:hsl(var(--muted-foreground)); font-size:13px; margin-top:4px;
-  max-width:600px; margin-left:auto; margin-right:auto;
-}
-.header-stats {
-  display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px;
-}
-.header-stats .pill {
-  padding:4px 14px; border-radius:9999px;
-  background:hsl(var(--primary) / 0.1); border:1px solid hsl(var(--primary) / 0.2);
-  font-size:12px; color:hsl(var(--muted-foreground));
-}
-.header-stats .pill strong {
-  color:hsl(var(--primary)); font-weight:700;
-}
+  /* ── Header ── */
+  .hero {
+    text-align: center; padding: 56px 24px 40px;
+    background: linear-gradient(180deg, var(--card-bg) 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:600px; height:2px;
+    background: linear-gradient(90deg, transparent, #d4a853, #c0392b, #8e44ad, transparent);
+    opacity:0.6;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 52px); font-weight: 900; letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #d4a853 0%, #c0392b 25%, #e67e22 50%, #8e44ad 75%, #2980b9 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 8px;
+  }
+  .hero p { color: var(--text-secondary); font-size: 16px; letter-spacing: 0.1em; }
 
-/* ── Container ── */
-.container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:32px 24px 80px; }
+  .container { max-width: 1440px; margin: 0 auto; padding: 0 28px; }
 
-/* ── Page visibility ── */
-.page { display:none; animation: fadeIn .4s ease; }
-.page.active { display:block; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+  /* ── Stats ── */
+  .stats {
+    display: flex; flex-wrap: wrap; gap: 32px; justify-content: center;
+    padding: 36px 0 20px;
+  }
+  .stat { text-align: center; }
+  .stat-val {
+    font-size: 36px; font-weight: 900;
+    background: linear-gradient(135deg, #c0392b, #d4a853);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .stat-lbl { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
 
-/* ── Home ── */
-.era-grid {
-  display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
-}
-.era-card {
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:var(--radius); padding:24px; cursor:pointer;
-  transition:var(--transition); position:relative; overflow:hidden;
-}
-.era-card:hover {
-  background:var(--card-hover); transform:translateY(-4px);
-  box-shadow:var(--shadow-glow); border-color:hsl(var(--primary) / .4);
-}
-.era-card .era-bar { height:4px; border-radius:2px; margin-bottom:16px; }
-.era-card .era-name { font-size:18px; font-weight:700; }
-.era-card .era-period { font-size:12px; color:var(--text-muted); margin-top:4px; }
-.era-card .era-desc {
-  font-size:13px; color:var(--text-secondary); line-height:1.6; margin-top:10px;
-  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
-}
+  /* ── Period Nav ── */
+  .period-nav {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    padding: 12px 0 28px;
+  }
+  .period-nav a {
+    text-decoration: none; color: var(--text-secondary);
+    border: 1px solid var(--border); border-radius: 20px;
+    padding: 6px 18px; font-size: 13px; font-weight: 500;
+    transition: all 0.2s; background: var(--card-bg);
+    white-space: nowrap;
+  }
+  .period-nav a:hover { border-color: var(--text); color: var(--text); transform: translateY(-1px); }
 
-/* ── Timeline Card ── */
-.timeline-card {
-  background:var(--card-bg); border:1px solid var(--border);
-  border-radius:var(--radius); box-shadow:var(--shadow-card), 0 0 0 1px hsl(var(--primary) / .08), 0 0 32px hsl(var(--primary) / .08);
-  padding:24px; margin-bottom:32px;
-  transition:var(--transition); position:relative; overflow:hidden;
-}
-.timeline-card::before {
-  content:''; position:absolute; inset:0;
-  background-image:
-    linear-gradient(hsl(var(--primary) / .02) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--primary) / .02) 1px, transparent 1px);
-  background-size:48px 48px; pointer-events:none; opacity:0.5;
-}
-.timeline-header {
-  display:flex; align-items:center; justify-content:space-between;
-  margin-bottom:20px; position:relative; z-index:1;
-}
-.timeline-title-group {
-  display:flex; align-items:center; gap:12px;
-}
-.timeline-icon {
-  padding:10px; border-radius:10px;
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 20px hsl(var(--primary) / .4);
-  flex-shrink:0;
-}
-.timeline-icon svg { display:block; width:20px; height:20px; color:#1a1814; }
-.timeline-title-group h3 { font-size:18px; font-weight:700; }
-.timeline-title-group p { font-size:12px; color:hsl(var(--muted-foreground)); margin-top:2px; }
-.timeline-year-badge {
-  padding:7px 18px; border-radius:9999px;
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  color:#1a1814; font-weight:700; font-size:14px;
-  box-shadow:0 0 20px hsl(var(--primary) / .4);
-  position:relative; z-index:1; white-space:nowrap;
-}
+  /* ── Legend ── */
+  .legend { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; padding:0 0 32px; }
+  .legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--text-muted); }
+  .legend-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
 
-/* ── Slider ── */
-.timeline-card input[type=range] {
-  -webkit-appearance:none; width:100%; height:4px;
-  border-radius:2px;
-  background:linear-gradient(90deg,
-    hsl(35 50% 40%), hsl(35 55% 45%), hsl(38 60% 48%), hsl(40 65% 50%),
-    hsl(42 70% 50%), hsl(44 80% 52%), hsl(45 85% 54%), hsl(45 90% 55%),
-    hsl(44 80% 52%), hsl(42 70% 50%), hsl(40 65% 50%), hsl(38 60% 48%),
-    hsl(35 55% 45%), hsl(35 50% 40%), hsl(38 55% 46%), hsl(40 65% 50%),
-    hsl(42 75% 52%), hsl(44 85% 54%), hsl(45 90% 55%)
-  );
-  outline:none; cursor:pointer; position:relative; z-index:1;
-  margin-bottom:4px;
-}
-.timeline-card input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 12px hsl(var(--primary) / .5); cursor:pointer;
-  border:2px solid #1c1915;
-}
+  /* ── Section title ── */
+  .section-title {
+    font-size: 15px; font-weight: 800; letter-spacing: 0.08em;
+    color: var(--text-muted); text-transform: uppercase;
+    padding: 40px 0 16px; display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
 
-/* ── Era Bars ── */
-.era-bars {
-  position:relative; height:40px; margin:6px 0 14px; border-radius:8px;
-  background:linear-gradient(90deg, hsl(var(--muted) / .15), hsl(var(--muted) / .3), hsl(var(--muted) / .15));
-  padding:8px; z-index:1; overflow:hidden;
-}
-.era-bar {
-  position:absolute; height:14px; border-radius:3px; cursor:pointer;
-  top:50%; transform:translateY(-50%);
-  transition:all .2s ease; opacity:.8;
-}
-.era-bar:hover { height:20px; opacity:1; box-shadow:0 0 12px currentColor; }
-.era-bar.active { height:20px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
+  /* ── Overview Cards ── */
+  .overview-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; margin-bottom: 32px;
+  }
+  .overview-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 24px 28px;
+    transition: transform 0.25s, box-shadow 0.25s;
+    border-left: 5px solid transparent;
+    cursor: default;
+  }
+  .overview-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .overview-card h3 { font-size: 24px; margin-bottom: 4px; display:flex; align-items:center; gap:10px; }
+  .overview-card h3 .ch { font-size: 36px; line-height:1; }
+  .overview-card .oc-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+  .overview-card .oc-dynasties { font-size: 14px; color: var(--text-secondary); }
+  .oc-dynasty-row {
+    display: flex; align-items: baseline;
+    padding: 5px 0; border-bottom: 1px dotted var(--border);
+    gap: 12px;
+  }
+  .oc-dynasty-block { margin-bottom: 2px; }
+  .oc-dynasty-block:last-child { margin-bottom: 0; }
+  .oc-dynasty-row:last-child { border-bottom: none; }
+  .oc-dynasty-row strong { color: var(--text); white-space: nowrap; min-width: 56px; }
+  .oc-dynasty-row span { font-size: 12px; color: var(--text-muted); white-space: nowrap; margin-left: auto; }
+  .oc-dynasty-events {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 2px 0 6px 68px;
+  }
+  .oc-event-tag {
+    font-size: 12px; color: var(--text-secondary);
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 4px 12px;
+    transition: all 0.2s; white-space: nowrap;
+  }
+  .oc-event-tag:hover { border-color: var(--text); color: var(--text); }
+  .oc-event-sm { font-size: 11px; padding: 2px 10px; border-radius: 4px; }
 
-/* ── Era Pills ── */
-.era-pills {
-  display:flex; flex-wrap:wrap; gap:8px; position:relative; z-index:1; margin-bottom:16px;
-}
-.era-pill {
-  padding:8px 16px; border-radius:9999px; font-size:12px; font-weight:600;
-  cursor:pointer; border:1px solid var(--border);
-  background:hsl(var(--muted) / .5); color:hsl(var(--muted-foreground));
-  transition:all .25s ease; white-space:nowrap;
-}
-.era-pill:hover { background:hsl(var(--muted)); color:var(--text); border-color:hsl(var(--primary) / .25); }
-.era-pill.active {
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  color:#1a1814; border-color:transparent;
-  box-shadow:0 0 20px hsl(var(--primary) / .5);
-  transform:scale(1.05);
-}
+  /* ── Timeline ── */
+  .timeline-block {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    margin-bottom: 40px; box-shadow: var(--shadow-sm);
+  }
+  .tl-header {
+    display: flex; border-bottom: 1px solid var(--border);
+    background: var(--card-bg); position: sticky; top: 0; z-index: 10;
+  }
+  .tl-labels {
+    width: var(--label-width); flex-shrink: 0;
+    border-right: 1px solid var(--border);
+  }
+  .tl-label {
+    height: 56px; display: flex; align-items: center;
+    padding: 0 14px; font-size: 13px; font-weight: 700;
+    color: var(--text-muted); border-bottom:1px solid var(--border);
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .tl-scroll {
+    flex:1; overflow-x:auto; overflow-y:hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tl-scroll::-webkit-scrollbar { height:5px; }
+  .tl-scroll::-webkit-scrollbar-track { background: transparent; }
+  .tl-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius:3px; }
 
-/* ── Era Preview ── */
-.era-preview {
-  padding:20px; border-radius:12px; margin-bottom:16px;
-  background:linear-gradient(135deg, hsl(var(--muted) / .5), hsl(var(--muted) / .3));
-  border:2px solid hsl(var(--primary) / .15); position:relative; z-index:1;
-}
-.era-preview h4 {
-  font-size:22px; font-weight:800;
-  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
-}
-.era-preview .era-preview-period {
-  display:inline-block; font-size:12px; color:hsl(var(--muted-foreground));
-  padding:2px 12px; border-radius:20px; background:hsl(var(--muted) / .5);
-  border:1px solid hsl(var(--primary) / .1); margin:6px 0 10px;
-}
-.era-preview p { font-size:14px; color:hsl(var(--muted-foreground)); line-height:1.7; }
+  .tl-row {
+    display: flex; height: 56px;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  .tl-row:hover { background: rgba(128,128,128,0.03); }
 
-/* ── Inline Content ── */
-.main-content {
-  display:none; margin-top:32px;
-  animation: fadeIn .4s ease;
-}
-.main-content.visible { display:block; }
+  .tl-row-label {
+    width: var(--label-width); flex-shrink: 0;
+    padding: 0 14px; font-size: 12px; font-weight: 600;
+    display: flex; align-items: center;
+    border-right: 1px solid var(--border);
+  }
+  .tl-row-bars {
+    flex:1; position:relative; min-height:56px;
+  }
 
-.content-hero {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:32px; margin-bottom:24px;
-  position:relative; overflow:hidden;
-}
-.content-hero::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg, hsl(var(--primary) / .04) 0%, transparent 50%);
-  pointer-events:none;
-}
-.content-hero h1 { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
-.content-hero .ch-period {
-  font-size:13px; color:var(--text-muted); margin-top:4px;
-  padding:4px 14px; background:hsl(var(--primary) / .06); border-radius:20px;
-  display:inline-block; margin-bottom:16px;
-}
-.content-hero .ch-desc { font-size:15px; color:var(--text-secondary); line-height:1.9; }
+  .dynasty-bar {
+    position: absolute; top: 10px; bottom: 10px;
+    border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: #fff;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    white-space: nowrap; overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+    min-width: 34px; padding: 0 4px;
+  }
+  .dynasty-bar:hover {
+    transform: translateY(-3px) scaleX(1.02);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    z-index: 50; filter: brightness(1.15);
+  }
+  .dynasty-bar .bar-label-inner { position:relative; z-index:1; }
 
-.content-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-.content-card {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:24px;
-}
-.content-card h3 {
-  font-size:15px; font-weight:700; margin-bottom:14px;
-  display:flex; align-items:center; gap:8px; color:hsl(var(--primary));
-}
-.content-card h3::before { content:''; width:3px; height:14px; border-radius:2px; background:hsl(var(--primary)); flex-shrink:0; }
+  .event-marker {
+    position: absolute; top: 6px; bottom: 6px;
+    width: 2px; border-radius: 1px;
+    opacity: 0.35; pointer-events: none;
+  }
+  .event-dot {
+    position: absolute; top: 4px;
+    width: 6px; height: 6px; border-radius: 50%;
+    z-index: 5; cursor: help;
+    transition: transform 0.2s;
+  }
+  .event-dot:hover { transform: scale(2); }
 
-@media (max-width:1024px) {
-  .content-grid { grid-template-columns:1fr; }
-}
-@media (max-width:640px) {
-  .content-hero { padding:20px; }
-  .content-card { padding:16px; }
-}
+  .ruler-tick {
+    position: absolute; top: 50%;
+    font-size: 10px; color: var(--text-muted);
+    transform: translate(-50%, -50%);
+    white-space: nowrap; font-weight: 500;
+  }
+  .ruler-line {
+    position: absolute; top: 0;
+    width: 1px; background: var(--border); opacity: 0.4;
+  }
 
-/* ── Detail Page ── */
-.detail-nav { display:flex; gap:12px; margin-bottom:24px; align-items:center; }
-.detail-nav button {
-  padding:8px 20px; border-radius:20px; font-size:13px; font-weight:600;
-  background:var(--card-bg); border:1px solid var(--border);
-  color:var(--text-secondary); cursor:pointer; transition:var(--transition);
-}
-.detail-nav button:hover { border-color:hsl(var(--primary)); color:hsl(var(--primary)); }
-.detail-nav .current-name { font-size:20px; font-weight:700; color:hsl(var(--primary)); margin:0 8px; }
+  /* ── Tooltip ── */
+  .tooltip {
+    position: fixed; pointer-events: none;
+    background: var(--card-bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 14px;
+    padding: 18px 22px; box-shadow: var(--shadow-lg);
+    z-index: 200; max-width: 340px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.18s, transform 0.18s;
+    backdrop-filter: blur(12px);
+  }
+  @supports (backdrop-filter: blur(12px)) {
+    .tooltip { background: color-mix(in srgb, var(--card-bg) 92%, transparent); }
+  }
+  .tooltip.on { opacity: 1; transform: translateY(0); }
+  .tooltip h3 { font-size: 22px; margin-bottom: 4px; }
+  .tooltip .tt-era { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+  .tooltip .tt-row { font-size: 13px; line-height: 2; }
+  .tooltip .tt-row b { color: var(--text); font-weight: 700; }
 
-.detail-hero {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:32px; margin-bottom:24px;
-}
-.detail-hero h1 { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
-.detail-hero .dh-period {
-  font-size:13px; color:var(--text-muted); margin-top:4px;
-  padding:4px 14px; background:hsl(var(--primary) / .06); border-radius:20px;
-  display:inline-block; margin-bottom:16px;
-}
-.detail-hero .dh-desc { font-size:15px; color:var(--text-secondary); line-height:1.9; }
+  /* ── Mnemonic ── */
+  .mnemonic-section { margin-bottom: 44px; }
+  .mnemonic-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+  }
+  .mnemonic-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); overflow: hidden;
+    box-shadow: var(--shadow-sm); transition: box-shadow 0.3s;
+  }
+  .mnemonic-card:hover { box-shadow: var(--shadow-md); }
+  .mnemonic-card-header {
+    padding: 14px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 700; color: var(--text-secondary);
+  }
+  .mnemonic-card-header .badge {
+    font-size: 11px; padding: 2px 10px; border-radius: 10px;
+    color: #fff; font-weight: 600;
+  }
+  .mnemonic-card-body {
+    padding: 28px 32px;
+  }
+  .mnemonic-card-body .verse {
+    font-family: "KaiTi","STKaiti","Songti SC","Noto Serif SC",serif;
+    font-size: 19px; line-height: 2.1; letter-spacing:0.05em;
+    color: var(--text); text-align: center;
+  }
+  .mnemonic-card-body .verse-sm {
+    font-family: "KaiTi","STKaiti","Songti SC","Noto Serif SC",serif;
+    font-size: 16px; line-height: 2.4; letter-spacing:0.04em;
+    color: var(--text); text-align: center;
+  }
+  .verse-line { display: block; }
+  .verse-line + .verse-line { margin-top: 2px; }
 
-.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-.detail-card {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:24px;
-}
-.detail-card h3 {
-  font-size:15px; font-weight:700; margin-bottom:14px;
-  display:flex; align-items:center; gap:8px; color:hsl(var(--primary));
-}
-.detail-card h3::before { content:''; width:3px; height:14px; border-radius:2px; background:hsl(var(--primary)); flex-shrink:0; }
+  @media (max-width: 768px) {
+    .mnemonic-grid { grid-template-columns: 1fr; }
+    .mnemonic-card-body { padding: 20px; }
+    .mnemonic-card-body .verse { font-size: 16px; }
+    .mnemonic-card-body .verse-sm { font-size: 14px; }
+  }
 
-.event-list { display:flex; flex-direction:column; gap:6px; }
-.event-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-radius:8px; background:hsl(var(--primary) / .03); font-size:13px; line-height:1.5; }
-.event-dot { width:6px; height:6px; border-radius:50%; background:hsl(var(--primary)); flex-shrink:0; margin-top:7px; }
+  /* ── Footer ── */
+  footer {
+    text-align: center; padding: 28px 24px;
+    color: var(--text-muted); font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
 
-.tag-row { display:flex; flex-wrap:wrap; gap:8px; }
-.tag-item { padding:6px 14px; border-radius:20px; font-size:13px; font-weight:500; background:hsl(var(--primary) / .06); color:hsl(var(--primary)); border:1px solid hsl(var(--primary) / .12); }
-.invention-item { padding:12px 16px; border-radius:12px; background:hsl(var(--primary) / .03); font-size:13px; text-align:center; font-weight:500; }
-.invention-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-
-.tp-card { padding:14px 16px; border-radius:12px; background:hsl(var(--primary) / .03); border-left:3px solid hsl(var(--primary)); margin-bottom:8px; }
-.tp-card .tpc-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; }
-.tp-card .tpc-event { font-size:14px; font-weight:700; }
-.tp-card .tpc-desc { font-size:13px; color:var(--text-secondary); }
-.tp-card .tpc-sig { font-size:12px; color:var(--text-muted); font-style:italic; margin-top:2px; }
-
-/* ── Footer ── */
-.app-footer { text-align:center; padding:24px; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border); position:relative; z-index:1; }
-
-/* ── Responsive ── */
-@media (max-width:1024px) {
-  .era-grid { grid-template-columns:repeat(2,1fr); }
-  .detail-grid { grid-template-columns:1fr; }
-}
-@media (max-width:640px) {
-  .era-grid { grid-template-columns:1fr; }
-  .header-inner { padding:16px 12px; }
-  .container { padding:20px 12px 60px; }
-  .timeline-card { padding:16px; }
-  .detail-nav { flex-wrap:wrap; justify-content:center; }
-  .detail-hero { padding:20px; }
-  .detail-card { padding:16px; }
-  .invention-grid { grid-template-columns:1fr 1fr; }
-}
+  @media (max-width: 768px) {
+    :root { --label-width: 72px; }
+    .overview-grid { gap: 12px; }
+    .hero { padding: 36px 16px 28px; }
+    .hero h1 { font-size: 28px; }
+    .dynasty-bar { font-size: 9px; min-width: 24px; }
+    .tl-label, .tl-row-label { font-size: 10px; padding: 0 8px; }
+    .tl-row, .tl-label { height: 48px; }
+    .container { padding: 0 12px; }
+  }
 </style>
 </head>
 <body>
 
-<div class="bg-layer grid"></div>
-<div class="bg-layer pattern"></div>
-<div class="bg-layer glow"></div>
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <h1>中国历史朝代时间轴</h1>
+  <p>从夏朝到今日 · 横跨四千年文明</p>
+</div>
 
-<!-- Header -->
-<header>
-  <div class="header-inner">
-    <div class="header-deco">
-      <span class="header-bar"></span>
-      <h1 data-page="main">中 国 全 历 史</h1>
-      <span class="header-bar"></span>
-    </div>
-    <p class="subtitle">穿越五千年历史长河，探索中华文明的璀璨轨迹</p>
-    <div class="header-stats">
-      <span class="pill"><strong>19</strong> 个历史时期</span>
-      <span class="pill"><strong>5000+</strong> 年历史跨度</span>
-    </div>
+<div class="container">
+
+  <!-- ═══ STATS ═══ -->
+  <div class="stats">
+    <div class="stat"><div class="stat-val">4000+</div><div class="stat-lbl">年文明历程</div></div>
+    <div class="stat"><div class="stat-val">30+</div><div class="stat-lbl">主要朝代</div></div>
+    <div class="stat"><div class="stat-val">7</div><div class="stat-lbl">历史阶段</div></div>
+    <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">并立政权时期</div></div>
   </div>
-</header>
 
-<!-- ====== MAIN PAGE (Timeline + Home) ====== -->
-<div class="page active" id="page-main">
-  <div class="container">
-    <!-- Timeline Card -->
-    <div class="timeline-card">
-      <div class="timeline-header">
-        <div class="timeline-title-group">
-          <div class="timeline-icon" id="tlIcon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          </div>
-          <div>
-            <h3>历史时间轴</h3>
-            <p>拖动滑块或点击色条探索历史</p>
-          </div>
-        </div>
-        <span class="timeline-year-badge" id="tlYearBadge">公元2026年</span>
+  <!-- ═══ PERIOD NAV ═══ -->
+  <nav class="period-nav" id="periodNav"></nav>
+
+  <!-- ═══ LEGEND ═══ -->
+  <div class="legend" id="legend"></div>
+
+  <!-- ═══ OVERVIEW CARDS ═══ -->
+  <div class="section-title">历史阶段概览</div>
+  <div class="overview-grid" id="overviewGrid"></div>
+
+  <!-- ═══ TIMELINE ═══ -->
+  <div class="section-title">比例时间轴 <span style="font-weight:400;font-size:12px;text-transform:none;letter-spacing:0">— 横条宽度 = 年代跨度，左右滑动浏览</span></div>
+  <div class="timeline-block">
+    <div class="tl-header">
+      <div class="tl-labels"><div class="tl-label">分类</div></div>
+      <div class="tl-scroll" id="tlScrollHeader">
+        <div style="width:1px; height:56px;" id="headerDummy"></div>
       </div>
-      <div class="era-preview" id="tlPreview"></div>
-      <input type="range" id="tlSlider" min="0" max="100" step="0.1" value="100">
-      <div class="era-bars" id="eraBars"></div>
-      <div class="era-pills" id="eraPills"></div>
     </div>
-
-    <!-- Inline Content -->
-    <div class="main-content" id="mainContent"></div>
+    <div style="display:flex">
+      <div class="tl-labels" id="tlLabelsCol"></div>
+      <div class="tl-scroll" id="tlBodyScroll">
+        <div id="tlBody" style="position:relative;"></div>
+      </div>
+    </div>
   </div>
+
+  <!-- ═══ MNEMONIC ═══ -->
+  <div class="section-title">朝代记忆口诀</div>
+  <div class="mnemonic-section">
+    <div class="mnemonic-card">
+      <div class="mnemonic-card-header">
+        <span class="badge" style="background:#c0392b;">人教版</span> 五字一句 · 全国通用教材
+      </div>
+      <div class="mnemonic-card-body">
+        <div class="verse">
+          <span class="verse-line">三皇五帝始，尧舜禹相传。</span>
+          <span class="verse-line">夏商与西周，东周分两段。</span>
+          <span class="verse-line">春秋和战国，一统秦两汉。</span>
+          <span class="verse-line">三分魏蜀吴，二晋前后延。</span>
+          <span class="verse-line">南北朝并立，隋唐五代传。</span>
+          <span class="verse-line">宋元明清后，皇朝自此完。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-<!-- ====== DETAIL PAGE ====== -->
-<div class="page" id="page-detail">
-  <div class="container">
-    <div class="detail-nav">
-      <button id="detailPrev">← 上一个</button>
-      <button data-page="main" style="font-size:12px;">返回主页</button>
-      <span class="current-name" id="detailEraName"></span>
-      <button data-page="main" style="font-size:12px;">返回主页</button>
-      <button id="detailNext">下一个 →</button>
-    </div>
-    <div id="detailContent"></div>
-  </div>
-</div>
+<footer>数据来源：百度百科 · 中国历史年表 &nbsp;|&nbsp; 朝代歌来源：传统记忆口诀 &nbsp;|&nbsp; 夏商周年代参考"夏商周断代工程"</footer>
 
-<footer class="app-footer">中国全历史网 · 穿越五千年历史长河，探索中华文明的璀璨轨迹</footer>
+<div class="tooltip" id="tooltip"></div>
 
 <script>
-// ═══════════ DATA ═══════════
-const eras = [
-  { id:'ancient',name:'上古时期',period:'史前 — 约前2070年',start:-3000,end:-2070,
-    desc:'此时期是人类社会发展的初级阶段，也是中华文明的孕育期。北京猿人、蓝田人等古人类的发现，展示了中国早期人类的智慧与生存状态。随着石器工具的进步和火的使用，人类社会逐渐进入新石器时代，农业、畜牧业开始兴起，定居生活成为可能。',
-    events:['北京猿人生活（约70万年前）','仰韶文化兴起（约前5000年）','大汶口文化发展（约前4300年）','三皇五帝传说时期'],
-    figures:['黄帝','炎帝','尧','舜','禹'],
-    inventions:['石器工具','火的使用','彩陶制作','农业种植'],
-    turningPoints:[{y:'约前5000年',e:'仰韶文化兴起',d:'以彩陶为特色的新石器时代文化，分布在黄河中游地区',s:'标志着中国进入定居农业社会，文明曙光初现'}],
-    color:'#8B7355'
-  },
-  { id:'xia',name:'夏朝',period:'约前2070年 — 约前1600年',start:-2070,end:-1600,
-    desc:'夏朝是中国历史上第一个世袭制王朝，标志着中国由原始社会向奴隶制社会的过渡。大禹治水成功后建立夏朝，开创了"家天下"的政治格局。考古发现的二里头文化被认为与夏朝有关，出土了宫殿基址、青铜器等重要遗迹遗物。',
-    events:['大禹治水建立夏朝（约前2070年）','启继承王位，开创世袭制','太康失国，后羿夺权','少康中兴，恢复夏朝统治','桀暴政，夏朝灭亡（约前1600年）'],
-    figures:['大禹','启','太康','少康','桀'],
-    inventions:['世袭制度','历法雏形','青铜器初现','城市规划'],
-    turningPoints:[{y:'约前2070年',e:'夏朝建立',d:'大禹治水成功，受舜禅让建立中国历史上第一个王朝',s:'标志着中国进入王朝时代，原始社会结束'},{y:'约前1600年',e:'夏朝灭亡',d:'夏桀暴虐无道，商汤起兵灭夏',s:'暴政导致王朝更替，开启商朝时代'}],
-    color:'#8B7355'
-  },
-  { id:'shang',name:'商朝',period:'约前1600年 — 约前1046年',start:-1600,end:-1046,
-    desc:'商朝是中国历史上第二个王朝，以青铜器文明和甲骨文闻名于世。青铜冶炼技术达到了很高的水平，司母戊鼎是世界最大的青铜器。甲骨文的出现标志着中国文字的成熟。商朝实行神权政治，占卜活动频繁，为后世留下了大量珍贵的甲骨文资料。',
-    events:['商汤灭夏建立商朝（约前1600年）','盘庚迁殷（约前1300年）','武丁中兴，商朝鼎盛','妇好出征，中国最早女将军','帝辛（纣王）暴政','牧野之战，商朝灭亡（约前1046年）'],
-    figures:['商汤','伊尹','盘庚','武丁','妇好','纣王','比干'],
-    inventions:['甲骨文','青铜器','历法','占卜术'],
-    turningPoints:[{y:'约前1300年',e:'盘庚迁殷',d:'商王盘庚将都城迁至殷（今河南安阳），此后273年不再迁都',s:'商朝进入稳定发展期，殷墟成为重要考古遗址'},{y:'约前1046年',e:'商朝灭亡',d:'牧野之战商军阵前倒戈，纣王自焚于鹿台',s:'青铜文明达到顶峰后衰落，周朝建立'}],
-    color:'#A0826D'
-  },
-  { id:'zhou',name:'西周',period:'约前1046年 — 前771年',start:-1046,end:-771,
-    desc:'西周建立了完善的分封制和宗法制度，形成了"天子—诸侯—卿大夫—士"的等级体系。周公制礼作乐，确立了礼乐文化的基础。西周时期农业、手工业都有很大发展，青铜器铭文成为重要的历史资料。',
-    events:['武王伐纣建立周朝（约前1046年）','周公东征平定三监之乱','周公制礼作乐，确立宗法制','成康之治，四十余年不用刑罚','国人暴动（前841年），中国历史确切纪年之始','烽火戏诸侯，西周灭亡（前771年）'],
-    figures:['周武王','周公旦','姜子牙','周成王','周康王','周幽王'],
-    inventions:['分封制','宗法制','礼乐制度','井田制'],
-    turningPoints:[{y:'约前1046年',e:'西周建立',d:'周武王伐纣成功，建立周朝，定都镐京',s:'分封制和宗法制确立，礼乐文化形成'},{y:'前771年',e:'西周灭亡',d:'犬戎攻破镐京，周幽王被杀于骊山之下',s:'西周结束，平王东迁洛邑，进入春秋时期'}],
-    color:'#B8956A'
-  },
-  { id:'spring-autumn',name:'春秋时期',period:'前770年 — 前476年',start:-770,end:-476,
-    desc:'春秋时期是东周的前半期，周王室权威衰落，诸侯争霸成为主旋律。齐桓公、晋文公、楚庄王、吴王阖闾、越王勾践先后称霸。铁器开始使用，生产力提高，社会经济发展，思想文化空前活跃，出现了百家争鸣的萌芽。',
-    events:['平王东迁（前770年），东周开始','齐桓公称霸（前685—前643年），春秋第一霸主','晋文公称霸（前636—前628年），城濮之战','楚庄王问鼎中原（前613—前591年）','吴越争霸，勾践卧薪尝胆','孔子周游列国，创立儒家学派'],
-    figures:['齐桓公','管仲','晋文公','楚庄王','孔子','老子','孙武'],
-    inventions:['铁器','牛耕','私学兴起','诸子百家思想萌芽'],
-    turningPoints:[{y:'前770年',e:'平王东迁',d:'周平王在诸侯护卫下迁都洛邑，东周开始',s:'周王室权威衰落，诸侯争霸时代来临'},{y:'前551年',e:'孔子诞生',d:'儒家学派创始人孔子出生于鲁国陬邑',s:'儒家思想诞生，影响中国两千多年'}],
-    color:'#C9A86A'
-  },
-  { id:'warring-states',name:'战国时期',period:'前475年 — 前221年',start:-475,end:-221,
-    desc:'战国时期是中国历史上最为动荡的时期之一，七雄并立，战争频繁，但也催生了空前活跃的思想文化。各国纷纷变法图强，商鞅变法使秦国由弱变强。铁器广泛使用，农业生产力大幅提高，诸子百家思想达到鼎盛。',
-    events:['三家分晋（前403年），战国开端','商鞅变法（前356年），秦国崛起','长平之战（前260年），白起坑杀赵军四十万','荆轲刺秦王（前227年），图穷匕见','秦灭六国统一天下（前230—前221年）'],
-    figures:['商鞅','孟子','庄子','荀子','韩非子','墨子','屈原','白起','廉颇','赵括'],
-    inventions:['都江堰水利工程','郡县制雏形','兵法著作','诸子百家学说'],
-    turningPoints:[{y:'前356年',e:'商鞅变法',d:'秦孝公任用商鞅推行变法，废井田开阡陌',s:'秦国崛起，为统一六国奠定基础'},{y:'前260年',e:'长平之战',d:'秦将白起大败赵军，坑杀降卒四十万',s:'东方六国再无力独立抗衡秦国'}],
-    color:'#D4AF6A'
-  },
-  { id:'qin',name:'秦朝',period:'前221年 — 前207年',start:-221,end:-207,
-    desc:'秦朝是中国历史上第一个统一的中央集权制封建王朝，奠定了中国两千多年政治制度的基本格局。秦始皇统一六国后，推行郡县制，统一文字、货币、度量衡，修建万里长城和驰道。虽然仅存15年，但其制度创新影响极为深远。',
-    events:['秦始皇统一六国（前221年），自称"始皇帝"','统一文字、货币、度量衡','蒙恬北逐匈奴，修筑万里长城','焚书坑儒（前213—前212年）','秦始皇巡游途中病逝沙丘（前210年）','陈胜吴广起义（前209年）','刘邦项羽攻入咸阳，秦朝灭亡（前207年）'],
-    figures:['秦始皇','李斯','蒙恬','赵高','陈胜','吴广','项羽'],
-    inventions:['郡县制','统一文字（小篆）','统一货币（半两钱）','统一度量衡'],
-    turningPoints:[{y:'前221年',e:'秦朝建立',d:'秦王嬴政灭六国完成统一大业，自号始皇帝',s:'结束五百余年分裂，建立中国第一个大一统帝国'},{y:'前207年',e:'秦朝灭亡',d:'刘邦率先攻入咸阳，秦王子婴素车白马出降',s:'暴政导致第一个统一王朝仅存15年便速亡'}],
-    color:'#8B7355'
-  },
-  { id:'han',name:'汉朝',period:'前202年 — 公元220年',start:-202,end:220,
-    desc:'汉朝分为西汉和东汉两个时期，是中国历史上最强盛的王朝之一，与同时期的罗马帝国并列为世界两大帝国。汉武帝时期国力达到鼎盛，北击匈奴，开辟丝绸之路，独尊儒术。"汉族""汉字""汉语"等称谓皆由此而来。',
-    events:['刘邦建立汉朝（前202年），定都长安','文景之治（前180—前141年）','汉武帝独尊儒术（前134年）','张骞出使西域（前138年），开辟丝绸之路','司马迁完成《史记》（约前91年）','王莽篡汉建立新朝（公元8年）','光武中兴（公元25年），东汉建立','蔡伦改进造纸术（公元105年）','黄巾起义（公元184年），天下大乱'],
-    figures:['刘邦','汉武帝','张骞','司马迁','董仲舒','卫青','霍去病','王莽','光武帝','班超','蔡伦'],
-    inventions:['造纸术','地动仪','浑天仪','《史记》','丝绸之路','《汉书》'],
-    turningPoints:[{y:'前202年',e:'汉朝建立',d:'刘邦在垓下之战中击败项羽，于定陶称帝建立汉朝',s:'开创汉族文化，汉成为民族代称'},{y:'前134年',e:'独尊儒术',d:'汉武帝采纳董仲舒建议，罢黜百家独尊儒术',s:'儒家思想成为此后两千年中国社会的正统思想'},{y:'公元105年',e:'蔡伦改进造纸术',d:'蔡伦用树皮、麻头等原料造出轻便廉价的纸张',s:'造纸术成为中国古代四大发明之一'}],
-    color:'#A0826D'
-  },
-  { id:'three-kingdoms',name:'三国时期',period:'220年 — 280年',start:220,end:280,
-    desc:'三国时期是中国历史上的著名分裂时期，魏、蜀、吴三国鼎立。虽战争频繁，但也涌现出诸葛亮、曹操、关羽等一大批杰出的政治家、军事家和文学家。三国故事被后世演绎成《三国演义》，成为中国文学瑰宝。',
-    events:['曹丕称帝建立魏国（220年），东汉灭亡','刘备称帝建立蜀汉（221年）','孙权称帝建立吴国（229年）','诸葛亮六出祁山北伐（228—234年）','司马懿高平陵之变（249年）','邓艾偷渡阴平灭蜀汉（263年）','司马炎代魏建晋，三国归晋（280年）'],
-    figures:['曹操','刘备','孙权','诸葛亮','关羽','张飞','赵云','周瑜','司马懿','陆逊'],
-    inventions:['木牛流马','连弩','屯田制','《出师表》'],
-    turningPoints:[{y:'208年',e:'赤壁之战',d:'孙刘联军在赤壁以火攻大败曹操八十万大军',s:'奠定三国鼎立格局'},{y:'280年',e:'三国归晋',d:'晋武帝司马炎派王濬顺长江而下灭吴',s:'结束六十年分裂，中国重归统一'}],
-    color:'#B8956A'
-  },
-  { id:'jin',name:'两晋时期',period:'265年 — 420年',start:265,end:420,
-    desc:'两晋分为西晋和东晋。西晋短暂统一后，因八王之乱和永嘉之乱而迅速灭亡。东晋偏安江南，北方陷入五胡十六国的混乱。士族门阀势力极度强大，玄学盛行，王羲之的书法、陶渊明的诗歌均达到了艺术高峰。',
-    events:['司马炎建立西晋（265年），定都洛阳','八王之乱（291—306年），宗室自相残杀','永嘉之乱（311年），匈奴攻破洛阳','司马睿建立东晋（317年），"王与马共天下"','淝水之战（383年），以少胜多','刘裕代晋建宋（420年），东晋灭亡'],
-    figures:['司马炎','司马睿','王导','王羲之','陶渊明','顾恺之','谢安','刘裕'],
-    inventions:['行书与草书','山水诗','田园诗','玄学思想'],
-    turningPoints:[{y:'316年',e:'西晋灭亡',d:'匈奴首领刘曜攻破长安，俘虏晋愍帝',s:'北方陷入五胡十六国大混乱'},{y:'383年',e:'淝水之战',d:'谢安坐镇建康，谢石、谢玄在淝水大败苻坚',s:'保住了江南汉族政权'}],
-    color:'#C9A86A'
-  },
-  { id:'northern-southern',name:'南北朝时期',period:'420年 — 589年',start:420,end:589,
-    desc:'南北朝时期是中国历史上又一个大分裂时期。南方经历了宋、齐、梁、陈四个朝代，北方有北魏、东魏、西魏、北齐、北周。佛教广泛传播，石窟艺术达到鼎盛。北魏孝文帝的汉化改革促进了民族大融合。',
-    events:['刘裕建立宋朝（420年），南朝开始','北魏统一北方（439年）','北魏孝文帝迁都洛阳推行汉化改革（494年）','梁武帝萧衍即位（502年）','侯景之乱（548年）','北周武帝灭北齐统一北方（577年）','杨坚代周建隋（581年），后灭陈统一全国（589年）'],
-    figures:['刘裕','北魏孝文帝','梁武帝萧衍','陈霸先','祖冲之','郦道元','贾思勰'],
-    inventions:['均田制','三长制','石窟艺术','《水经注》','《齐民要术》'],
-    turningPoints:[{y:'494年',e:'孝文帝改革',d:'北魏孝文帝迁都洛阳，禁胡服胡语，改鲜卑姓为汉姓',s:'极大促进了民族大融合'},{y:'589年',e:'隋朝统一',d:'隋文帝杨坚派杨广率大军南下灭陈',s:'结束自东汉以来近四百年分裂局面'}],
-    color:'#D4AF6A'
-  },
-  { id:'sui',name:'隋朝',period:'581年 — 618年',start:581,end:618,
-    desc:'隋朝虽然国祚短暂仅37年，但它结束了近三百年的分裂局面，重新统一了中国。隋文帝开创了科举制度，隋炀帝修建了贯通南北的大运河。科举制打破了门阀士族对政治权力的垄断，大运河则成为此后千年中国经济的大动脉。',
-    events:['杨坚建立隋朝（581年），定都大兴','隋灭南陈统一全国（589年）','开创科举制度（587年），设进士科取士','开凿大运河（605—610年）','完善三省六部制','三征高句丽（612—614年）均以失败告终','隋炀帝在江都被宇文化及缢杀（618年）'],
-    figures:['隋文帝杨坚','隋炀帝杨广','独孤皇后','宇文化及'],
-    inventions:['科举制度','大运河','赵州桥','三省六部制'],
-    turningPoints:[{y:'605年',e:'开创科举制',d:'隋炀帝正式设立进士科，以考试选拔人才',s:'打破门阀垄断，影响中国一千三百年'},{y:'605—610年',e:'修建大运河',d:'以洛阳为中心，南起余杭北至涿郡，全长两千余公里',s:'促进南北经济文化交流'}],
-    color:'#8B7355'
-  },
-  { id:'tang',name:'唐朝',period:'618年 — 907年',start:618,end:907,
-    desc:'唐朝是中国历史上最强盛的王朝之一，国力强盛、文化繁荣、对外开放，是当时世界上最强大的国家。贞观之治和开元盛世是中国封建社会的巅峰时期。李白、杜甫等诗人的作品至今广为传诵，对东亚文化圈影响深远。',
-    events:['李渊称帝建唐（618年），定都长安','玄武门之变（626年）','贞观之治（627—649年）','玄奘西行取经（629—645年）','武则天称帝改国号为周（690年）','开元盛世（713—741年）','安史之乱（755—763年）','黄巢起义（875—884年）','朱温篡唐（907年）'],
-    figures:['李世民','武则天','李白','杜甫','白居易','玄奘','鉴真','狄仁杰','颜真卿','韩愈'],
-    inventions:['雕版印刷术','火药','唐诗','飞钱（早期汇票）'],
-    turningPoints:[{y:'627—649年',e:'贞观之治',d:'唐太宗虚心纳谏，任用魏征、房玄龄等贤臣',s:'政治清明，经济繁荣，文化昌盛'},{y:'755年',e:'安史之乱',d:'安禄山以讨伐杨国忠为名起兵叛乱',s:'唐朝由盛转衰的转折点，藩镇割据持续150余年'}],
-    color:'#A0826D'
-  },
-  { id:'five-dynasties',name:'五代十国时期',period:'907年 — 960年',start:907,end:960,
-    desc:'五代十国是唐朝灭亡后中国再次陷入的分裂时期。北方中原先后经历了后梁、后唐、后晋、后汉、后周五个朝代，南方则有十个割据政权。后周世宗柴荣的改革为宋朝统一奠定了坚实基础。',
-    events:['朱温灭唐建立后梁（907年）','李存勖灭后梁建立后唐（923年）','石敬瑭建立后晋，割让燕云十六州（936年）','郭威建立后周（951年）','柴荣即位推行改革（954年）','赵匡胤陈桥兵变黄袍加身（960年）'],
-    figures:['朱温','李存勖','石敬瑭','郭威','柴荣','赵匡胤','李煜'],
-    inventions:['火药武器实战应用','活字印刷技术萌芽','词的发展成熟'],
-    turningPoints:[{y:'936年',e:'割让燕云十六州',d:'石敬瑭为换取契丹支持割让燕云十六州',s:'中原王朝失去北方天然屏障'},{y:'960年',e:'宋朝建立',d:'赵匡胤发动陈桥兵变被拥立为帝',s:'结束五代十国分裂，中国再次走向统一'}],
-    color:'#B8956A'
-  },
-  { id:'song',name:'宋朝',period:'960年 — 1279年',start:960,end:1279,
-    desc:'宋朝分为北宋和南宋两个阶段，是中国历史上经济、文化、科技最发达的朝代之一。北宋都城汴京是当时世界上最大的城市。经济极度繁荣，出现了纸币"交子"。指南针、火药、活字印刷术都在宋朝得到重大发展。',
-    events:['赵匡胤建立宋朝（960年），定都汴京','杯酒释兵权（961年）','王安石变法（1069年）','毕昇发明活字印刷术（约1040年）','靖康之变（1127年），北宋灭亡','岳飞郾城大捷（1140年）','岳飞冤狱（1141年）','文天祥抗元，南宋灭亡（1279年）'],
-    figures:['赵匡胤','王安石','苏轼','岳飞','文天祥','朱熹','沈括','辛弃疾','李清照'],
-    inventions:['活字印刷术','指南针','火药武器','纸币（交子）','《梦溪笔谈》'],
-    turningPoints:[{y:'1044年',e:'火药配方正式记载',d:'曾公亮《武经总要》首次记载火药三种配方',s:'火药开始用于军事领域'},{y:'1127年',e:'靖康之变',d:'金兵攻破汴京，俘虏徽钦二帝北去',s:'北宋灭亡，宋室南迁临安'}],
-    color:'#C9A86A'
-  },
-  { id:'yuan',name:'元朝',period:'1271年 — 1368年',start:1271,end:1368,
-    desc:'元朝是由蒙古族建立的中国历史上疆域最辽阔的统一王朝，版图横跨欧亚大陆。元朝定都大都（今北京），首次将西藏、云南等地正式纳入中国版图。中外交流空前活跃，马可·波罗等西方旅行家来到中国。',
-    events:['铁木真统一蒙古，称成吉思汗（1206年）','忽必烈改国号为"大元"（1271年）','元军灭南宋统一全国（1279年）','马可·波罗来华（1275年）','行省制度确立','红巾军起义爆发（1351年）','朱元璋北伐攻克大都（1368年）'],
-    figures:['忽必烈','成吉思汗','郭守敬','关汉卿','马致远','马可·波罗'],
-    inventions:['《授时历》','元曲','行省制度','回回炮'],
-    turningPoints:[{y:'1279年',e:'元朝统一全国',d:'元军在崖山海战中击败南宋残部',s:'中国历史上首次由少数民族完成全国统一'},{y:'1368年',e:'元朝灭亡',d:'明军攻克大都，元顺帝北逃',s:'蒙古势力退回草原'}],
-    color:'#D4AF6A'
-  },
-  { id:'ming',name:'明朝',period:'1368年 — 1644年',start:1368,end:1644,
-    desc:'明朝是中国历史上最后一个由汉族建立的大一统王朝。明初国力强盛，郑和七下西洋展示了强大的海上实力。永乐年间编纂的《永乐大典》是当时世界上最大的百科全书。但后期宦官专权、党争激烈，最终被农民起义推翻。',
-    events:['朱元璋称帝建明（1368年）','靖难之役（1399—1402年）','永乐迁都北京（1421年）','郑和七下西洋（1405—1433年）','土木堡之变（1449年）','张居正改革（1572—1582年）','戚继光抗倭','李自成攻破北京（1644年）'],
-    figures:['朱元璋','朱棣','郑和','王阳明','张居正','戚继光','李时珍','海瑞','徐光启'],
-    inventions:['《永乐大典》','《本草纲目》','《天工开物》','紫禁城','青花瓷'],
-    turningPoints:[{y:'1405—1433年',e:'郑和下西洋',d:'郑和率庞大船队七次远航，访问30多个国家',s:'展示明朝海上实力'},{y:'1644年',e:'明朝灭亡',d:'李自成攻入北京，崇祯帝煤山自缢',s:'最后一个汉族大一统王朝结束'}],
-    color:'#8B7355'
-  },
-  { id:'qing',name:'清朝',period:'1636年 — 1912年',start:1636,end:1912,
-    desc:'清朝是中国历史上最后一个封建王朝，由满族建立。康雍乾三朝国力鼎盛，疆域超1300万平方公里，人口突破三亿。但中后期闭关锁国，与工业革命失之交臂，在西方列强侵略下逐渐沦为半殖民地。辛亥革命推翻帝制，终结了封建君主专制。',
-    events:['努尔哈赤建立后金（1616年）','清军入关（1644年）','康熙擒鳌拜、平三藩、收台湾','康乾盛世（1661—1795年）','鸦片战争（1840年）','太平天国运动（1851—1864年）','洋务运动（1861—1894年）','甲午中日战争（1894年）','戊戌变法（1898年）','辛亥革命（1911年）'],
-    figures:['康熙','雍正','乾隆','林则徐','曾国藩','李鸿章','左宗棠','慈禧太后','孙中山','康有为'],
-    inventions:['《四库全书》','《红楼梦》','京剧','圆明园'],
-    turningPoints:[{y:'1840年',e:'鸦片战争',d:'英国发动侵华战争，清朝战败签订《南京条约》',s:'中国开始沦为半殖民地半封建社会'},{y:'1911年',e:'辛亥革命',d:'武昌起义爆发，各省纷纷响应',s:'结束两千余年封建帝制'}],
-    color:'#A0826D'
-  },
-  { id:'modern',name:'近现代时期',period:'1912年 — 至今',start:1912,end:2026,
-    desc:'辛亥革命推翻帝制后，中国经历了北洋政府、国民政府、抗日战争、解放战争等重大阶段。1949年中华人民共和国成立。1978年改革开放后，中国经济持续高速发展，已成为世界第二大经济体。今天的中国，正在实现民族复兴的道路上坚定前行。',
-    events:['中华民国成立（1912年）','五四运动（1919年）','中国共产党成立（1921年）','抗日战争全面爆发（1937年）','中华人民共和国成立（1949年）','抗美援朝（1950—1953年）','改革开放（1978年）','香港回归（1997年）','北京奥运会（2008年）','全面建成小康社会（2020年）'],
-    figures:['孙中山','毛泽东','周恩来','邓小平','鲁迅','钱学森','袁隆平','邓稼先'],
-    inventions:['两弹一星','杂交水稻','高铁技术','5G通信','载人航天'],
-    turningPoints:[{y:'1949年',e:'新中国成立',d:'毛泽东在天安门城楼宣告中华人民共和国成立',s:'中国人民从此站起来了'},{y:'1978年',e:'改革开放',d:'中共十一届三中全会决定工作重心转向经济建设',s:'中国开始了规模最大的经济腾飞'}],
-    color:'#C9A86A'
-  }
+// ── Color palette ──
+const palette = {
+  preqin:       { color:'#c9a445', bg:'#fcf8ee', darkBg:'#2a2414', emoji:'🏺', symbol:'青铜鼎', territory:'黄河流域' },
+  qinhan:       { color:'#c0392b', bg:'#fdf3f0', darkBg:'#2c1a16', emoji:'⚔️', symbol:'兵马俑', territory:'疆域大一统' },
+  weijin:       { color:'#16a085', bg:'#ebfaf5', darkBg:'#14281e', emoji:'🏯', symbol:'莲花纹', territory:'南北分治' },
+  suitang:      { color:'#e67e22', bg:'#fef6ee', darkBg:'#2a1e12', emoji:'🌅', symbol:'唐三彩', territory:'东亚大帝国' },
+  song:         { color:'#2980b9', bg:'#edf4fa', darkBg:'#141e2a', emoji:'🎨', symbol:'青花瓷', territory:'多政权并立' },
+  yuanmingqing: { color:'#8e44ad', bg:'#f5eef9', darkBg:'#1e1428', emoji:'🐉', symbol:'琉璃瓦', territory:'现代中国版图雏形' },
+  modern:       { color:'#27ae60', bg:'#ebfaf1', darkBg:'#14281c', emoji:'🏙️', symbol:'天安门', territory:'中华人民共和国' },
+};
+
+const periods = [
+  { id:'preqin', name:'先秦', start:-2070, end:-221, desc:'夏商周三代，中华文明奠基期',
+    dynastyEvents: {
+      '夏': [{y:-2070,t:'禹传启·世袭制取代禅让制'},{y:-2000,t:'太康失国·后羿代夏'},{y:-1900,t:'少康中兴·恢复夏统'}],
+      '商': [{y:-1600,t:'商汤灭夏·鸣条之战'},{y:-1300,t:'盘庚迁殷·甲骨文出现'},{y:-1250,t:'武丁中兴·妇好征战'},{y:-1200,t:'司母戊鼎·最大青铜器'}],
+      '西周': [{y:-1046,t:'牧野之战·武王伐纣'},{y:-1040,t:'周公制礼作乐·分封天下'},{y:-841,t:'国人暴动·共和行政'},{y:-771,t:'烽火戏诸侯·西周灭亡'}],
+      '春秋': [{y:-685,t:'齐桓公首霸·管仲改革'},{y:-632,t:'晋楚争霸·城濮之战'},{y:-551,t:'孔子诞生·儒家创立'},{y:-473,t:'吴越争霸·卧薪尝胆'}],
+      '战国': [{y:-403,t:'三家分晋·战国开端'},{y:-356,t:'商鞅变法·秦国崛起'},{y:-307,t:'赵武灵王胡服骑射'},{y:-260,t:'长平之战·白起坑赵'},{y:-278,t:'屈原投江·楚辞传世'}],
+    }},
+  { id:'qinhan', name:'秦汉', start:-221, end:220, desc:'大一统帝国形成，制度文明确立',
+    dynastyEvents: {
+      '秦': [{y:-221,t:'灭六国·书同文车同轨'},{y:-220,t:'废分封立郡县·中央集权'},{y:-215,t:'修筑万里长城·北御匈奴'},{y:-213,t:'焚书坑儒·思想专制'},{y:-209,t:'陈胜吴广起义·揭竿而起'}],
+      '西汉': [{y:-206,t:'楚汉相争·刘邦建汉'},{y:-170,t:'文景之治·轻徭薄赋'},{y:-127,t:'汉武帝推恩令·独尊儒术'},{y:-138,t:'张骞通西域·丝绸之路'},{y:-119,t:'卫青霍去病大破匈奴'},{y:-91,t:'司马迁著《史记》'}],
+      '新': [{y:8,t:'王莽篡汉·托古改制'},{y:17,t:'绿林赤眉起义'}],
+      '东汉': [{y:25,t:'光武中兴·定都洛阳'},{y:73,t:'班超出使西域·重开丝路'},{y:105,t:'蔡伦改进造纸术·惠及全球'},{y:132,t:'张衡发明地动仪浑天仪'},{y:184,t:'黄巾起义·天下三分'}],
+    }},
+  { id:'weijin', name:'魏晋南北朝', start:220, end:589, desc:'分裂与融合，佛教兴盛，民族大迁徙',
+    dynastyEvents: {
+      '三国': [{y:200,t:'官渡之战·曹操定北方'},{y:208,t:'赤壁之战·三国鼎立'},{y:225,t:'七擒孟获·诸葛亮治蜀'},{y:249,t:'高平陵之变·司马夺权'}],
+      '西晋': [{y:280,t:'三家归晋·天下一统'},{y:290,t:'太康之治·短暂繁荣'},{y:291,t:'八王之乱·国力崩溃'},{y:311,t:'永嘉之祸·五胡乱华'}],
+      '东晋': [{y:318,t:'王与马共天下·门阀政治'},{y:383,t:'淝水之战·八万破百万'},{y:321,t:'祖逖北伐·中流击楫'},{y:353,t:'王羲之兰亭集序'}],
+      '十六国': [{y:304,t:'匈奴刘渊建汉·五胡十六国'},{y:376,t:'前秦苻坚统一北方'},{y:338,t:'北魏前身·拓跋代国'}],
+      '南北朝': [{y:494,t:'北魏孝文帝改革·迁都汉化'},{y:460,t:'祖冲之计算圆周率到七位'},{y:540,t:'贾思勰著《齐民要术》'},{y:548,t:'侯景之乱·南朝衰败'}],
+    }},
+  { id:'suitang', name:'隋唐五代', start:581, end:979, desc:'盛世巅峰，文化璀璨，万国来朝',
+    dynastyEvents: {
+      '隋': [{y:581,t:'杨坚建隋·统一天下'},{y:589,t:'隋灭陈·天下重归一统'},{y:605,t:'开凿大运河·贯通南北'},{y:607,t:'创立三省六部·科举取士'},{y:612,t:'三征高句丽·民怨沸腾'}],
+      '唐': [{y:626,t:'玄武门之变·贞观之治'},{y:641,t:'文成公主入藏·唐蕃和亲'},{y:713,t:'开元盛世·万国来朝'},{y:754,t:'鉴真东渡·传播佛法'},{y:750,t:'李白杜甫·诗歌巅峰'},{y:755,t:'安史之乱·由盛转衰'},{y:780,t:'两税法·赋税改革'}],
+      '武周': [{y:690,t:'武则天称帝·中国唯一女皇'},{y:693,t:'开创殿试·完善科举'}],
+      '五代十国': [{y:907,t:'朱温篡唐·五代更迭'},{y:938,t:'石敬瑭割燕云十六州·称儿皇帝'},{y:959,t:'后周世宗柴荣北伐'}],
+    }},
+  { id:'song', name:'宋辽金夏', start:907, end:1279, desc:'经济文化高峰，多政权并立',
+    dynastyEvents: {
+      '辽': [{y:907,t:'耶律阿保机称帝·契丹建国'},{y:1005,t:'澶渊之盟·宋辽百年和平'}],
+      '北宋': [{y:960,t:'陈桥兵变·黄袍加身'},{y:961,t:'杯酒释兵权·文官治国'},{y:1043,t:'范仲淹庆历新政'},{y:1069,t:'王安石变法·富国强兵'},{y:1040,t:'毕昇发明活字印刷'},{y:1100,t:'《清明上河图》·汴京繁华'}],
+      '西夏': [{y:1038,t:'李元昊称帝·创制西夏文字'}],
+      '金': [{y:1115,t:'完颜阿骨打起兵反辽'},{y:1127,t:'靖康之变·徽钦二帝被掳'}],
+      '南宋': [{y:1140,t:'岳飞抗金·精忠报国'},{y:1180,t:'辛弃疾爱国词篇'},{y:1189,t:'程朱理学·朱熹集大成'},{y:1279,t:'文天祥《正气歌》·崖山海战南宋亡'}],
+    }},
+  { id:'yuanmingqing', name:'元明清', start:1271, end:1912, desc:'大一统王朝，从鼎盛到转折',
+    dynastyEvents: {
+      '元': [{y:1271,t:'忽必烈建元·定都大都'},{y:1275,t:'马可·波罗来华'},{y:1280,t:'行省制度·影响至今'},{y:1281,t:'郭守敬《授时历》'},{y:1351,t:'红巾军起义·元末大乱'}],
+      '明': [{y:1368,t:'朱元璋建明·定都应天府'},{y:1421,t:'永乐迁都北京·紫禁城'},{y:1405,t:'郑和七下西洋·扬帆万里'},{y:1449,t:'土木堡之变·于谦保卫北京'},{y:1510,t:'王阳明心学·知行合一'},{y:1560,t:'戚继光抗倭·肃清海疆'},{y:1581,t:'张居正一条鞭法·中兴之治'},{y:1644,t:'李自成入京·崇祯自缢'}],
+      '清': [{y:1644,t:'清军入关·定鼎中原'},{y:1681,t:'康熙擒鳌拜·平定三藩'},{y:1684,t:'统一台湾·设台湾府'},{y:1689,t:'雅克萨之战·《尼布楚条约》'},{y:1729,t:'雍正设军机处·改土归流'},{y:1750,t:'康乾盛世·人口破三亿'},{y:1773,t:'《四库全书》编纂'},{y:1840,t:'鸦片战争·《南京条约》'},{y:1851,t:'太平天国运动·历时14年'},{y:1861,t:'洋务运动·师夷长技'},{y:1894,t:'甲午战争·《马关条约》'},{y:1898,t:'戊戌变法·百日维新'},{y:1900,t:'八国联军·《辛丑条约》'},{y:1911,t:'辛亥革命·武昌起义·帝制终结'}],
+    }},
+  { id:'modern', name:'近现代', start:1912, end:2026, desc:'从帝制终结到民族复兴',
+    dynastyEvents: {
+      '中华民国': [{y:1912,t:'中华民国成立·孙中山任临时大总统'},{y:1919,t:'五四运动·新民主主义开端'},{y:1921,t:'中国共产党成立'},{y:1924,t:'黄埔军校创建·国共首次合作'},{y:1926,t:'北伐战争·打倒列强除军阀'},{y:1927,t:'南昌起义·人民军队诞生'},{y:1934,t:'红军长征·两万五千里'},{y:1931,t:'九一八事变·东北沦陷'},{y:1936,t:'西安事变·逼蒋抗日'},{y:1937,t:'七七事变·全民族抗战爆发'},{y:1937,t:'南京大屠杀·30万同胞罹难'},{y:1938,t:'台儿庄大捷·正面战场首胜'},{y:1940,t:'百团大战·敌后战场反攻'},{y:1945,t:'抗战胜利·日本无条件投降'},{y:1945,t:'重庆谈判·《双十协定》'},{y:1948,t:'三大战役·解放战争决胜'},{y:1949,t:'渡江战役·南京解放'}],
+      '中华人民共和国': [{y:1949,t:'开国大典·中国人民站起来了'},{y:1950,t:'抗美援朝·保家卫国'},{y:1964,t:'两弹一星·国之重器'},{y:1978,t:'改革开放·经济腾飞'},{y:1997,t:'香港回归·一国两制'},{y:2001,t:'加入WTO·融入世界'},{y:2008,t:'北京奥运会·大国崛起'},{y:2020,t:'全面脱贫·建成小康'}],
+    }},
 ];
 
-// ═══════════ APP LOGIC ═══════════
-let currentPage = 'main';
-let timelineEraIdx = 7; // default to 秦朝
-let detailEraIdx = 0;
+const dynasties = [
+  { name:'夏',      start:-2070, end:-1600, founder:'禹',               capital:'阳城（今河南登封）',       period:'preqin',       layer:'main' },
+  { name:'商',      start:-1600, end:-1046, founder:'汤',               capital:'亳→殷（今河南安阳）',      period:'preqin',       layer:'main' },
+  { name:'西周',    start:-1046, end:-771,  founder:'周武王姬发',         capital:'镐京（今陕西西安）',       period:'preqin',       layer:'main' },
+  { name:'春秋',    start:-770,  end:-476,  founder:'周平王姬宜臼',       capital:'洛邑（今河南洛阳）',       period:'preqin',       layer:'sub' },
+  { name:'战国',    start:-475,  end:-221,  founder:'—',               capital:'齐楚燕韩赵魏秦七雄并立',     period:'preqin',       layer:'sub' },
+  { name:'秦',      start:-221,  end:-206,  founder:'秦始皇嬴政',         capital:'咸阳（今陕西咸阳）',       period:'qinhan',       layer:'main' },
+  { name:'西汉',    start:-202,  end:8,     founder:'汉高祖刘邦',         capital:'长安（今陕西西安）',       period:'qinhan',       layer:'main' },
+  { name:'新',      start:8,     end:23,    founder:'王莽',             capital:'常安（今陕西西安）',       period:'qinhan',       layer:'sub' },
+  { name:'东汉',    start:25,    end:220,   founder:'光武帝刘秀',         capital:'洛阳（今河南洛阳）',       period:'qinhan',       layer:'main' },
+  { name:'三国',    start:220,   end:280,   founder:'魏·蜀·吴鼎立',      capital:'洛阳 / 成都 / 建业',      period:'weijin',       layer:'main' },
+  { name:'西晋',    start:265,   end:316,   founder:'司马炎',            capital:'洛阳（今河南洛阳）',       period:'weijin',       layer:'sub' },
+  { name:'十六国',  start:304,   end:439,   founder:'多政权并立',         capital:'—',                   period:'weijin',       layer:'split' },
+  { name:'东晋',    start:317,   end:420,   founder:'司马睿',            capital:'建康（今江苏南京）',       period:'weijin',       layer:'sub' },
+  { name:'南北朝',  start:420,   end:589,   founder:'宋→齐→梁→陈 / 北魏→北周', capital:'建康 / 洛阳 / 邺城',    period:'weijin',       layer:'main' },
+  { name:'隋',      start:581,   end:618,   founder:'隋文帝杨坚',         capital:'大兴（今陕西西安）',       period:'suitang',      layer:'main' },
+  { name:'唐',      start:618,   end:907,   founder:'唐高祖李渊',         capital:'长安（今陕西西安）',       period:'suitang',      layer:'main' },
+  { name:'武周',    start:690,   end:705,   founder:'圣神皇帝武则天',      capital:'神都（今河南洛阳）',       period:'suitang',      layer:'sub' },
+  { name:'五代十国',start:907,   end:979,   founder:'多政权并立',         capital:'—',                   period:'suitang',      layer:'main' },
+  { name:'辽',      start:907,   end:1125,  founder:'耶律阿保机',         capital:'上京（今内蒙古巴林左旗）',  period:'song',         layer:'sub' },
+  { name:'北宋',    start:960,   end:1127,  founder:'宋太祖赵匡胤',       capital:'汴京（今河南开封）',       period:'song',         layer:'main' },
+  { name:'西夏',    start:1038,  end:1227,  founder:'李元昊',            capital:'兴庆（今宁夏银川）',       period:'song',         layer:'split' },
+  { name:'金',      start:1115,  end:1234,  founder:'完颜阿骨打',         capital:'中都（今北京）',          period:'song',         layer:'sub' },
+  { name:'南宋',    start:1127,  end:1279,  founder:'宋高宗赵构',         capital:'临安（今浙江杭州）',       period:'song',         layer:'main' },
+  { name:'元',      start:1271,  end:1368,  founder:'元世祖忽必烈',       capital:'大都（今北京）',          period:'yuanmingqing', layer:'main' },
+  { name:'明',      start:1368,  end:1644,  founder:'明太祖朱元璋',       capital:'南京 → 北京',           period:'yuanmingqing', layer:'main' },
+  { name:'清',      start:1616,  end:1912,  founder:'清太祖努尔哈赤',      capital:'北京',                 period:'yuanmingqing', layer:'main' },
+  { name:'中华民国', start:1912,  end:1949,  founder:'孙中山',            capital:'南京',                 period:'modern',       layer:'main' },
+  { name:'中华人民共和国', start:1949, end:2026, founder:'毛泽东',        capital:'北京',                 period:'modern',       layer:'main' },
+];
 
-function navigate(page, eraIdx) {
-  currentPage = page;
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  if (page === 'main') renderMain();
-  if (page === 'detail' && eraIdx !== undefined) {
-    detailEraIdx = eraIdx;
-    renderDetail();
+let tooltipPinned = null;
+
+const keyEvents = [
+  { year:-1046, text:'牧野之战·商亡周立' },
+  { year:-841,  text:'共和行政·中国历史确切纪年开始' },
+  { year:-551,  text:'孔子诞生' },
+  { year:-356,  text:'商鞅变法' },
+  { year:-221,  text:'秦统一六国' },
+  { year:-202,  text:'刘邦称帝建汉' },
+  { year:-138,  text:'张骞出使西域' },
+  { year:8,     text:'王莽篡汉建新' },
+  { year:105,   text:'蔡伦改进造纸术' },
+  { year:184,   text:'黄巾起义' },
+  { year:208,   text:'赤壁之战' },
+  { year:280,   text:'三家归晋' },
+  { year:383,   text:'淝水之战' },
+  { year:494,   text:'北魏孝文帝迁都洛阳' },
+  { year:589,   text:'隋统一天下' },
+  { year:605,   text:'开凿大运河' },
+  { year:626,   text:'玄武门之变' },
+  { year:690,   text:'武则天称帝' },
+  { year:755,   text:'安史之乱' },
+  { year:960,   text:'陈桥兵变·北宋建立' },
+  { year:1069,  text:'王安石变法' },
+  { year:1127,  text:'靖康之变' },
+  { year:1206,  text:'成吉思汗建蒙古' },
+  { year:1279,  text:'崖山海战·南宋亡' },
+  { year:1368,  text:'明朝建立' },
+  { year:1405,  text:'郑和下西洋' },
+  { year:1644,  text:'清军入关' },
+  { year:1840,  text:'鸦片战争' },
+  { year:1911,  text:'辛亥革命' },
+  { year:1919,  text:'五四运动' },
+  { year:1921,  text:'中国共产党成立' },
+  { year:1937,  text:'七七事变·全面抗战' },
+  { year:1945,  text:'抗战胜利' },
+  { year:1949,  text:'中华人民共和国成立' },
+  { year:1978,  text:'改革开放' },
+];
+
+// ── Constants ──
+const TOTAL_START = -2070;
+const TOTAL_END = 2026;
+const TOTAL_SPAN = TOTAL_END - TOTAL_START;
+const SCALE = 1.4; // px per year
+
+function x(year) { return (year - TOTAL_START) * SCALE; }
+function fmtYear(y) { return y < 0 ? '前' + Math.abs(y) : '公元' + y; }
+function durLabel(s, e) { const d = e - s; return (d >= 100 ? '约' : '') + d + '年'; }
+
+// ── Period Nav ──
+document.getElementById('periodNav').innerHTML = periods.map(p =>
+  `<a href="#period-${p.id}" style="--c:${palette[p.id].color}">${palette[p.id].emoji} ${p.name}</a>`
+).join('');
+
+// ── Legend ──
+document.getElementById('legend').innerHTML = periods.map(p =>
+  `<div class="legend-item"><div class="legend-dot" style="background:${palette[p.id].color}"></div>${p.name} ${fmtYear(p.start)}—${fmtYear(p.end)}</div>`
+).join('');
+
+// ── Overview Cards ──
+document.getElementById('overviewGrid').innerHTML = periods.map(p => {
+  const ds = dynasties.filter(d => d.period === p.id);
+  return `
+    <div class="overview-card" id="period-${p.id}" style="border-left-color:${palette[p.id].color}">
+      <h3><span class="ch">${palette[p.id].emoji}</span>${p.name}<span style="font-size:13px;font-weight:400;color:var(--text-muted);margin-left:4px;">· ${palette[p.id].symbol}</span></h3>
+      <div class="oc-meta">${fmtYear(p.start)} — ${fmtYear(p.end)} · ${durLabel(p.start, p.end)} · 核心区域：${palette[p.id].territory}</div>
+      <div class="oc-dynasties">${ds.map(d => {
+        const evts = (p.dynastyEvents||{})[d.name]||[];
+        return `<div class="oc-dynasty-block">
+          <div class="oc-dynasty-row"><strong>${d.name}</strong><span>${fmtYear(d.start)} — ${fmtYear(d.end)}</span></div>
+          ${evts.length ? `<div class="oc-dynasty-events">${evts.map(e => `<span class="oc-event-tag oc-event-sm" data-year="${fmtYear(e.y)}" title="${fmtYear(e.y)}">${e.t}</span>`).join('')}</div>` : ''}
+        </div>`;
+      }).join('')}</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:12px">${p.desc}</div>
+    </div>`;
+}).join('');
+
+// ── Timeline ──
+const layerNames = { main:'主要王朝', sub:'次要政权', split:'并立政权' };
+const layers = {};
+dynasties.forEach(d => {
+  if (!layers[d.layer]) layers[d.layer] = [];
+  layers[d.layer].push(d);
+});
+
+const W = x(TOTAL_END) + 60;
+const ROW_H = 56;
+
+// Build rows array first
+const rows = [];
+['main','sub','split'].forEach(layer => {
+  if (!layers[layer]) return;
+  rows.push({ layer, label: layerNames[layer], dynasties: layers[layer] });
+});
+rows.unshift({ layer:'ruler', label:'时间标尺', dynasties:[] });
+
+const tlBody = document.getElementById('tlBody');
+tlBody.style.width = W + 'px';
+tlBody.style.minHeight = (rows.length * ROW_H) + 'px';
+
+// Also set header width
+document.querySelector('#tlScrollHeader > div').style.width = W + 'px';
+
+const labelCol = document.getElementById('tlLabelsCol');
+
+rows.forEach((rowDef, ri) => {
+  const labelDiv = document.createElement('div');
+  labelDiv.className = 'tl-row-label';
+  labelDiv.style.cssText = `height:${ROW_H}px;border-bottom:1px solid var(--border);`;
+  labelDiv.textContent = rowDef.label;
+  labelCol.appendChild(labelDiv);
+
+  if (rowDef.layer === 'ruler') {
+    // Ruler ticks are drawn in the bars area
+    const rulerDiv = document.createElement('div');
+    rulerDiv.style.cssText = `position:absolute;top:${ri*ROW_H}px;left:0;width:${W}px;height:${ROW_H}px;`;
+    for (let y = -2000; y <= 2000; y += 200) {
+      const tick = document.createElement('span');
+      tick.className = 'ruler-tick';
+      tick.style.left = x(y) + 'px';
+      tick.textContent = fmtYear(y);
+      rulerDiv.appendChild(tick);
+    }
+    for (let y = -2000; y <= 2000; y += 500) {
+      const line = document.createElement('div');
+      line.className = 'ruler-line';
+      line.style.left = x(y) + 'px';
+      line.style.height = ROW_H + 'px';
+      rulerDiv.appendChild(line);
+    }
+    tlBody.appendChild(rulerDiv);
+  } else {
+    const barsDiv = document.createElement('div');
+    barsDiv.style.cssText = `position:absolute;top:${ri*ROW_H}px;left:0;width:${W}px;height:${ROW_H}px;`;
+
+    rowDef.dynasties.forEach(d => {
+      const left = x(d.start);
+      const width = Math.max((d.end - d.start) * SCALE, 34);
+      const p = palette[d.period];
+
+      const bar = document.createElement('div');
+      bar.className = 'dynasty-bar';
+      bar.style.cssText = `left:${left}px;width:${width}px;background:${p.color};`;
+      bar.innerHTML = `<span class="bar-label-inner">${d.name}</span>`;
+
+      bar.addEventListener('mouseenter', function(e) {
+        const tt = document.getElementById('tooltip');
+        tt.innerHTML = `
+          <h3 style="color:${p.color}">${d.name}</h3>
+          <div class="tt-era">${p.emoji} ${periods.find(pp=>pp.id===d.period)?.name||''} · ${durLabel(d.start, d.end)}</div>
+          <div class="tt-row"><b>时间：</b>${fmtYear(d.start)} — ${fmtYear(d.end)}</div>
+          <div class="tt-row"><b>建立者：</b>${d.founder}</div>
+          <div class="tt-row"><b>都城：</b>${d.capital}</div>
+        `;
+        tt.classList.add('on');
+      });
+      bar.addEventListener('mousemove', function(e) {
+        const tt = document.getElementById('tooltip');
+        let tx = e.clientX + 16, ty = e.clientY - 12;
+        if (tx + 350 > window.innerWidth) tx = e.clientX - 360;
+        if (ty + 160 > window.innerHeight) ty = e.clientY - 170;
+        tt.style.left = tx + 'px';
+        tt.style.top = ty + 'px';
+      });
+      bar.addEventListener('mouseleave', function() {
+        document.getElementById('tooltip').classList.remove('on');
+      });
+
+      barsDiv.appendChild(bar);
+    });
+
+    // Event markers on 2nd row (layer === 'sub')
+    if (rowDef.layer === 'sub') {
+      keyEvents.forEach(ev => {
+        const dot = document.createElement('div');
+        dot.className = 'event-dot';
+        dot.style.cssText = `left:${x(ev.year)-3}px;background:${palette[periods.find(pp=>ev.year>=pp.start&&ev.year<=pp.end)?.id]?.color||'#999'}`;
+        dot.title = fmtYear(ev.year) + ' — ' + ev.text;
+        barsDiv.appendChild(dot);
+      });
+    }
+
+    tlBody.appendChild(barsDiv);
   }
-  window.scrollTo({ top:0, behavior:'smooth' });
-}
+});
 
-// ── Timeline constants ──
-const TIMELINE_MIN = -3000, TIMELINE_MAX = 2026;
-const TIMELINE_RANGE = TIMELINE_MAX - TIMELINE_MIN;
+// ── Sync scroll ──
+const headerScroll = document.getElementById('tlScrollHeader');
+const bodyScroll = document.getElementById('tlBodyScroll');
+headerScroll.addEventListener('scroll', () => { bodyScroll.scrollLeft = headerScroll.scrollLeft; });
+bodyScroll.addEventListener('scroll', () => { headerScroll.scrollLeft = bodyScroll.scrollLeft; });
 
-function yearToPct(y) { return ((y - TIMELINE_MIN) / TIMELINE_RANGE) * 100; }
-function pctToYear(p) { return Math.round(TIMELINE_MIN + (p / 100) * TIMELINE_RANGE); }
-function fmtYear(y) { return y < 0 ? '公元前'+Math.abs(y)+'年' : '公元'+y+'年'; }
+// Initial scroll to show Qin unification (~221 BC)
+setTimeout(() => {
+  const sx = x(-221) - 200;
+  bodyScroll.scrollLeft = Math.max(0, sx);
+  headerScroll.scrollLeft = bodyScroll.scrollLeft;
+}, 200);
 
-// ── Era Bars ──
-function buildEraBars() {
-  document.getElementById('eraBars').innerHTML = eras.map((e, i) => {
-    const left = ((e.start - TIMELINE_MIN) / TIMELINE_RANGE) * 100;
-    const width = ((e.end - e.start) / TIMELINE_RANGE) * 100;
-    const isActive = i === timelineEraIdx;
-    return `<span class="era-bar${isActive ? ' active' : ''}"
-      style="left:${left}%;width:${Math.max(width, 0.35)}%;background:${e.color};"
-      title="${e.name} (${e.period})"
-      data-idx="${i}"></span>`;
-  }).join('');
-}
-
-// ── Era Pills ──
-function buildEraPills() {
-  document.getElementById('eraPills').innerHTML = eras.map((e, i) => {
-    const isActive = i === timelineEraIdx;
-    return `<span class="era-pill${isActive ? ' active' : ''}"
-      data-idx="${i}" style="${isActive ? `box-shadow:0 0 20px ${e.color}80` : ''}">${e.name}</span>`;
-  }).join('');
-}
-
-// ── Era Preview ──
-function updateEraPreview() {
-  const e = eras[timelineEraIdx];
-  document.getElementById('tlPreview').innerHTML = `
-    <h4>${e.name}</h4>
-    <span class="era-preview-period">${e.period}</span>
-    <p>${e.desc}</p>
-  `;
-}
-
-// ── Year Badge ──
-function updateYearBadge() {
-  const pct = parseFloat(document.getElementById('tlSlider').value);
-  document.getElementById('tlYearBadge').textContent = fmtYear(pctToYear(pct));
-}
-
-// ── Inline Content ──
-function renderInlineContent() {
-  const e = eras[timelineEraIdx];
-  const tp = e.turningPoints || [];
-  const mc = document.getElementById('mainContent');
-  mc.innerHTML = `
-    <div class="content-hero">
-      <h1>${e.name}</h1>
-      <span class="ch-period">${e.period}</span>
-      <p class="ch-desc">${e.desc}</p>
-      <button onclick="navigate('detail',${timelineEraIdx})" style="margin-top:16px;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;background:hsl(var(--primary) / .1);border:1px solid hsl(var(--primary) / .3);color:hsl(var(--primary));cursor:pointer;transition:var(--transition);">查看完整详情 →</button>
-    </div>
-    <div class="content-grid">
-      <div class="content-card">
-        <h3>重大事件</h3>
-        <div class="event-list">
-          ${e.events.map(ev => `<div class="event-item"><span class="event-dot"></span><span>${ev}</span></div>`).join('')}
-        </div>
-      </div>
-      <div class="content-card">
-        <h3>著名人物</h3>
-        <div class="tag-row">
-          ${e.figures.map(f => `<span class="tag-item">${f}</span>`).join('')}
-        </div>
-        <h3 style="margin-top:24px;">重要成就</h3>
-        <div class="invention-grid">
-          ${e.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
-        </div>
-      </div>
-      ${tp.length > 0 ? `
-      <div class="content-card" style="grid-column:1/-1;">
-        <h3>历史转折点</h3>
-        ${tp.map(t => `
-          <div class="tp-card">
-            <div class="tpc-year">${t.y}</div>
-            <div class="tpc-event">${t.e}</div>
-            <div class="tpc-desc">${t.d}</div>
-            <div class="tpc-sig">${t.s}</div>
-          </div>
-        `).join('')}
-      </div>
-      ` : ''}
-    </div>
-  `;
-  mc.classList.add('visible');
-  mc.scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-// ── Select Era ──
-function selectTimelineEra(idx) {
-  timelineEraIdx = idx;
-  const midYear = Math.round((eras[idx].start + eras[idx].end) / 2);
-  document.getElementById('tlSlider').value = yearToPct(midYear);
-  updateYearBadge();
-  buildEraBars();
-  buildEraPills();
-  updateEraPreview();
-  renderInlineContent();
-}
-
-// ── Slider Input ──
-function onSliderInput() {
-  const pct = parseFloat(document.getElementById('tlSlider').value);
-  const year = pctToYear(pct);
-  updateYearBadge();
-
-  let idx = eras.length - 1;
-  for (let i = eras.length - 1; i >= 0; i--) {
-    if (year >= eras[i].start && year <= eras[i].end) { idx = i; break; }
+// Mobile: click-to-toggle tooltips on dynasty bars
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.dynasty-bar')) {
+    document.getElementById('tooltip').classList.remove('on');
+    tooltipPinned = null;
   }
-  if (idx !== timelineEraIdx) {
-    timelineEraIdx = idx;
-    buildEraBars();
-    buildEraPills();
-    updateEraPreview();
-    renderInlineContent();
-  }
-}
-
-// ── Main Render ──
-function renderMain() {
-  const era = eras[timelineEraIdx];
-  const midYear = Math.round((era.start + era.end) / 2);
-  document.getElementById('tlSlider').value = yearToPct(midYear);
-  updateYearBadge();
-  buildEraBars();
-  buildEraPills();
-  updateEraPreview();
-  renderInlineContent();
-}
-
-// ── Detail ──
-function renderDetail() {
-  const e = eras[detailEraIdx];
-  document.getElementById('detailEraName').textContent = e.name;
-
-  const tp = e.turningPoints || [];
-  document.getElementById('detailContent').innerHTML = `
-    <div class="detail-hero">
-      <h1>${e.name}</h1>
-      <span class="dh-period">${e.period}</span>
-      <p class="dh-desc">${e.desc}</p>
-    </div>
-    <div class="detail-grid">
-      <div class="detail-card">
-        <h3>重大事件</h3>
-        <div class="event-list">
-          ${e.events.map(ev => `<div class="event-item"><span class="event-dot"></span><span>${ev}</span></div>`).join('')}
-        </div>
-      </div>
-      <div class="detail-card">
-        <h3>著名人物</h3>
-        <div class="tag-row">
-          ${e.figures.map(f => `<span class="tag-item">${f}</span>`).join('')}
-        </div>
-        <h3 style="margin-top:24px;">重要成就</h3>
-        <div class="invention-grid">
-          ${e.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
-        </div>
-      </div>
-      ${tp.length > 0 ? `
-      <div class="detail-card" style="grid-column:1/-1;">
-        <h3>历史转折点</h3>
-        ${tp.map(t => `
-          <div class="tp-card">
-            <div class="tpc-year">${t.y}</div>
-            <div class="tpc-event">${t.e}</div>
-            <div class="tpc-desc">${t.d}</div>
-            <div class="tpc-sig">${t.s}</div>
-          </div>
-        `).join('')}
-      </div>
-      ` : ''}
-    </div>
-  `;
-
-  document.getElementById('detailPrev').style.visibility = detailEraIdx > 0 ? 'visible' : 'hidden';
-  document.getElementById('detailNext').style.visibility = detailEraIdx < eras.length - 1 ? 'visible' : 'hidden';
-}
-
-// ── Event Bindings ──
-document.querySelectorAll('[data-page]').forEach(el => {
-  el.addEventListener('click', function() {
-    const page = this.dataset.page;
-    if (page === 'main') { renderMain(); navigate('main'); }
-    else navigate(page);
+});
+document.querySelectorAll('.dynasty-bar').forEach(function(bar) {
+  bar.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var tt = document.getElementById('tooltip');
+    if (tooltipPinned === bar) {
+      tt.classList.remove('on');
+      tooltipPinned = null;
+    } else {
+      tooltipPinned = bar;
+      tt.classList.add('on');
+      var cx = e.clientX, cy = e.clientY;
+      var tx = cx + 16, ty = cy - 12;
+      if (tx + 350 > window.innerWidth) tx = cx - 360;
+      if (ty + 200 > window.innerHeight) ty = cy - 200;
+      tt.style.left = tx + 'px';
+      tt.style.top = ty + 'px';
+    }
+  });
+  bar.addEventListener('mouseleave', function() {
+    if (tooltipPinned !== bar) {
+      document.getElementById('tooltip').classList.remove('on');
+    }
   });
 });
-
-document.getElementById('detailPrev').addEventListener('click', () => {
-  if (detailEraIdx > 0) { detailEraIdx--; renderDetail(); window.scrollTo({ top:0, behavior:'smooth' }); }
+// Event tag tap: show year tooltip on mobile
+document.querySelectorAll('.oc-event-tag').forEach(function(tag) {
+  tag.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var tt = document.getElementById('tooltip');
+    var year = this.getAttribute('data-year');
+    if (tt.classList.contains('on') && tt._tagEl === this) {
+      tt.classList.remove('on');
+      tt._tagEl = null;
+    } else {
+      tt.innerHTML = '<div style="font-size:15px;font-weight:700;">' + year + '</div><div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + this.textContent + '</div>';
+      tt.classList.add('on');
+      tt._tagEl = this;
+      var rect = this.getBoundingClientRect();
+      var tx = rect.left, ty = rect.bottom + 6;
+      if (tx + 280 > window.innerWidth) tx = window.innerWidth - 290;
+      if (ty + 80 > window.innerHeight) ty = rect.top - 80;
+      tt.style.left = tx + 'px';
+      tt.style.top = ty + 'px';
+    }
+  });
 });
-document.getElementById('detailNext').addEventListener('click', () => {
-  if (detailEraIdx < eras.length - 1) { detailEraIdx++; renderDetail(); window.scrollTo({ top:0, behavior:'smooth' }); }
-});
-
-document.getElementById('tlSlider').addEventListener('input', onSliderInput);
-
-// Era bars click delegation
-document.getElementById('eraBars').addEventListener('click', function(e) {
-  const bar = e.target.closest('.era-bar');
-  if (bar) { selectTimelineEra(parseInt(bar.dataset.idx)); }
-});
-
-// Era pills click delegation
-document.getElementById('eraPills').addEventListener('click', function(e) {
-  const pill = e.target.closest('.era-pill');
-  if (pill) { selectTimelineEra(parseInt(pill.dataset.idx)); }
-});
-
-// Click timeline preview to scroll to content
-document.getElementById('tlPreview').addEventListener('click', function() {
-  var mc = document.getElementById('mainContent');
-  if (mc.classList.contains('visible')) {
-    mc.scrollIntoView({ behavior:'smooth', block:'start' });
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.oc-event-tag')) {
+    var tt = document.getElementById('tooltip');
+    if (tt._tagEl) { tt.classList.remove('on'); tt._tagEl = null; }
   }
 });
 
-// Pulse glow animation for timeline icon
-setInterval(function() {
-  const icon = document.getElementById('tlIcon');
-  icon.style.boxShadow = icon.style.boxShadow === '0 0 24px hsl(var(--primary) / .6)' ? '0 0 14px hsl(var(--primary) / .35)' : '0 0 24px hsl(var(--primary) / .6)';
-}, 2000);
-
-// ── Init ──
-renderMain();
 </script>
-</body></html>
+</body>
+</html>
