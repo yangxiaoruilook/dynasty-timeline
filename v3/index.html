@@ -485,7 +485,13 @@ const eras = [
       {name:'大汶口文化发展',desc:'约公元前4300年，大汶口文化在黄河下游山东地区繁荣发展，墓葬中出现明显的贫富分化和社会分层现象，出土了精美的玉器和象牙制品，是龙山文化的直接前身。'},
       {name:'三皇五帝传说时期',desc:'远古传说中的帝王时代，伏羲、女娲、神农为"三皇"，黄帝、颛顼、帝喾、尧、舜为"五帝"。黄帝在阪泉之战中击败炎帝、涿鹿之战中擒杀蚩尤，被尊为中华民族的人文初祖。'}
     ],
-    figures:['黄帝','炎帝','尧','舜','禹'],
+    figures:[
+      {name:'黄帝',desc:'姬姓，号轩辕氏，被尊为中华民族的人文初祖。阪泉之战击败炎帝，涿鹿之战擒杀蚩尤，统一华夏部落，被后世尊为"五帝"之首。传说中养蚕、舟车、音律等皆始于黄帝时期。'},
+      {name:'炎帝',desc:'姜姓，号神农氏，教民农耕、尝百草发明医药，被尊为农业和医药之神。后与黄帝结盟，共同形成华夏族的核心，"炎黄子孙"由此而来。'},
+      {name:'尧',desc:'陶唐氏，五帝之一。命羲和观测天象制定历法，晚年禅让帝位给舜而非传子，开创了中国最早的"禅让"政治传统，被儒家奉为圣王典范。'},
+      {name:'舜',desc:'有虞氏，五帝之一。出身贫寒，以孝闻名天下，经受尧的三年考察后受禅为帝。命大禹治水成功，晚年将帝位禅让给大禹。'},
+      {name:'禹',desc:'姒姓，因治水功绩卓著受舜禅让为部落联盟首领。采用疏导之法治理滔天洪水，划定九州、铸造九鼎，是中国历史上第一个王朝——夏朝的奠基者。'}
+    ],
     inventions:['石器工具','火的使用','彩陶制作','农业种植'],
     turningPoints:[{y:'约前5000年',e:'仰韶文化兴起',d:'以彩陶为特色的新石器时代文化，分布在黄河中游地区',s:'标志着中国进入定居农业社会，文明曙光初现'}],
     color:'#8B7355', bg:'https://miaoda-site-img.cdn.bcebos.com/images/256d90d2-c525-4280-b7b0-828b93cdb6f8.jpg'
@@ -499,7 +505,13 @@ const eras = [
       {name:'少康中兴',desc:'太康之孙少康在有仍氏等部落协助下积蓄力量，最终反攻复国，重建夏朝统治，史称"少康中兴"，是中国历史上第一次王朝中兴。'},
       {name:'夏桀暴政与夏朝灭亡',desc:'约公元前1600年，末代君主夏桀荒淫暴虐，自比太阳，民众咒骂"时日曷丧？予及汝皆亡"。商汤在伊尹辅佐下兴兵灭夏，鸣条之战夏军大败，夏朝覆亡。'}
     ],
-    figures:['大禹','启','太康','少康','桀'],
+    figures:[
+      {name:'大禹',desc:'夏朝开国君主。因治水有功受舜禅让，划定九州、铸造九鼎，将部落联盟改造为早期国家形态，是中国历史上第一个世袭王朝的创立者，其子启继承王位开启了"家天下"时代。'},
+      {name:'启',desc:'大禹之子，夏朝第二代君主。击败法定继承人伯益，在钧台大会诸侯正式即天子位，以世袭制取代禅让制，开创了中国王位家族传承的先河。'},
+      {name:'太康',desc:'夏朝第三代君主，大禹之孙。即位后沉湎田猎游乐不理朝政，被东夷有穷氏首领后羿趁虚而入夺取政权，流亡在外多年不得归国，史称"太康失国"。'},
+      {name:'少康',desc:'夏朝第六代君主，太康之孙。在流亡中长大，依靠有仍氏等部落支持积蓄力量，最终以少胜多反攻复国成功，史称"少康中兴"，是中国历史上第一次王朝中兴。'},
+      {name:'桀',desc:'夏朝末代君主。力大无穷能徒手搏虎，但荒淫暴虐宠幸妹喜，大兴土木建造倾宫瑶台，自比太阳永不坠落。最终被商汤在鸣条之战击败，夏朝覆亡。'}
+    ],
     inventions:['世袭制度','历法雏形','青铜器初现','城市规划'],
     turningPoints:[{y:'约前2070年',e:'夏朝建立',d:'大禹治水成功，受舜禅让建立中国历史上第一个王朝',s:'标志着中国进入王朝时代，原始社会结束'},{y:'约前1600年',e:'夏朝灭亡',d:'夏桀暴虐无道，商汤起兵灭夏，鸣条之战夏军大败',s:'暴政导致王朝更替，开启商朝时代'}],
     color:'#8B7355', bg:'https://miaoda-site-img.cdn.bcebos.com/images/93877b7d-3c74-4ad0-9a6a-62a4516a666b.jpg'
@@ -514,7 +526,15 @@ const eras = [
       {name:'帝辛暴政',desc:'商朝末代君主帝辛（纣王）虽有文武之才，但宠幸妲己、拒谏饰非，以炮烙之刑残害忠良，叔父比干因直言进谏被剖心而死，微子、箕子等纷纷出走。'},
       {name:'牧野之战与商朝灭亡',desc:'约公元前1046年，周武王姬发率诸侯联军在牧野与商军决战，商军主力远在东南征战，临时武装的奴隶阵前倒戈，纣王兵败逃回朝歌自焚于鹿台，商朝灭亡。'}
     ],
-    figures:['商汤','伊尹','盘庚','武丁','妇好','纣王','比干'],
+    figures:[
+      {name:'商汤',desc:'商朝开国君主，子姓，名履。以"吊民伐罪"为号召，在名相伊尹辅佐下联合各部族起兵灭夏，经鸣条之战大败夏桀，建立了中国历史上第二个王朝，被后世视为"革命"的典范——以有道伐无道。'},
+      {name:'伊尹',desc:'商朝开国名相，出身奴隶，以烹饪之道比喻治国之理得到商汤赏识。辅佐商汤灭夏建商，汤去世后又辅佐三代商王，被后世尊为"元圣"，是中国历史上最早的贤相典范。'},
+      {name:'盘庚',desc:'商朝第二十任君主，力排众议将都城从奄迁至殷（今河南安阳），此后273年不再迁都，商朝进入稳定发展期。殷墟遗址成为20世纪中国最重大的考古发现之一。'},
+      {name:'武丁',desc:'商朝第二十三任君主，在位59年。任用贤臣傅说、甘盘，其妻妇好是中国最早的女将军。在位期间商朝国力达到鼎盛，疆域空前辽阔，史称"武丁中兴"。'},
+      {name:'妇好',desc:'商王武丁之妻，中国有文字记载以来第一位女将军。多次统率大军征伐羌方、土方等周边方国，甲骨文中关于她的占卜记录达二百余条，墓葬出土了大量青铜器和玉器。'},
+      {name:'纣王',desc:'商朝末代君主，名受。虽有文武之才但宠幸妲己、拒谏饰非，以炮烙之刑残害忠良，叔父比干因直言进谏被剖心。牧野之战兵败后自焚于鹿台，商朝覆亡。'},
+      {name:'比干',desc:'商纣王叔父，官至少师（丞相）。因纣王暴虐无道，冒着灭族危险连续三日跪谏纣王，被纣王怒而剖心。后世尊为"亘古第一忠臣"，民间奉为文财神。'}
+    ],
     inventions:['甲骨文','青铜器','历法','占卜术'],
     turningPoints:[{y:'约前1300年',e:'盘庚迁殷',d:'商王盘庚力排众议将都城迁至殷（今河南安阳），此后273年不再迁都',s:'商朝进入稳定发展期，殷墟成为重要考古遗址'},{y:'约前1046年',e:'商朝灭亡',d:'周武王伐纣，牧野之战商军阵前倒戈，纣王自焚于鹿台',s:'青铜文明达到顶峰后衰落，周朝建立'}],
     color:'#A0826D', bg:'https://miaoda-site-img.cdn.bcebos.com/images/d91e5372-7269-4ee0-9f64-5d4c58cd3b0e.jpg'
@@ -529,7 +549,14 @@ const eras = [
       {name:'国人暴动',desc:'公元前841年，周厉王推行专利政策垄断山林川泽之利，又派卫巫监视国人言论使"道路以目"，镐京城内的"国人"（自由民）忍无可忍发动暴动驱逐厉王，这一年成为中国历史确切纪年之始。'},
       {name:'烽火戏诸侯与西周灭亡',desc:'公元前771年，周幽王宠幸褒姒废嫡立庶，为博美人一笑不惜点燃烽火台戏弄诸侯。当犬戎联军真的来犯时诸侯无人来援，镐京被攻破，幽王被杀于骊山之下，西周覆亡。'}
     ],
-    figures:['周武王','周公旦','姜子牙','周成王','周康王','周幽王'],
+    figures:[
+      {name:'周武王',desc:'姬姓，名发，周朝开国君主。继承父亲文王遗志，会合八百诸侯于盟津，在牧野之战中以少胜多击败商纣王，建立周朝定都镐京，开启了延续八百年的周王朝。'},
+      {name:'周公旦',desc:'周武王之弟，姓姬名旦。武王去世后摄政辅佐年幼的成王，率军东征平定三监之乱，大规模分封诸侯，制礼作乐确立宗法制和分封制，被尊为儒家元圣，是中华礼乐文明的总设计师。'},
+      {name:'姜子牙',desc:'姜姓吕氏，名尚，号太公望。在渭水之滨垂钓时被周文王访得，年逾七十辅佐文王武王两代灭商建周，因功封于齐地成为齐国开国之君，被尊为兵家始祖。'},
+      {name:'周成王',desc:'名诵，武王之子。幼年即位由叔父周公旦摄政，成年后周公归政，亲政期间继续推行周公的制度建设，与子康王共同开创了"成康之治"的盛世局面。'},
+      {name:'周康王',desc:'名钊，成王之子。在位期间延续成王和周公的治国方针，轻徭薄赋、明德慎罚，社会安定四十余年不用刑罚，是西周国力的鼎盛时期。'},
+      {name:'周幽王',desc:'名宫湦，西周最后一任君主。宠幸褒姒废嫡立庶，为博美人一笑不惜烽火戏诸侯。公元前771年犬戎联军攻破镐京，幽王被杀于骊山之下，西周灭亡。'}
+    ],
     inventions:['分封制','宗法制','礼乐制度','井田制'],
     turningPoints:[{y:'约前1046年',e:'西周建立',d:'周武王伐纣成功，建立周朝，定都镐京',s:'分封制和宗法制确立，礼乐文化形成'},{y:'前771年',e:'西周灭亡',d:'犬戎攻破镐京，周幽王被杀于骊山之下',s:'西周结束，平王东迁洛邑，进入春秋时期'}],
     color:'#B8956A', bg:'https://miaoda-site-img.cdn.bcebos.com/images/a0f5a1de-0315-4d68-ba22-3f7f45566a5e.jpg'
@@ -544,7 +571,15 @@ const eras = [
       {name:'吴越争霸与卧薪尝胆',desc:'吴王阖闾败于越王勾践后重伤而死，其子夫差励精图治击败越国。勾践被俘后忍辱负重，归国后卧薪尝胆十年生聚，最终于公元前473年灭吴，成为春秋最后一位霸主。'},
       {name:'孔子周游列国创立儒家学派',desc:'孔子（前551—前479年）为推行仁政德治的政治理想，带领弟子周游卫、宋、陈、蔡等列国十四年，虽屡遭困厄但始终坚持。晚年返回鲁国整理六经，创立儒家学派，被后世尊为"至圣先师"。'}
     ],
-    figures:['齐桓公','管仲','晋文公','楚庄王','孔子','老子','孙武'],
+    figures:[
+      {name:'齐桓公',desc:'姜姓，名小白，春秋五霸之首。任用管仲为相推行全面改革，以"尊王攘夷"为号召九合诸侯一匡天下，北击山戎救燕、南伐楚国立威，使齐国成为春秋第一强国。'},
+      {name:'管仲',desc:'齐国名相，被齐桓公尊为"仲父"。推行政治、军事、经济全面改革——四民分业、相地而衰征、官山海盐铁专卖，使齐国率先富强，被后世誉为"法家先驱""华夏第一相"。'},
+      {name:'晋文公',desc:'姬姓，名重耳。流亡列国十九年备尝艰辛，六十二岁归国即位后励精图治，城濮之战以退避三舍大败楚军，践土之盟被周襄王册封为诸侯之长，晋国称霸中原百余年。'},
+      {name:'楚庄王',desc:'芈姓熊氏，名侣。即位三年沉醉酒色不理朝政，后"一鸣惊人"发愤图强问鼎中原，任用孙叔敖治理内政，使楚国成为南方霸主，被列入春秋五霸。'},
+      {name:'孔子',desc:'名丘字仲尼（前551—前479年），春秋末期鲁国人。带领弟子周游列国十四年推行仁政思想，晚年返鲁整理六经、修订《春秋》，创立儒家学派，被后世尊为"至圣先师""万世师表"，其思想深刻影响了中华文明和世界文化。'},
+      {name:'老子',desc:'姓李名耳字聃，道家学派创始人。曾任周王室守藏室之史（国家图书馆馆长），见周室衰微后西出函谷关留下五千余言《道德经》，提出"道法自然""无为而治"等核心思想，被道教尊为太上老君。'},
+      {name:'孙武',desc:'字长卿，齐国人，被吴王阖闾拜为大将。率吴军西破强楚、北威齐晋，著有《孙子兵法》十三篇，被誉为"兵学圣典""世界古代第一兵书"，被尊为"兵圣""百世兵家之师"。'}
+    ],
     inventions:['铁器','牛耕','私学兴起','诸子百家思想萌芽'],
     turningPoints:[{y:'前770年',e:'平王东迁',d:'周平王在晋、郑等诸侯护卫下迁都洛邑，东周开始',s:'周王室权威衰落，诸侯争霸时代来临'},{y:'前551年',e:'孔子诞生',d:'儒家学派创始人孔子出生于鲁国陬邑（今山东曲阜）',s:'儒家思想诞生，影响中国两千多年'}],
     color:'#C9A86A', bg:'https://miaoda-site-img.cdn.bcebos.com/images/add434a8-5872-4f40-997e-6588003e36f0.jpg'
@@ -936,7 +971,7 @@ function renderContent() {
         </div>
         <div id="tabRightFigures" class="tab-panel" style="display:none;" data-group="right">
           <div class="tag-list">
-            ${era.figures.map((f,i) => `<span class="tag clickable-item" data-figure-idx="${i}">${f}</span>`).join('')}
+            ${era.figures.map((f,i) => `<span class="tag clickable-item" data-figure-idx="${i}">${typeof f==='object'?f.name:f}</span>`).join('')}
           </div>
         </div>
         <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
@@ -976,16 +1011,42 @@ function showDetail(era, type, idx) {
     `;
   } else if (type === 'figure') {
     const fig = era.figures[idx];
-    title = fig;
+    const figName = typeof fig === 'object' ? fig.name : fig;
+    const figDesc = typeof fig === 'object' ? fig.desc : '';
+    title = figName;
+    // Find events that mention this figure
+    const relatedEvents = era.events.filter(ev => {
+      const en = typeof ev === 'object' ? ev.name : ev;
+      return en.includes(figName);
+    });
     bodyContent = `
-      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">${fig}，活跃于${era.name}时期（${era.period}），是这一时代的重要历史人物。${era.desc}</p>
+      ${figDesc ? `<p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));margin-bottom:16px;">${figDesc}</p>` : ''}
+      <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;padding:3px 10px;border-radius:9999px;font-size:11px;font-weight:600;background:hsl(var(--primary) / .15);color:hsl(var(--primary));">${era.name}</span>
+        <span style="font-size:12px;color:hsl(var(--muted-foreground));">${era.period}</span>
+      </div>
+      ${relatedEvents.length > 0 ? `
+        <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">相关重大事件</strong></p>
+        ${relatedEvents.map(ev => `
+          <div style="margin-bottom:6px;padding:8px 12px;background:hsl(var(--muted) / .15);border-radius:6px;font-size:13px;color:hsl(var(--muted-foreground));">
+            ${typeof ev === 'object' ? ev.name : ev}
+          </div>
+        `).join('')}
+      ` : ''}
       ${renderContextSection(era)}
     `;
   } else if (type === 'invention') {
     const inv = era.inventions[idx];
-    title = inv;
+    const invName = typeof inv === 'object' ? inv.name : inv;
+    const invDesc = typeof inv === 'object' ? inv.desc : '';
+    title = invName;
     bodyContent = `
-      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">「${inv}」是${era.name}时期的重要发明创造，体现了当时社会的科技水平和文明高度。${era.desc}</p>
+      ${invDesc ? `<p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));margin-bottom:16px;">${invDesc}</p>` : ''}
+      <div style="margin-bottom:8px;display:flex;align-items:center;gap:8px;">
+        <span style="display:inline-block;padding:3px 10px;border-radius:9999px;font-size:11px;font-weight:600;background:hsl(var(--primary) / .15);color:hsl(var(--primary));">${era.name}</span>
+        <span style="font-size:12px;color:hsl(var(--muted-foreground));">${era.period}</span>
+      </div>
+      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">「${invName}」是${era.name}时期的重要发明创造与文明成果，代表了当时社会的科技水平和创造力。${era.desc}</p>
       ${renderContextSection(era)}
     `;
   } else if (type === 'turning') {
@@ -1026,8 +1087,8 @@ function renderContextSection(era) {
         </div>
       `).join('')}
     ` : ''}
-    <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">同时代著名人物：</strong>${era.figures.join('、')}</p>
-    <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">同时代重要成就：</strong>${era.inventions.join('、')}</p>
+    <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">同时代著名人物：</strong>${era.figures.map(f=>typeof f==='object'?f.name:f).join('、')}</p>
+    <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">同时代重要成就：</strong>${era.inventions.map(inv=>typeof inv==='object'?inv.name:inv).join('、')}</p>
   `;
 }
 
