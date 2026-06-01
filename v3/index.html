@@ -394,13 +394,21 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 .detail-panel-inner { padding:24px 28px 28px; }
 .detail-panel h3 {
-  font-size:22px; font-weight:800; margin:0 0 6px;
+  display:inline-block;
+  font-size:20px; font-weight:700; margin:0 0 14px;
   color:hsl(var(--foreground));
   letter-spacing:0.02em;
+  padding:6px 18px; border-radius:9999px;
+  background:hsl(var(--card)); border:1px solid hsl(var(--primary) / .25);
+  box-shadow:0 2px 12px hsl(var(--primary) / .06);
 }
 .detail-panel .period-label {
-  display:inline-block; margin-bottom:8px;
-  font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+  display:inline-block; margin-bottom:10px;
+  font-size:11px; letter-spacing:0.05em;
+  padding:4px 14px; border-radius:9999px;
+  background:hsl(var(--primary) / .08); color:hsl(var(--primary));
+  border:1px solid hsl(var(--primary) / .15);
+  font-weight:600;
 }
 .detail-close {
   position:sticky; top:12px; float:right; margin-right:16px;
