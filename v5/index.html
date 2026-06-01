@@ -207,35 +207,31 @@ input[type=range]::-webkit-slider-thumb {
 
 <!-- Header -->
 <header class="app-header">
-  <span class="logo" data-page="home">中国全历史</span>
-  <nav>
-    <button data-page="home" class="active">首页</button>
-    <button data-page="timeline">时间轴</button>
-  </nav>
+  <span class="logo" data-page="main">中国全历史</span>
+  <span style="font-size:12px;color:var(--text-muted);">穿越五千年时光轴</span>
 </header>
 
-<!-- ====== HOME PAGE ====== -->
-<div class="page active" id="page-home">
+<!-- ====== MAIN PAGE (Timeline + Home) ====== -->
+<div class="page active" id="page-main">
   <div class="container">
-    <div class="stats-row">
-      <div class="stat-card"><div class="num">19</div><div class="label">历史时期</div></div>
-      <div class="stat-card"><div class="num">5000+</div><div class="label">年历史跨度</div></div>
-      <div class="stat-card"><div class="num">300+</div><div class="label">重大事件</div></div>
-      <div class="stat-card"><div class="num">160+</div><div class="label">著名人物</div></div>
-    </div>
-    <div class="era-grid" id="eraGrid"></div>
-  </div>
-</div>
-
-<!-- ====== TIMELINE PAGE ====== -->
-<div class="page" id="page-timeline">
-  <div class="container">
+    <!-- Timeline Section -->
     <div class="timeline-controls">
       <span class="year-display" id="tlYear">公元2026年</span>
       <input type="range" id="tlSlider" min="0" max="100" step="0.1" value="100">
     </div>
     <div class="timeline-nodes" id="tlNodes"></div>
     <div class="timeline-preview" id="tlPreview"></div>
+
+    <!-- Stats -->
+    <div class="stats-row" style="margin-top:40px;">
+      <div class="stat-card"><div class="num">19</div><div class="label">历史时期</div></div>
+      <div class="stat-card"><div class="num">5000+</div><div class="label">年历史跨度</div></div>
+      <div class="stat-card"><div class="num">300+</div><div class="label">重大事件</div></div>
+      <div class="stat-card"><div class="num">160+</div><div class="label">著名人物</div></div>
+    </div>
+
+    <!-- Era Cards -->
+    <div class="era-grid" id="eraGrid"></div>
   </div>
 </div>
 
@@ -244,9 +240,9 @@ input[type=range]::-webkit-slider-thumb {
   <div class="container">
     <div class="detail-nav">
       <button id="detailPrev">← 上一个</button>
-      <button data-page="home" style="font-size:12px;">返回首页</button>
+      <button data-page="main" style="font-size:12px;">返回主页</button>
       <span class="current-name" id="detailEraName"></span>
-      <button data-page="timeline" style="font-size:12px;">返回时间轴</button>
+      <button data-page="main" style="font-size:12px;">返回主页</button>
       <button id="detailNext">下一个 →</button>
     </div>
     <div id="detailContent"></div>
@@ -413,7 +409,7 @@ const eras = [
 ];
 
 // ═══════════ APP LOGIC ═══════════
-let currentPage = 'home';
+let currentPage = 'main';
 let timelineEraIdx = 7; // default to 秦朝
 let detailEraIdx = 0;
 
@@ -421,11 +417,7 @@ function navigate(page, eraIdx) {
   currentPage = page;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b => {
-    b.classList.toggle('active', b.dataset.page === page);
-  });
-  if (page === 'home') renderHome();
-  if (page === 'timeline') renderTimeline();
+  if (page === 'main') renderMain();
   if (page === 'detail' && eraIdx !== undefined) {
     detailEraIdx = eraIdx;
     renderDetail();
@@ -433,8 +425,20 @@ function navigate(page, eraIdx) {
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-// ── Home ──
-function renderHome() {
+// ── Main (Timeline + Home) ──
+function renderMain() {
+  // Timeline nodes
+  document.getElementById('tlNodes').innerHTML = eras.map((e,i) => `
+    <span class="timeline-node ${i === timelineEraIdx ? 'active' : ''}"
+          onclick="selectTimelineEra(${i})">${e.name}</span>
+  `).join('');
+
+  const era = eras[timelineEraIdx];
+  const midYear = Math.round((era.start + era.end) / 2);
+  document.getElementById('tlSlider').value = yearToPct(midYear);
+  updateTimelinePreview();
+
+  // Era cards
   document.getElementById('eraGrid').innerHTML = eras.map((e,i) => `
     <div class="era-card" onclick="navigate('detail',${i})">
       <div class="era-bar" style="background:${e.color};"></div>
@@ -445,7 +449,7 @@ function renderHome() {
   `).join('');
 }
 
-// ── Timeline ──
+// ── Timeline (legacy compat) ──
 function renderTimeline() {
   // Nodes
   document.getElementById('tlNodes').innerHTML = eras.map((e,i) => `
@@ -558,7 +562,9 @@ function renderDetail() {
 // ── Event Bindings ──
 document.querySelectorAll('[data-page]').forEach(el => {
   el.addEventListener('click', function() {
-    navigate(this.dataset.page);
+    const page = this.dataset.page;
+    if (page === 'main') { renderMain(); navigate('main'); }
+    else navigate(page);
   });
 });
 
@@ -577,6 +583,6 @@ document.getElementById('tlPreview').addEventListener('click', function() {
 });
 
 // ── Init ──
-renderHome();
+renderMain();
 </script>
 </body></html>
