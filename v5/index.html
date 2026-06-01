@@ -221,7 +221,7 @@ header .subtitle {
 
 /* ── Era Preview ── */
 .era-preview {
-  padding:20px; border-radius:12px;
+  padding:20px; border-radius:12px; margin-bottom:16px;
   background:linear-gradient(135deg, hsl(var(--muted) / .5), hsl(var(--muted) / .3));
   border:2px solid hsl(var(--primary) / .15); position:relative; z-index:1;
 }
@@ -388,10 +388,10 @@ header .subtitle {
         </div>
         <span class="timeline-year-badge" id="tlYearBadge">公元2026年</span>
       </div>
+      <div class="era-preview" id="tlPreview"></div>
       <input type="range" id="tlSlider" min="0" max="100" step="0.1" value="100">
       <div class="era-bars" id="eraBars"></div>
       <div class="era-pills" id="eraPills"></div>
-      <div class="era-preview" id="tlPreview"></div>
     </div>
 
     <!-- Inline Content -->
