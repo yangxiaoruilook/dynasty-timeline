@@ -247,6 +247,37 @@ input[type=range]::-webkit-slider-thumb {
 }
 .col { display:flex; flex-direction:column; gap:24px; }
 
+/* ── Tabs ── */
+.content-tabs {
+  display:flex; gap:4px; background:hsl(var(--muted) / .5);
+  padding:4px; border-radius:10px; margin-bottom:16px;
+}
+.content-tab {
+  flex:1; padding:10px 8px; border-radius:8px; font-size:12px; font-weight:600;
+  text-align:center; cursor:pointer; color:hsl(var(--muted-foreground));
+  transition:all .25s ease; border:none; background:none;
+  white-space:nowrap;
+}
+.content-tab:hover { color:hsl(var(--foreground)); background:hsl(var(--muted)); }
+.content-tab.active {
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  color:hsl(var(--primary-foreground)); box-shadow:0 0 16px hsl(var(--primary) / .4);
+}
+
+/* ── Stat cards ── */
+.stat-cards {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+}
+.stat-item {
+  text-align:center; padding:20px 16px; border-radius:12px;
+  background:hsl(var(--card)); border:1px solid hsl(var(--border));
+  transition:all .25s ease;
+}
+.stat-item:hover { border-color:hsl(var(--primary) / .3); box-shadow:0 0 20px hsl(var(--primary) / .1); }
+.stat-item .stat-icon { font-size:24px; margin-bottom:6px; }
+.stat-item .stat-num { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
+.stat-item .stat-label { font-size:11px; color:hsl(var(--muted-foreground)); margin-top:2px; }
+
 /* ── Cards ── */
 .card {
   background:hsl(var(--card)); border:1px solid hsl(var(--border));
@@ -679,42 +710,71 @@ function renderContent() {
         <span class="period-label">${era.period}</span>
         <h2>${era.name}</h2>
         <p class="era-desc">${era.desc}</p>
+
+        <div class="section-title" style="margin-top:20px;">时期概述</div>
+
+        <div class="content-tabs" id="contentTabs">
+          <button class="content-tab active" data-tab="events">重大事件</button>
+          <button class="content-tab" data-tab="figures">著名人物</button>
+          <button class="content-tab" data-tab="inventions">发明创造</button>
+          <button class="content-tab" data-tab="turning">历史转折</button>
+        </div>
+
+        <div id="tabContentEvents" class="tab-panel">
+          <div class="event-list">
+            ${era.events.map((ev,i) => `
+              <div class="event-item" data-event-idx="${i}">
+                <span class="event-dot"></span>
+                <span>${ev}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div id="tabContentFigures" class="tab-panel" style="display:none;">
+          <div class="tag-list">
+            ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
+          </div>
+        </div>
+        <div id="tabContentInventions" class="tab-panel" style="display:none;">
+          <div class="invention-grid">
+            ${era.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
+          </div>
+        </div>
+        <div id="tabContentTurning" class="tab-panel" style="display:none;">
+          ${tp.length > 0 ? tp.map(t => `
+            <div class="tp-card">
+              <div class="tp-year">${t.y}</div>
+              <div class="tp-event">${t.e}</div>
+              <div class="tp-desc">${t.d}</div>
+              <div class="tp-sig">${t.s}</div>
+            </div>
+          `).join('') : '<p style="color:hsl(var(--muted-foreground));font-size:13px;">暂无数据</p>'}
+        </div>
       </div>
     </div>
 
     <div class="col" style="animation:slideInRight .5s ease-out;">
-      <div class="card">
-        <div class="section-title" style="margin-top:0;">重大事件</div>
-        <div class="event-list">
-          ${era.events.map((ev,i) => `
-            <div class="event-item" data-event-idx="${i}">
-              <span class="event-dot"></span>
-              <span>${ev}</span>
-            </div>
-          `).join('')}
+      <div class="stat-cards">
+        <div class="stat-item">
+          <div class="stat-icon">&#128211;</div>
+          <div class="stat-num">${era.events.length}</div>
+          <div class="stat-label">重大事件</div>
         </div>
-
-        <div class="section-title">著名人物</div>
-        <div class="tag-list">
-          ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
+        <div class="stat-item">
+          <div class="stat-icon">&#128100;</div>
+          <div class="stat-num">${era.figures.length}</div>
+          <div class="stat-label">著名人物</div>
         </div>
-
-        <div class="section-title">重要成就</div>
-        <div class="invention-grid">
-          ${era.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
+        <div class="stat-item">
+          <div class="stat-icon">&#128161;</div>
+          <div class="stat-num">${era.inventions.length}</div>
+          <div class="stat-label">发明创造</div>
         </div>
-
-        ${tp.length > 0 ? `
-        <div class="section-title">历史转折</div>
-        ${tp.map(t => `
-          <div class="tp-card">
-            <div class="tp-year">${t.y}</div>
-            <div class="tp-event">${t.e}</div>
-            <div class="tp-desc">${t.d}</div>
-            <div class="tp-sig">${t.s}</div>
-          </div>
-        `).join('')}
-        ` : ''}
+        <div class="stat-item">
+          <div class="stat-icon">&#128260;</div>
+          <div class="stat-num">${tp.length}</div>
+          <div class="stat-label">历史转折</div>
+        </div>
       </div>
     </div>
   `;
@@ -779,8 +839,19 @@ document.getElementById('eraPills').addEventListener('click', function(e) {
   selectEra(parseInt(pill.dataset.idx));
 });
 
-// Event detail click
+// Event detail + tab switching
 document.getElementById('mainContent').addEventListener('click', function(e) {
+  const tab = e.target.closest('.content-tab');
+  if (tab) {
+    document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const panelId = tab.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+    const panelMap = { events:'tabContentEvents', figures:'tabContentFigures', inventions:'tabContentInventions', turning:'tabContentTurning' };
+    const target = document.getElementById(panelMap[panelId]);
+    if (target) target.style.display = 'block';
+    return;
+  }
   const item = e.target.closest('.event-item');
   if (!item) return;
   const idx = parseInt(item.dataset.eventIdx);
