@@ -1111,7 +1111,6 @@ function updateEraPreview() {
     preview.innerHTML = `
       <h4>${era.name}</h4>
       <span class="era-preview-period">${era.period}</span>
-      ${era.founder ? `<span style="display:inline-block;margin-top:4px;font-size:11px;color:hsl(var(--primary));">创建者：${era.founder}</span>` : ''}
       <p>${era.desc}</p>
     `;
   }
@@ -1189,7 +1188,6 @@ function renderContent() {
         <div style="display:flex;gap:8px;margin-bottom:16px;">
           <span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--background) / .5);border:1px solid hsl(var(--primary) / .2);color:hsl(var(--muted-foreground));">${era.period}</span>
           <span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--background) / .5);border:1px solid hsl(var(--primary) / .2);color:hsl(var(--muted-foreground));">历史跨度 ${duration} 年</span>
-          ${era.founder ? `<span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--primary) / .08);border:1px solid hsl(var(--primary) / .25);color:hsl(var(--primary));">创建者 ${era.founder}</span>` : ''}
         </div>
 
         <div class="content-tabs" data-group="right">
