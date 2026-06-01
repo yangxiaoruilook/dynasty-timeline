@@ -328,6 +328,10 @@ input[type=range]::-webkit-slider-thumb:hover {
   background:hsl(var(--muted)); border-color:hsl(var(--primary) / 0.3);
   transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3);
 }
+.clickable-item { cursor:pointer; }
+.tag.clickable-item:hover { background:hsl(var(--primary) / 0.12); border-color:hsl(var(--primary) / 0.4); }
+.invention-item.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
+.tp-card.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
 .event-dot {
   flex-shrink:0; width:6px; height:6px; border-radius:50%;
   background:hsl(var(--primary)); box-shadow:0 0 8px hsl(var(--primary) / 0.5);
@@ -932,17 +936,17 @@ function renderContent() {
         </div>
         <div id="tabRightFigures" class="tab-panel" style="display:none;" data-group="right">
           <div class="tag-list">
-            ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
+            ${era.figures.map((f,i) => `<span class="tag clickable-item" data-figure-idx="${i}">${f}</span>`).join('')}
           </div>
         </div>
         <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
           <div class="invention-grid">
-            ${era.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
+            ${era.inventions.map((inv,i) => `<div class="invention-item clickable-item" data-invention-idx="${i}">${inv}</div>`).join('')}
           </div>
         </div>
         <div id="tabRightTurning" class="tab-panel" style="display:none;" data-group="right">
-          ${tp.length > 0 ? tp.map(t => `
-            <div class="tp-card">
+          ${tp.length > 0 ? tp.map((t,i) => `
+            <div class="tp-card clickable-item" data-turning-idx="${i}">
               <div class="tp-year">${t.y}</div>
               <div class="tp-event">${t.e}</div>
               <div class="tp-desc">${t.d}</div>
@@ -956,31 +960,74 @@ function renderContent() {
 }
 
 // ── Detail overlay ──
-function showDetail(era, ev, idx) {
+function showDetail(era, type, idx) {
   const overlay = document.getElementById('detailOverlay');
   overlay.style.display = 'flex';
   const tp = era.turningPoints || [];
+
+  let title, bodyContent;
+
+  if (type === 'event') {
+    const ev = era.events[idx];
+    title = ev.name;
+    bodyContent = `
+      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">${ev.desc}</p>
+      ${renderContextSection(era)}
+    `;
+  } else if (type === 'figure') {
+    const fig = era.figures[idx];
+    title = fig;
+    bodyContent = `
+      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">${fig}，活跃于${era.name}时期（${era.period}），是这一时代的重要历史人物。${era.desc}</p>
+      ${renderContextSection(era)}
+    `;
+  } else if (type === 'invention') {
+    const inv = era.inventions[idx];
+    title = inv;
+    bodyContent = `
+      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">「${inv}」是${era.name}时期的重要发明创造，体现了当时社会的科技水平和文明高度。${era.desc}</p>
+      ${renderContextSection(era)}
+    `;
+  } else if (type === 'turning') {
+    const t = tp[idx];
+    title = t.e;
+    bodyContent = `
+      <div style="margin-bottom:12px;">
+        <span style="display:inline-block;padding:4px 12px;border-radius:9999px;font-size:12px;font-weight:700;background:hsl(var(--primary) / .15);color:hsl(var(--primary));">${t.y}</span>
+      </div>
+      <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));margin-bottom:12px;">${t.d}</p>
+      <div style="padding:12px;background:hsl(var(--primary) / .08);border-radius:8px;border-left:3px solid hsl(var(--primary));">
+        <p style="font-size:13px;color:hsl(var(--primary));"><strong>历史影响：</strong>${t.s}</p>
+      </div>
+      ${renderContextSection(era)}
+    `;
+  }
+
   overlay.innerHTML = `
     <div class="detail-panel">
       <button class="detail-close" onclick="closeDetail()">&times;</button>
       <span class="period-label">${era.period}</span>
-      <h3>${ev.name}</h3>
-      <div class="detail-body">
-        <p style="font-size:14px;line-height:1.9;color:hsl(var(--foreground));">${ev.desc}</p>
-        ${tp.length > 0 ? `
-          <p style="margin-top:20px;"><strong style="color:hsl(var(--primary))">时代背景 · 历史转折</strong></p>
-          ${tp.map(t => `
-            <div style="margin-bottom:10px;padding:10px;background:hsl(var(--muted) / .2);border-radius:8px;border-left:3px solid hsl(var(--primary) / .5);">
-              <span style="font-size:12px;font-weight:700;color:hsl(var(--primary));">${t.y} · ${t.e}</span>
-              <p style="font-size:13px;color:hsl(var(--muted-foreground));margin:4px 0;">${t.d}</p>
-              <p style="font-size:12px;color:hsl(var(--primary) / .7);">📌 ${t.s}</p>
-            </div>
-          `).join('')}
-        ` : ''}
-        <p style="margin-top:20px;"><strong style="color:hsl(var(--primary))">同时代著名人物：</strong>${era.figures.join('、')}</p>
-        <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">同时代重要成就：</strong>${era.inventions.join('、')}</p>
-      </div>
+      <h3>${title}</h3>
+      <div class="detail-body">${bodyContent}</div>
     </div>
+  `;
+}
+
+function renderContextSection(era) {
+  const tp = era.turningPoints || [];
+  return `
+    ${tp.length > 0 ? `
+      <p style="margin-top:20px;"><strong style="color:hsl(var(--primary))">时代背景 · 历史转折</strong></p>
+      ${tp.map(t => `
+        <div style="margin-bottom:10px;padding:10px;background:hsl(var(--muted) / .2);border-radius:8px;border-left:3px solid hsl(var(--primary) / .5);">
+          <span style="font-size:12px;font-weight:700;color:hsl(var(--primary));">${t.y} · ${t.e}</span>
+          <p style="font-size:13px;color:hsl(var(--muted-foreground));margin:4px 0;">${t.d}</p>
+          <p style="font-size:12px;color:hsl(var(--primary) / .7);">${t.s}</p>
+        </div>
+      `).join('')}
+    ` : ''}
+    <p style="margin-top:16px;"><strong style="color:hsl(var(--primary))">同时代著名人物：</strong>${era.figures.join('、')}</p>
+    <p style="margin-top:8px;"><strong style="color:hsl(var(--primary))">同时代重要成就：</strong>${era.inventions.join('、')}</p>
   `;
 }
 
@@ -1018,29 +1065,49 @@ document.getElementById('eraPills').addEventListener('click', function(e) {
   selectEra(parseInt(pill.dataset.idx));
 });
 
-// Event detail + tab switching
+// Item detail + tab switching
 document.getElementById('mainContent').addEventListener('click', function(e) {
   const tab = e.target.closest('.content-tab');
   if (tab) {
     const group = tab.dataset.group;
-    // Deactivate all tabs in this group
     document.querySelectorAll(`.content-tab[data-group="${group}"]`).forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    // Hide all panels in this group
     document.querySelectorAll(`.tab-panel[data-group="${group}"]`).forEach(p => p.style.display = 'none');
-    // Show the target panel
     const cap = tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1);
     const targetId = 'tabRight' + cap;
     const target = document.getElementById(targetId);
     if (target) target.style.display = 'block';
     return;
   }
-  const item = e.target.closest('.event-item');
-  if (!item) return;
-  const idx = parseInt(item.dataset.eventIdx);
-  if (isNaN(idx)) return;
   const era = eras[activeIdx];
-  showDetail(era, era.events[idx], idx);
+  // Event click
+  const eventItem = e.target.closest('.event-item');
+  if (eventItem) {
+    const idx = parseInt(eventItem.dataset.eventIdx);
+    if (!isNaN(idx)) showDetail(era, 'event', idx);
+    return;
+  }
+  // Figure click
+  const figureItem = e.target.closest('[data-figure-idx]');
+  if (figureItem) {
+    const idx = parseInt(figureItem.dataset.figureIdx);
+    if (!isNaN(idx)) showDetail(era, 'figure', idx);
+    return;
+  }
+  // Invention click
+  const invItem = e.target.closest('[data-invention-idx]');
+  if (invItem) {
+    const idx = parseInt(invItem.dataset.inventionIdx);
+    if (!isNaN(idx)) showDetail(era, 'invention', idx);
+    return;
+  }
+  // Turning point click
+  const tpItem = e.target.closest('[data-turning-idx]');
+  if (tpItem) {
+    const idx = parseInt(tpItem.dataset.turningIdx);
+    if (!isNaN(idx)) showDetail(era, 'turning', idx);
+    return;
+  }
 });
 
 // Detail overlay close
