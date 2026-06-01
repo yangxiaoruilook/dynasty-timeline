@@ -14,9 +14,13 @@
   --text-muted: #6b6258;
   --border: #3a3428;
   --primary: 45 90% 55%;
+  --primary-glow: 45 100% 65%;
   --primary-hex: #e6c444;
+  --muted: 30 20% 22%;
+  --muted-foreground: 40 20% 70%;
   --radius: 16px;
   --shadow-card: 0 8px 32px rgba(0,0,0,.4);
+  --shadow-elegant: 0 20px 60px -20px hsl(var(--bg) / 0.9);
   --shadow-glow: 0 0 40px hsl(45 90% 55% / .25);
   --transition: all .3s cubic-bezier(.4,0,.2,1);
   --era-colors: #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A;
@@ -41,22 +45,48 @@ body::after {
 }
 
 /* ── Header ── */
-.app-header {
+header {
   position:sticky; top:0; z-index:100;
-  background:hsl(30 15% 10% / .85); backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px;
+  background:linear-gradient(180deg, hsl(var(--bg)), hsl(var(--card-bg)));
+  border-bottom:1px solid hsl(var(--border) / 0.5);
+  box-shadow:var(--shadow-elegant);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
 }
-.app-header .logo {
-  font-size:17px; font-weight:700; color:hsl(var(--primary)); cursor:pointer;
-  letter-spacing:.06em;
+.header-inner {
+  max-width:1200px; margin:0 auto; padding:20px 32px;
+  text-align:center;
 }
-.app-header nav { display:flex; gap:4px; }
-.app-header nav button {
-  background:none; border:none; color:var(--text-secondary); font-size:13px;
-  padding:8px 16px; border-radius:20px; cursor:pointer; transition:var(--transition);
+.header-deco {
+  display:flex; align-items:center; justify-content:center; gap:14px;
+  margin-bottom:6px;
 }
-.app-header nav button:hover, .app-header nav button.active { color:hsl(var(--primary)); background:hsl(var(--primary) / .08); }
+.header-bar {
+  width:4px; height:40px; border-radius:2px;
+  background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  box-shadow:0 0 16px hsl(var(--primary) / 0.5);
+}
+header h1 {
+  font-size:clamp(24px,4vw,36px); font-weight:800; letter-spacing:.1em;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 0 20px hsl(var(--primary) / 0.5)) drop-shadow(0 0 40px hsl(var(--primary) / 0.3));
+  cursor:pointer;
+}
+header .subtitle {
+  color:hsl(var(--muted-foreground)); font-size:13px; margin-top:4px;
+  max-width:600px; margin-left:auto; margin-right:auto;
+}
+.header-stats {
+  display:flex; align-items:center; justify-content:center; gap:10px; margin-top:10px;
+}
+.header-stats .pill {
+  padding:4px 14px; border-radius:9999px;
+  background:hsl(var(--primary) / 0.1); border:1px solid hsl(var(--primary) / 0.2);
+  font-size:12px; color:hsl(var(--muted-foreground));
+}
+.header-stats .pill strong {
+  color:hsl(var(--primary)); font-weight:700;
+}
 
 /* ── Container ── */
 .container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:32px 24px 80px; }
@@ -67,15 +97,6 @@ body::after {
 @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
 
 /* ── Home ── */
-.stats-row { display:flex; gap:16px; margin-bottom:40px; justify-content:center; flex-wrap:wrap; }
-.stat-card {
-  text-align:center; padding:24px 32px; border-radius:var(--radius);
-  background:var(--card-bg); border:1px solid var(--border);
-  min-width:140px; flex:1;
-}
-.stat-card .num { font-size:36px; font-weight:800; color:hsl(var(--primary)); }
-.stat-card .label { font-size:13px; color:var(--text-muted); margin-top:4px; }
-
 .era-grid {
   display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
 }
@@ -190,11 +211,8 @@ input[type=range]::-webkit-slider-thumb {
 }
 @media (max-width:640px) {
   .era-grid { grid-template-columns:1fr; }
-  .app-header { padding:0 12px; }
+  .header-inner { padding:16px 12px; }
   .container { padding:20px 12px 60px; }
-  .stats-row { gap:8px; }
-  .stat-card { padding:16px 20px; min-width:100px; }
-  .stat-card .num { font-size:28px; }
   .timeline-controls { flex-direction:column; padding:16px; }
   .detail-nav { flex-wrap:wrap; justify-content:center; }
   .detail-hero { padding:20px; }
@@ -206,9 +224,19 @@ input[type=range]::-webkit-slider-thumb {
 <body>
 
 <!-- Header -->
-<header class="app-header">
-  <span class="logo" data-page="main">中国全历史</span>
-  <span style="font-size:12px;color:var(--text-muted);">穿越五千年时光轴</span>
+<header>
+  <div class="header-inner">
+    <div class="header-deco">
+      <span class="header-bar"></span>
+      <h1 data-page="main">中 国 全 历 史</h1>
+      <span class="header-bar"></span>
+    </div>
+    <p class="subtitle">穿越五千年时光轴，纵览中国历史脉络</p>
+    <div class="header-stats">
+      <span class="pill"><strong>19</strong> 个历史时期</span>
+      <span class="pill"><strong>5000+</strong> 年历史跨度</span>
+    </div>
+  </div>
 </header>
 
 <!-- ====== MAIN PAGE (Timeline + Home) ====== -->
@@ -221,14 +249,6 @@ input[type=range]::-webkit-slider-thumb {
     </div>
     <div class="timeline-nodes" id="tlNodes"></div>
     <div class="timeline-preview" id="tlPreview"></div>
-
-    <!-- Stats -->
-    <div class="stats-row" style="margin-top:40px;">
-      <div class="stat-card"><div class="num">19</div><div class="label">历史时期</div></div>
-      <div class="stat-card"><div class="num">5000+</div><div class="label">年历史跨度</div></div>
-      <div class="stat-card"><div class="num">300+</div><div class="label">重大事件</div></div>
-      <div class="stat-card"><div class="num">160+</div><div class="label">著名人物</div></div>
-    </div>
 
     <!-- Era Cards -->
     <div class="era-grid" id="eraGrid"></div>
