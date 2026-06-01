@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国全历史网</title>
+<style>
+:root {
+  --bg: #1a1814;
+  --card-bg: #24211a;
+  --card-hover: #2d2920;
+  --text: #e8dfcf;
+  --text-secondary: #a09880;
+  --text-muted: #6b6258;
+  --border: #3a3428;
+  --primary: 45 90% 55%;
+  --primary-hex: #e6c444;
+  --radius: 16px;
+  --shadow-card: 0 8px 32px rgba(0,0,0,.4);
+  --shadow-glow: 0 0 40px hsl(45 90% 55% / .25);
+  --transition: all .3s cubic-bezier(.4,0,.2,1);
+  --era-colors: #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
+}
+
+/* Background */
+body::before {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(hsl(var(--primary) / .03) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / .03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+body::after {
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, hsl(var(--primary) / .05) 0%, transparent 60%);
+}
+
+/* ── Header ── */
+.app-header {
+  position:sticky; top:0; z-index:100;
+  background:hsl(30 15% 10% / .85); backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px;
+}
+.app-header .logo {
+  font-size:17px; font-weight:700; color:hsl(var(--primary)); cursor:pointer;
+  letter-spacing:.06em;
+}
+.app-header nav { display:flex; gap:4px; }
+.app-header nav button {
+  background:none; border:none; color:var(--text-secondary); font-size:13px;
+  padding:8px 16px; border-radius:20px; cursor:pointer; transition:var(--transition);
+}
+.app-header nav button:hover, .app-header nav button.active { color:hsl(var(--primary)); background:hsl(var(--primary) / .08); }
+
+/* ── Container ── */
+.container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:32px 24px 80px; }
+
+/* ── Page visibility ── */
+.page { display:none; animation: fadeIn .4s ease; }
+.page.active { display:block; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Home ── */
+.stats-row { display:flex; gap:16px; margin-bottom:40px; justify-content:center; flex-wrap:wrap; }
+.stat-card {
+  text-align:center; padding:24px 32px; border-radius:var(--radius);
+  background:var(--card-bg); border:1px solid var(--border);
+  min-width:140px; flex:1;
+}
+.stat-card .num { font-size:36px; font-weight:800; color:hsl(var(--primary)); }
+.stat-card .label { font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+.era-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+}
+.era-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:var(--radius); padding:24px; cursor:pointer;
+  transition:var(--transition); position:relative; overflow:hidden;
+}
+.era-card:hover {
+  background:var(--card-hover); transform:translateY(-4px);
+  box-shadow:var(--shadow-glow); border-color:hsl(var(--primary) / .4);
+}
+.era-card .era-bar { height:4px; border-radius:2px; margin-bottom:16px; }
+.era-card .era-name { font-size:18px; font-weight:700; }
+.era-card .era-period { font-size:12px; color:var(--text-muted); margin-top:4px; }
+.era-card .era-desc {
+  font-size:13px; color:var(--text-secondary); line-height:1.6; margin-top:10px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+
+/* ── Timeline Page ── */
+.timeline-controls {
+  display:flex; align-items:center; gap:16px; margin-bottom:24px;
+  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 24px;
+}
+.timeline-controls .year-display {
+  font-size:20px; font-weight:700; color:hsl(var(--primary)); min-width:140px; text-align:center;
+}
+input[type=range] {
+  -webkit-appearance:none; flex:1; height:6px; border-radius:3px;
+  background:linear-gradient(90deg, #8B7355, #A0826D, #B8956A, #C9A86A, #D4AF6A, #8B7355, #A0826D, #B8956A, #C9A86A, #D4AF6A, #8B7355, #A0826D, #B8956A, #C9A86A, #D4AF6A, #8B7355, #A0826D, #B8956A, #C9A86A);
+  outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:24px; height:24px; border-radius:50%;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(45 100% 65%));
+  box-shadow:0 0 24px hsl(var(--primary) / .5); cursor:pointer; border:2px solid #fff;
+}
+.timeline-nodes { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:32px; }
+.timeline-node {
+  padding:10px 18px; border-radius:24px; font-size:13px; font-weight:600;
+  background:var(--card-bg); border:1px solid var(--border);
+  color:var(--text-secondary); cursor:pointer; transition:var(--transition);
+}
+.timeline-node:hover { color:var(--text); border-color:hsl(var(--primary) / .3); }
+.timeline-node.active { background:hsl(var(--primary)); color:#1a1814; border-color:hsl(var(--primary)); box-shadow:0 0 24px hsl(var(--primary) / .4); }
+
+.timeline-preview {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px; margin-top:16px;
+}
+.timeline-preview h2 { font-size:24px; font-weight:800; color:hsl(var(--primary)); }
+.timeline-preview .tp-period { font-size:13px; color:var(--text-muted); margin:6px 0 12px; }
+.timeline-preview .tp-desc { font-size:14px; color:var(--text-secondary); line-height:1.8; }
+
+/* ── Detail Page ── */
+.detail-nav { display:flex; gap:12px; margin-bottom:24px; align-items:center; }
+.detail-nav button {
+  padding:8px 20px; border-radius:20px; font-size:13px; font-weight:600;
+  background:var(--card-bg); border:1px solid var(--border);
+  color:var(--text-secondary); cursor:pointer; transition:var(--transition);
+}
+.detail-nav button:hover { border-color:hsl(var(--primary)); color:hsl(var(--primary)); }
+.detail-nav .current-name { font-size:20px; font-weight:700; color:hsl(var(--primary)); margin:0 8px; }
+
+.detail-hero {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+  padding:32px; margin-bottom:24px;
+}
+.detail-hero h1 { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
+.detail-hero .dh-period {
+  font-size:13px; color:var(--text-muted); margin-top:4px;
+  padding:4px 14px; background:hsl(var(--primary) / .06); border-radius:20px;
+  display:inline-block; margin-bottom:16px;
+}
+.detail-hero .dh-desc { font-size:15px; color:var(--text-secondary); line-height:1.9; }
+
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+.detail-card {
+  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px;
+}
+.detail-card h3 {
+  font-size:15px; font-weight:700; margin-bottom:14px;
+  display:flex; align-items:center; gap:8px; color:hsl(var(--primary));
+}
+.detail-card h3::before { content:''; width:3px; height:14px; border-radius:2px; background:hsl(var(--primary)); flex-shrink:0; }
+
+.event-list { display:flex; flex-direction:column; gap:6px; }
+.event-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-radius:8px; background:hsl(var(--primary) / .03); font-size:13px; line-height:1.5; }
+.event-dot { width:6px; height:6px; border-radius:50%; background:hsl(var(--primary)); flex-shrink:0; margin-top:7px; }
+
+.tag-row { display:flex; flex-wrap:wrap; gap:8px; }
+.tag-item { padding:6px 14px; border-radius:20px; font-size:13px; font-weight:500; background:hsl(var(--primary) / .06); color:hsl(var(--primary)); border:1px solid hsl(var(--primary) / .12); }
+.invention-item { padding:12px 16px; border-radius:12px; background:hsl(var(--primary) / .03); font-size:13px; text-align:center; font-weight:500; }
+.invention-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+.tp-card { padding:14px 16px; border-radius:12px; background:hsl(var(--primary) / .03); border-left:3px solid hsl(var(--primary)); margin-bottom:8px; }
+.tp-card .tpc-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; }
+.tp-card .tpc-event { font-size:14px; font-weight:700; }
+.tp-card .tpc-desc { font-size:13px; color:var(--text-secondary); }
+.tp-card .tpc-sig { font-size:12px; color:var(--text-muted); font-style:italic; margin-top:2px; }
+
+/* ── Footer ── */
+.app-footer { text-align:center; padding:24px; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border); position:relative; z-index:1; }
+
+/* ── Responsive ── */
+@media (max-width:1024px) {
+  .era-grid { grid-template-columns:repeat(2,1fr); }
+  .detail-grid { grid-template-columns:1fr; }
+}
+@media (max-width:640px) {
+  .era-grid { grid-template-columns:1fr; }
+  .app-header { padding:0 12px; }
+  .container { padding:20px 12px 60px; }
+  .stats-row { gap:8px; }
+  .stat-card { padding:16px 20px; min-width:100px; }
+  .stat-card .num { font-size:28px; }
+  .timeline-controls { flex-direction:column; padding:16px; }
+  .detail-nav { flex-wrap:wrap; justify-content:center; }
+  .detail-hero { padding:20px; }
+  .detail-card { padding:16px; }
+  .invention-grid { grid-template-columns:1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="app-header">
+  <span class="logo" data-page="home">中国全历史</span>
+  <nav>
+    <button data-page="home" class="active">首页</button>
+    <button data-page="timeline">时间轴</button>
+  </nav>
+</header>
+
+<!-- ====== HOME PAGE ====== -->
+<div class="page active" id="page-home">
+  <div class="container">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">19</div><div class="label">历史时期</div></div>
+      <div class="stat-card"><div class="num">5000+</div><div class="label">年历史跨度</div></div>
+      <div class="stat-card"><div class="num">300+</div><div class="label">重大事件</div></div>
+      <div class="stat-card"><div class="num">160+</div><div class="label">著名人物</div></div>
+    </div>
+    <div class="era-grid" id="eraGrid"></div>
+  </div>
+</div>
+
+<!-- ====== TIMELINE PAGE ====== -->
+<div class="page" id="page-timeline">
+  <div class="container">
+    <div class="timeline-controls">
+      <span class="year-display" id="tlYear">公元2026年</span>
+      <input type="range" id="tlSlider" min="0" max="100" step="0.1" value="100">
+    </div>
+    <div class="timeline-nodes" id="tlNodes"></div>
+    <div class="timeline-preview" id="tlPreview"></div>
+  </div>
+</div>
+
+<!-- ====== DETAIL PAGE ====== -->
+<div class="page" id="page-detail">
+  <div class="container">
+    <div class="detail-nav">
+      <button id="detailPrev">← 上一个</button>
+      <button data-page="home" style="font-size:12px;">返回首页</button>
+      <span class="current-name" id="detailEraName"></span>
+      <button data-page="timeline" style="font-size:12px;">返回时间轴</button>
+      <button id="detailNext">下一个 →</button>
+    </div>
+    <div id="detailContent"></div>
+  </div>
+</div>
+
+<footer class="app-footer">中国全历史网 · 穿越五千年时光轴，纵览中国历史脉络</footer>
+
+<script>
+// ═══════════ DATA ═══════════
+const eras = [
+  { id:'ancient',name:'上古时期',period:'史前 — 约前2070年',start:-3000,end:-2070,
+    desc:'此时期是人类社会发展的初级阶段，也是中华文明的孕育期。北京猿人、蓝田人等古人类的发现，展示了中国早期人类的智慧与生存状态。随着石器工具的进步和火的使用，人类社会逐渐进入新石器时代，农业、畜牧业开始兴起，定居生活成为可能。',
+    events:['北京猿人生活（约70万年前）','仰韶文化兴起（约前5000年）','大汶口文化发展（约前4300年）','三皇五帝传说时期'],
+    figures:['黄帝','炎帝','尧','舜','禹'],
+    inventions:['石器工具','火的使用','彩陶制作','农业种植'],
+    turningPoints:[{y:'约前5000年',e:'仰韶文化兴起',d:'以彩陶为特色的新石器时代文化，分布在黄河中游地区',s:'标志着中国进入定居农业社会，文明曙光初现'}],
+    color:'#8B7355'
+  },
+  { id:'xia',name:'夏朝',period:'约前2070年 — 约前1600年',start:-2070,end:-1600,
+    desc:'夏朝是中国历史上第一个世袭制王朝，标志着中国由原始社会向奴隶制社会的过渡。大禹治水成功后建立夏朝，开创了"家天下"的政治格局。考古发现的二里头文化被认为与夏朝有关，出土了宫殿基址、青铜器等重要遗迹遗物。',
+    events:['大禹治水建立夏朝（约前2070年）','启继承王位，开创世袭制','太康失国，后羿夺权','少康中兴，恢复夏朝统治','桀暴政，夏朝灭亡（约前1600年）'],
+    figures:['大禹','启','太康','少康','桀'],
+    inventions:['世袭制度','历法雏形','青铜器初现','城市规划'],
+    turningPoints:[{y:'约前2070年',e:'夏朝建立',d:'大禹治水成功，受舜禅让建立中国历史上第一个王朝',s:'标志着中国进入王朝时代，原始社会结束'},{y:'约前1600年',e:'夏朝灭亡',d:'夏桀暴虐无道，商汤起兵灭夏',s:'暴政导致王朝更替，开启商朝时代'}],
+    color:'#8B7355'
+  },
+  { id:'shang',name:'商朝',period:'约前1600年 — 约前1046年',start:-1600,end:-1046,
+    desc:'商朝是中国历史上第二个王朝，以青铜器文明和甲骨文闻名于世。青铜冶炼技术达到了很高的水平，司母戊鼎是世界最大的青铜器。甲骨文的出现标志着中国文字的成熟。商朝实行神权政治，占卜活动频繁，为后世留下了大量珍贵的甲骨文资料。',
+    events:['商汤灭夏建立商朝（约前1600年）','盘庚迁殷（约前1300年）','武丁中兴，商朝鼎盛','妇好出征，中国最早女将军','帝辛（纣王）暴政','牧野之战，商朝灭亡（约前1046年）'],
+    figures:['商汤','伊尹','盘庚','武丁','妇好','纣王','比干'],
+    inventions:['甲骨文','青铜器','历法','占卜术'],
+    turningPoints:[{y:'约前1300年',e:'盘庚迁殷',d:'商王盘庚将都城迁至殷（今河南安阳），此后273年不再迁都',s:'商朝进入稳定发展期，殷墟成为重要考古遗址'},{y:'约前1046年',e:'商朝灭亡',d:'牧野之战商军阵前倒戈，纣王自焚于鹿台',s:'青铜文明达到顶峰后衰落，周朝建立'}],
+    color:'#A0826D'
+  },
+  { id:'zhou',name:'西周',period:'约前1046年 — 前771年',start:-1046,end:-771,
+    desc:'西周建立了完善的分封制和宗法制度，形成了"天子—诸侯—卿大夫—士"的等级体系。周公制礼作乐，确立了礼乐文化的基础。西周时期农业、手工业都有很大发展，青铜器铭文成为重要的历史资料。',
+    events:['武王伐纣建立周朝（约前1046年）','周公东征平定三监之乱','周公制礼作乐，确立宗法制','成康之治，四十余年不用刑罚','国人暴动（前841年），中国历史确切纪年之始','烽火戏诸侯，西周灭亡（前771年）'],
+    figures:['周武王','周公旦','姜子牙','周成王','周康王','周幽王'],
+    inventions:['分封制','宗法制','礼乐制度','井田制'],
+    turningPoints:[{y:'约前1046年',e:'西周建立',d:'周武王伐纣成功，建立周朝，定都镐京',s:'分封制和宗法制确立，礼乐文化形成'},{y:'前771年',e:'西周灭亡',d:'犬戎攻破镐京，周幽王被杀于骊山之下',s:'西周结束，平王东迁洛邑，进入春秋时期'}],
+    color:'#B8956A'
+  },
+  { id:'spring-autumn',name:'春秋时期',period:'前770年 — 前476年',start:-770,end:-476,
+    desc:'春秋时期是东周的前半期，周王室权威衰落，诸侯争霸成为主旋律。齐桓公、晋文公、楚庄王、吴王阖闾、越王勾践先后称霸。铁器开始使用，生产力提高，社会经济发展，思想文化空前活跃，出现了百家争鸣的萌芽。',
+    events:['平王东迁（前770年），东周开始','齐桓公称霸（前685—前643年），春秋第一霸主','晋文公称霸（前636—前628年），城濮之战','楚庄王问鼎中原（前613—前591年）','吴越争霸，勾践卧薪尝胆','孔子周游列国，创立儒家学派'],
+    figures:['齐桓公','管仲','晋文公','楚庄王','孔子','老子','孙武'],
+    inventions:['铁器','牛耕','私学兴起','诸子百家思想萌芽'],
+    turningPoints:[{y:'前770年',e:'平王东迁',d:'周平王在诸侯护卫下迁都洛邑，东周开始',s:'周王室权威衰落，诸侯争霸时代来临'},{y:'前551年',e:'孔子诞生',d:'儒家学派创始人孔子出生于鲁国陬邑',s:'儒家思想诞生，影响中国两千多年'}],
+    color:'#C9A86A'
+  },
+  { id:'warring-states',name:'战国时期',period:'前475年 — 前221年',start:-475,end:-221,
+    desc:'战国时期是中国历史上最为动荡的时期之一，七雄并立，战争频繁，但也催生了空前活跃的思想文化。各国纷纷变法图强，商鞅变法使秦国由弱变强。铁器广泛使用，农业生产力大幅提高，诸子百家思想达到鼎盛。',
+    events:['三家分晋（前403年），战国开端','商鞅变法（前356年），秦国崛起','长平之战（前260年），白起坑杀赵军四十万','荆轲刺秦王（前227年），图穷匕见','秦灭六国统一天下（前230—前221年）'],
+    figures:['商鞅','孟子','庄子','荀子','韩非子','墨子','屈原','白起','廉颇','赵括'],
+    inventions:['都江堰水利工程','郡县制雏形','兵法著作','诸子百家学说'],
+    turningPoints:[{y:'前356年',e:'商鞅变法',d:'秦孝公任用商鞅推行变法，废井田开阡陌',s:'秦国崛起，为统一六国奠定基础'},{y:'前260年',e:'长平之战',d:'秦将白起大败赵军，坑杀降卒四十万',s:'东方六国再无力独立抗衡秦国'}],
+    color:'#D4AF6A'
+  },
+  { id:'qin',name:'秦朝',period:'前221年 — 前207年',start:-221,end:-207,
+    desc:'秦朝是中国历史上第一个统一的中央集权制封建王朝，奠定了中国两千多年政治制度的基本格局。秦始皇统一六国后，推行郡县制，统一文字、货币、度量衡，修建万里长城和驰道。虽然仅存15年，但其制度创新影响极为深远。',
+    events:['秦始皇统一六国（前221年），自称"始皇帝"','统一文字、货币、度量衡','蒙恬北逐匈奴，修筑万里长城','焚书坑儒（前213—前212年）','秦始皇巡游途中病逝沙丘（前210年）','陈胜吴广起义（前209年）','刘邦项羽攻入咸阳，秦朝灭亡（前207年）'],
+    figures:['秦始皇','李斯','蒙恬','赵高','陈胜','吴广','项羽'],
+    inventions:['郡县制','统一文字（小篆）','统一货币（半两钱）','统一度量衡'],
+    turningPoints:[{y:'前221年',e:'秦朝建立',d:'秦王嬴政灭六国完成统一大业，自号始皇帝',s:'结束五百余年分裂，建立中国第一个大一统帝国'},{y:'前207年',e:'秦朝灭亡',d:'刘邦率先攻入咸阳，秦王子婴素车白马出降',s:'暴政导致第一个统一王朝仅存15年便速亡'}],
+    color:'#8B7355'
+  },
+  { id:'han',name:'汉朝',period:'前202年 — 公元220年',start:-202,end:220,
+    desc:'汉朝分为西汉和东汉两个时期，是中国历史上最强盛的王朝之一，与同时期的罗马帝国并列为世界两大帝国。汉武帝时期国力达到鼎盛，北击匈奴，开辟丝绸之路，独尊儒术。"汉族""汉字""汉语"等称谓皆由此而来。',
+    events:['刘邦建立汉朝（前202年），定都长安','文景之治（前180—前141年）','汉武帝独尊儒术（前134年）','张骞出使西域（前138年），开辟丝绸之路','司马迁完成《史记》（约前91年）','王莽篡汉建立新朝（公元8年）','光武中兴（公元25年），东汉建立','蔡伦改进造纸术（公元105年）','黄巾起义（公元184年），天下大乱'],
+    figures:['刘邦','汉武帝','张骞','司马迁','董仲舒','卫青','霍去病','王莽','光武帝','班超','蔡伦'],
+    inventions:['造纸术','地动仪','浑天仪','《史记》','丝绸之路','《汉书》'],
+    turningPoints:[{y:'前202年',e:'汉朝建立',d:'刘邦在垓下之战中击败项羽，于定陶称帝建立汉朝',s:'开创汉族文化，汉成为民族代称'},{y:'前134年',e:'独尊儒术',d:'汉武帝采纳董仲舒建议，罢黜百家独尊儒术',s:'儒家思想成为此后两千年中国社会的正统思想'},{y:'公元105年',e:'蔡伦改进造纸术',d:'蔡伦用树皮、麻头等原料造出轻便廉价的纸张',s:'造纸术成为中国古代四大发明之一'}],
+    color:'#A0826D'
+  },
+  { id:'three-kingdoms',name:'三国时期',period:'220年 — 280年',start:220,end:280,
+    desc:'三国时期是中国历史上的著名分裂时期，魏、蜀、吴三国鼎立。虽战争频繁，但也涌现出诸葛亮、曹操、关羽等一大批杰出的政治家、军事家和文学家。三国故事被后世演绎成《三国演义》，成为中国文学瑰宝。',
+    events:['曹丕称帝建立魏国（220年），东汉灭亡','刘备称帝建立蜀汉（221年）','孙权称帝建立吴国（229年）','诸葛亮六出祁山北伐（228—234年）','司马懿高平陵之变（249年）','邓艾偷渡阴平灭蜀汉（263年）','司马炎代魏建晋，三国归晋（280年）'],
+    figures:['曹操','刘备','孙权','诸葛亮','关羽','张飞','赵云','周瑜','司马懿','陆逊'],
+    inventions:['木牛流马','连弩','屯田制','《出师表》'],
+    turningPoints:[{y:'208年',e:'赤壁之战',d:'孙刘联军在赤壁以火攻大败曹操八十万大军',s:'奠定三国鼎立格局'},{y:'280年',e:'三国归晋',d:'晋武帝司马炎派王濬顺长江而下灭吴',s:'结束六十年分裂，中国重归统一'}],
+    color:'#B8956A'
+  },
+  { id:'jin',name:'两晋时期',period:'265年 — 420年',start:265,end:420,
+    desc:'两晋分为西晋和东晋。西晋短暂统一后，因八王之乱和永嘉之乱而迅速灭亡。东晋偏安江南，北方陷入五胡十六国的混乱。士族门阀势力极度强大，玄学盛行，王羲之的书法、陶渊明的诗歌均达到了艺术高峰。',
+    events:['司马炎建立西晋（265年），定都洛阳','八王之乱（291—306年），宗室自相残杀','永嘉之乱（311年），匈奴攻破洛阳','司马睿建立东晋（317年），"王与马共天下"','淝水之战（383年），以少胜多','刘裕代晋建宋（420年），东晋灭亡'],
+    figures:['司马炎','司马睿','王导','王羲之','陶渊明','顾恺之','谢安','刘裕'],
+    inventions:['行书与草书','山水诗','田园诗','玄学思想'],
+    turningPoints:[{y:'316年',e:'西晋灭亡',d:'匈奴首领刘曜攻破长安，俘虏晋愍帝',s:'北方陷入五胡十六国大混乱'},{y:'383年',e:'淝水之战',d:'谢安坐镇建康，谢石、谢玄在淝水大败苻坚',s:'保住了江南汉族政权'}],
+    color:'#C9A86A'
+  },
+  { id:'northern-southern',name:'南北朝时期',period:'420年 — 589年',start:420,end:589,
+    desc:'南北朝时期是中国历史上又一个大分裂时期。南方经历了宋、齐、梁、陈四个朝代，北方有北魏、东魏、西魏、北齐、北周。佛教广泛传播，石窟艺术达到鼎盛。北魏孝文帝的汉化改革促进了民族大融合。',
+    events:['刘裕建立宋朝（420年），南朝开始','北魏统一北方（439年）','北魏孝文帝迁都洛阳推行汉化改革（494年）','梁武帝萧衍即位（502年）','侯景之乱（548年）','北周武帝灭北齐统一北方（577年）','杨坚代周建隋（581年），后灭陈统一全国（589年）'],
+    figures:['刘裕','北魏孝文帝','梁武帝萧衍','陈霸先','祖冲之','郦道元','贾思勰'],
+    inventions:['均田制','三长制','石窟艺术','《水经注》','《齐民要术》'],
+    turningPoints:[{y:'494年',e:'孝文帝改革',d:'北魏孝文帝迁都洛阳，禁胡服胡语，改鲜卑姓为汉姓',s:'极大促进了民族大融合'},{y:'589年',e:'隋朝统一',d:'隋文帝杨坚派杨广率大军南下灭陈',s:'结束自东汉以来近四百年分裂局面'}],
+    color:'#D4AF6A'
+  },
+  { id:'sui',name:'隋朝',period:'581年 — 618年',start:581,end:618,
+    desc:'隋朝虽然国祚短暂仅37年，但它结束了近三百年的分裂局面，重新统一了中国。隋文帝开创了科举制度，隋炀帝修建了贯通南北的大运河。科举制打破了门阀士族对政治权力的垄断，大运河则成为此后千年中国经济的大动脉。',
+    events:['杨坚建立隋朝（581年），定都大兴','隋灭南陈统一全国（589年）','开创科举制度（587年），设进士科取士','开凿大运河（605—610年）','完善三省六部制','三征高句丽（612—614年）均以失败告终','隋炀帝在江都被宇文化及缢杀（618年）'],
+    figures:['隋文帝杨坚','隋炀帝杨广','独孤皇后','宇文化及'],
+    inventions:['科举制度','大运河','赵州桥','三省六部制'],
+    turningPoints:[{y:'605年',e:'开创科举制',d:'隋炀帝正式设立进士科，以考试选拔人才',s:'打破门阀垄断，影响中国一千三百年'},{y:'605—610年',e:'修建大运河',d:'以洛阳为中心，南起余杭北至涿郡，全长两千余公里',s:'促进南北经济文化交流'}],
+    color:'#8B7355'
+  },
+  { id:'tang',name:'唐朝',period:'618年 — 907年',start:618,end:907,
+    desc:'唐朝是中国历史上最强盛的王朝之一，国力强盛、文化繁荣、对外开放，是当时世界上最强大的国家。贞观之治和开元盛世是中国封建社会的巅峰时期。李白、杜甫等诗人的作品至今广为传诵，对东亚文化圈影响深远。',
+    events:['李渊称帝建唐（618年），定都长安','玄武门之变（626年）','贞观之治（627—649年）','玄奘西行取经（629—645年）','武则天称帝改国号为周（690年）','开元盛世（713—741年）','安史之乱（755—763年）','黄巢起义（875—884年）','朱温篡唐（907年）'],
+    figures:['李世民','武则天','李白','杜甫','白居易','玄奘','鉴真','狄仁杰','颜真卿','韩愈'],
+    inventions:['雕版印刷术','火药','唐诗','飞钱（早期汇票）'],
+    turningPoints:[{y:'627—649年',e:'贞观之治',d:'唐太宗虚心纳谏，任用魏征、房玄龄等贤臣',s:'政治清明，经济繁荣，文化昌盛'},{y:'755年',e:'安史之乱',d:'安禄山以讨伐杨国忠为名起兵叛乱',s:'唐朝由盛转衰的转折点，藩镇割据持续150余年'}],
+    color:'#A0826D'
+  },
+  { id:'five-dynasties',name:'五代十国时期',period:'907年 — 960年',start:907,end:960,
+    desc:'五代十国是唐朝灭亡后中国再次陷入的分裂时期。北方中原先后经历了后梁、后唐、后晋、后汉、后周五个朝代，南方则有十个割据政权。后周世宗柴荣的改革为宋朝统一奠定了坚实基础。',
+    events:['朱温灭唐建立后梁（907年）','李存勖灭后梁建立后唐（923年）','石敬瑭建立后晋，割让燕云十六州（936年）','郭威建立后周（951年）','柴荣即位推行改革（954年）','赵匡胤陈桥兵变黄袍加身（960年）'],
+    figures:['朱温','李存勖','石敬瑭','郭威','柴荣','赵匡胤','李煜'],
+    inventions:['火药武器实战应用','活字印刷技术萌芽','词的发展成熟'],
+    turningPoints:[{y:'936年',e:'割让燕云十六州',d:'石敬瑭为换取契丹支持割让燕云十六州',s:'中原王朝失去北方天然屏障'},{y:'960年',e:'宋朝建立',d:'赵匡胤发动陈桥兵变被拥立为帝',s:'结束五代十国分裂，中国再次走向统一'}],
+    color:'#B8956A'
+  },
+  { id:'song',name:'宋朝',period:'960年 — 1279年',start:960,end:1279,
+    desc:'宋朝分为北宋和南宋两个阶段，是中国历史上经济、文化、科技最发达的朝代之一。北宋都城汴京是当时世界上最大的城市。经济极度繁荣，出现了纸币"交子"。指南针、火药、活字印刷术都在宋朝得到重大发展。',
+    events:['赵匡胤建立宋朝（960年），定都汴京','杯酒释兵权（961年）','王安石变法（1069年）','毕昇发明活字印刷术（约1040年）','靖康之变（1127年），北宋灭亡','岳飞郾城大捷（1140年）','岳飞冤狱（1141年）','文天祥抗元，南宋灭亡（1279年）'],
+    figures:['赵匡胤','王安石','苏轼','岳飞','文天祥','朱熹','沈括','辛弃疾','李清照'],
+    inventions:['活字印刷术','指南针','火药武器','纸币（交子）','《梦溪笔谈》'],
+    turningPoints:[{y:'1044年',e:'火药配方正式记载',d:'曾公亮《武经总要》首次记载火药三种配方',s:'火药开始用于军事领域'},{y:'1127年',e:'靖康之变',d:'金兵攻破汴京，俘虏徽钦二帝北去',s:'北宋灭亡，宋室南迁临安'}],
+    color:'#C9A86A'
+  },
+  { id:'yuan',name:'元朝',period:'1271年 — 1368年',start:1271,end:1368,
+    desc:'元朝是由蒙古族建立的中国历史上疆域最辽阔的统一王朝，版图横跨欧亚大陆。元朝定都大都（今北京），首次将西藏、云南等地正式纳入中国版图。中外交流空前活跃，马可·波罗等西方旅行家来到中国。',
+    events:['铁木真统一蒙古，称成吉思汗（1206年）','忽必烈改国号为"大元"（1271年）','元军灭南宋统一全国（1279年）','马可·波罗来华（1275年）','行省制度确立','红巾军起义爆发（1351年）','朱元璋北伐攻克大都（1368年）'],
+    figures:['忽必烈','成吉思汗','郭守敬','关汉卿','马致远','马可·波罗'],
+    inventions:['《授时历》','元曲','行省制度','回回炮'],
+    turningPoints:[{y:'1279年',e:'元朝统一全国',d:'元军在崖山海战中击败南宋残部',s:'中国历史上首次由少数民族完成全国统一'},{y:'1368年',e:'元朝灭亡',d:'明军攻克大都，元顺帝北逃',s:'蒙古势力退回草原'}],
+    color:'#D4AF6A'
+  },
+  { id:'ming',name:'明朝',period:'1368年 — 1644年',start:1368,end:1644,
+    desc:'明朝是中国历史上最后一个由汉族建立的大一统王朝。明初国力强盛，郑和七下西洋展示了强大的海上实力。永乐年间编纂的《永乐大典》是当时世界上最大的百科全书。但后期宦官专权、党争激烈，最终被农民起义推翻。',
+    events:['朱元璋称帝建明（1368年）','靖难之役（1399—1402年）','永乐迁都北京（1421年）','郑和七下西洋（1405—1433年）','土木堡之变（1449年）','张居正改革（1572—1582年）','戚继光抗倭','李自成攻破北京（1644年）'],
+    figures:['朱元璋','朱棣','郑和','王阳明','张居正','戚继光','李时珍','海瑞','徐光启'],
+    inventions:['《永乐大典》','《本草纲目》','《天工开物》','紫禁城','青花瓷'],
+    turningPoints:[{y:'1405—1433年',e:'郑和下西洋',d:'郑和率庞大船队七次远航，访问30多个国家',s:'展示明朝海上实力'},{y:'1644年',e:'明朝灭亡',d:'李自成攻入北京，崇祯帝煤山自缢',s:'最后一个汉族大一统王朝结束'}],
+    color:'#8B7355'
+  },
+  { id:'qing',name:'清朝',period:'1636年 — 1912年',start:1636,end:1912,
+    desc:'清朝是中国历史上最后一个封建王朝，由满族建立。康雍乾三朝国力鼎盛，疆域超1300万平方公里，人口突破三亿。但中后期闭关锁国，与工业革命失之交臂，在西方列强侵略下逐渐沦为半殖民地。辛亥革命推翻帝制，终结了封建君主专制。',
+    events:['努尔哈赤建立后金（1616年）','清军入关（1644年）','康熙擒鳌拜、平三藩、收台湾','康乾盛世（1661—1795年）','鸦片战争（1840年）','太平天国运动（1851—1864年）','洋务运动（1861—1894年）','甲午中日战争（1894年）','戊戌变法（1898年）','辛亥革命（1911年）'],
+    figures:['康熙','雍正','乾隆','林则徐','曾国藩','李鸿章','左宗棠','慈禧太后','孙中山','康有为'],
+    inventions:['《四库全书》','《红楼梦》','京剧','圆明园'],
+    turningPoints:[{y:'1840年',e:'鸦片战争',d:'英国发动侵华战争，清朝战败签订《南京条约》',s:'中国开始沦为半殖民地半封建社会'},{y:'1911年',e:'辛亥革命',d:'武昌起义爆发，各省纷纷响应',s:'结束两千余年封建帝制'}],
+    color:'#A0826D'
+  },
+  { id:'modern',name:'近现代时期',period:'1912年 — 至今',start:1912,end:2026,
+    desc:'辛亥革命推翻帝制后，中国经历了北洋政府、国民政府、抗日战争、解放战争等重大阶段。1949年中华人民共和国成立。1978年改革开放后，中国经济持续高速发展，已成为世界第二大经济体。今天的中国，正在实现民族复兴的道路上坚定前行。',
+    events:['中华民国成立（1912年）','五四运动（1919年）','中国共产党成立（1921年）','抗日战争全面爆发（1937年）','中华人民共和国成立（1949年）','抗美援朝（1950—1953年）','改革开放（1978年）','香港回归（1997年）','北京奥运会（2008年）','全面建成小康社会（2020年）'],
+    figures:['孙中山','毛泽东','周恩来','邓小平','鲁迅','钱学森','袁隆平','邓稼先'],
+    inventions:['两弹一星','杂交水稻','高铁技术','5G通信','载人航天'],
+    turningPoints:[{y:'1949年',e:'新中国成立',d:'毛泽东在天安门城楼宣告中华人民共和国成立',s:'中国人民从此站起来了'},{y:'1978年',e:'改革开放',d:'中共十一届三中全会决定工作重心转向经济建设',s:'中国开始了规模最大的经济腾飞'}],
+    color:'#C9A86A'
+  }
+];
+
+// ═══════════ APP LOGIC ═══════════
+let currentPage = 'home';
+let timelineEraIdx = 7; // default to 秦朝
+let detailEraIdx = 0;
+
+function navigate(page, eraIdx) {
+  currentPage = page;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === page);
+  });
+  if (page === 'home') renderHome();
+  if (page === 'timeline') renderTimeline();
+  if (page === 'detail' && eraIdx !== undefined) {
+    detailEraIdx = eraIdx;
+    renderDetail();
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ── Home ──
+function renderHome() {
+  document.getElementById('eraGrid').innerHTML = eras.map((e,i) => `
+    <div class="era-card" onclick="navigate('detail',${i})">
+      <div class="era-bar" style="background:${e.color};"></div>
+      <div class="era-name">${e.name}</div>
+      <div class="era-period">${e.period}</div>
+      <div class="era-desc">${e.desc}</div>
+    </div>
+  `).join('');
+}
+
+// ── Timeline ──
+function renderTimeline() {
+  // Nodes
+  document.getElementById('tlNodes').innerHTML = eras.map((e,i) => `
+    <span class="timeline-node ${i === timelineEraIdx ? 'active' : ''}"
+          onclick="selectTimelineEra(${i})">${e.name}</span>
+  `).join('');
+
+  // Slider
+  const era = eras[timelineEraIdx];
+  const midYear = Math.round((era.start + era.end) / 2);
+  const pct = yearToPct(midYear);
+  document.getElementById('tlSlider').value = pct;
+  updateTimelinePreview();
+}
+
+function yearToPct(y) {
+  const min = -3000, max = 2026;
+  return ((y - min) / (max - min)) * 100;
+}
+function pctToYear(p) {
+  const min = -3000, max = 2026;
+  return Math.round(min + (p / 100) * (max - min));
+}
+function fmtYear(y) { return y < 0 ? '公元前'+Math.abs(y)+'年' : '公元'+y+'年'; }
+
+function updateTimelinePreview() {
+  const pct = parseFloat(document.getElementById('tlSlider').value);
+  const year = pctToYear(pct);
+  document.getElementById('tlYear').textContent = fmtYear(year);
+
+  // Find matching era
+  let idx = eras.length - 1;
+  for (let i = eras.length - 1; i >= 0; i--) {
+    if (year >= eras[i].start && year <= eras[i].end) { idx = i; break; }
+  }
+  if (idx !== timelineEraIdx) {
+    timelineEraIdx = idx;
+    document.getElementById('tlNodes').querySelectorAll('.timeline-node').forEach((n,i) => {
+      n.classList.toggle('active', i === idx);
+    });
+  }
+
+  const e = eras[idx];
+  document.getElementById('tlPreview').innerHTML = `
+    <h2>${e.name}</h2>
+    <div class="tp-period">${e.period}</div>
+    <p class="tp-desc">${e.desc}</p>
+  `;
+}
+
+function selectTimelineEra(idx) {
+  timelineEraIdx = idx;
+  const midYear = Math.round((eras[idx].start + eras[idx].end) / 2);
+  document.getElementById('tlSlider').value = yearToPct(midYear);
+  updateTimelinePreview();
+  document.getElementById('tlNodes').querySelectorAll('.timeline-node').forEach((n,i) => {
+    n.classList.toggle('active', i === idx);
+  });
+}
+
+// ── Detail ──
+function renderDetail() {
+  const e = eras[detailEraIdx];
+  document.getElementById('detailEraName').textContent = e.name;
+
+  const tp = e.turningPoints || [];
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-hero">
+      <h1>${e.name}</h1>
+      <span class="dh-period">${e.period}</span>
+      <p class="dh-desc">${e.desc}</p>
+    </div>
+    <div class="detail-grid">
+      <div class="detail-card">
+        <h3>重大事件</h3>
+        <div class="event-list">
+          ${e.events.map(ev => `<div class="event-item"><span class="event-dot"></span><span>${ev}</span></div>`).join('')}
+        </div>
+      </div>
+      <div class="detail-card">
+        <h3>著名人物</h3>
+        <div class="tag-row">
+          ${e.figures.map(f => `<span class="tag-item">${f}</span>`).join('')}
+        </div>
+        <h3 style="margin-top:24px;">重要成就</h3>
+        <div class="invention-grid">
+          ${e.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
+        </div>
+      </div>
+      ${tp.length > 0 ? `
+      <div class="detail-card" style="grid-column:1/-1;">
+        <h3>历史转折点</h3>
+        ${tp.map(t => `
+          <div class="tp-card">
+            <div class="tpc-year">${t.y}</div>
+            <div class="tpc-event">${t.e}</div>
+            <div class="tpc-desc">${t.d}</div>
+            <div class="tpc-sig">${t.s}</div>
+          </div>
+        `).join('')}
+      </div>
+      ` : ''}
+    </div>
+  `;
+
+  document.getElementById('detailPrev').style.visibility = detailEraIdx > 0 ? 'visible' : 'hidden';
+  document.getElementById('detailNext').style.visibility = detailEraIdx < eras.length - 1 ? 'visible' : 'hidden';
+}
+
+// ── Event Bindings ──
+document.querySelectorAll('[data-page]').forEach(el => {
+  el.addEventListener('click', function() {
+    navigate(this.dataset.page);
+  });
+});
+
+document.getElementById('detailPrev').addEventListener('click', () => {
+  if (detailEraIdx > 0) { detailEraIdx--; renderDetail(); window.scrollTo({ top:0, behavior:'smooth' }); }
+});
+document.getElementById('detailNext').addEventListener('click', () => {
+  if (detailEraIdx < eras.length - 1) { detailEraIdx++; renderDetail(); window.scrollTo({ top:0, behavior:'smooth' }); }
+});
+
+document.getElementById('tlSlider').addEventListener('input', updateTimelinePreview);
+
+// Click timeline preview to go to detail
+document.getElementById('tlPreview').addEventListener('click', function() {
+  navigate('detail', timelineEraIdx);
+});
+
+// ── Init ──
+renderHome();
+</script>
+</body></html>
