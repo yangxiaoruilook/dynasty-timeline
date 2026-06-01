@@ -181,7 +181,7 @@ header .subtitle {
   margin-bottom:4px;
 }
 .timeline-card input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:22px; height:14px; border-radius:7px;
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
   box-shadow:0 0 12px hsl(var(--primary) / .5); cursor:pointer;
   border:2px solid #1c1915;
@@ -194,12 +194,12 @@ header .subtitle {
   padding:8px; z-index:1; overflow:hidden;
 }
 .era-bar {
-  position:absolute; height:14px; border-radius:3px; cursor:pointer;
+  position:absolute; height:14px; border-radius:7px; cursor:pointer;
   top:50%; transform:translateY(-50%);
   transition:all .2s ease; opacity:.8;
 }
-.era-bar:hover { height:20px; opacity:1; box-shadow:0 0 12px currentColor; }
-.era-bar.active { height:20px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
+.era-bar:hover { height:20px; border-radius:10px; opacity:1; box-shadow:0 0 12px currentColor; }
+.era-bar.active { height:20px; border-radius:10px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
 
 /* ── Era Pills ── */
 .era-pills {
