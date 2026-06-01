@@ -81,7 +81,7 @@ body {
 
 /* ── Header ── */
 header {
-  position:sticky; top:0; z-index:100;
+  position:relative; z-index:100;
   background:linear-gradient(180deg, hsl(var(--background)), hsl(var(--card)));
   border-bottom:1px solid hsl(var(--border) / 0.5);
   box-shadow:var(--shadow-elegant);
@@ -134,7 +134,7 @@ header .subtitle {
   background:hsl(var(--card) / 0.95); border:1px solid hsl(var(--border));
   border-radius:var(--radius); box-shadow:var(--shadow-card), 0 0 0 1px hsl(var(--primary) / 0.15), 0 0 20px hsl(var(--primary) / 0.1);
   padding:24px; margin-bottom:24px;
-  transition:var(--transition-smooth); position:relative; overflow:hidden;
+  transition:var(--transition-smooth); position:relative;  
 }
 .timeline-card::before {
   content:''; position:absolute; inset:0;
@@ -188,7 +188,7 @@ header .subtitle {
 
 /* ── Slider ── */
 input[type=range] {
-  -webkit-appearance:none; width:100%; height:6px;
+  -webkit-appearance:none; width:100%; height:12px; padding:0 2px;
   border-radius:3px;
   background:linear-gradient(90deg,
     hsl(38 45% 38%), hsl(40 55% 45%), hsl(42 60% 48%), hsl(43 65% 50%),
@@ -215,7 +215,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .era-bars {
   position:relative; height:32px; margin:8px 0 14px; border-radius:8px;
   background:hsl(var(--muted) / 0.25);
-  padding:6px; position:relative; z-index:1; overflow:hidden;
+  padding:6px; position:relative; z-index:1;  
 }
 .era-bar {
   position:absolute; height:10px; border-radius:5px; cursor:pointer;
@@ -251,21 +251,10 @@ input[type=range]::-webkit-slider-thumb:hover {
 @media (min-width:1280px) {
   .main-grid {
     grid-template-columns:1fr 1fr;
-    height:calc(100vh - 340px);
   }
 }
 .col { display:flex; flex-direction:column; gap:24px; }
-.right-col { min-height:0; }
-.right-col > .card {
-  flex:1; display:flex; flex-direction:column; min-height:0;
-}
-.right-card-scroll {
-  flex:1; overflow-y:auto; overflow-x:hidden; min-height:0;
-  scrollbar-width:thin; scrollbar-color:hsl(var(--border)) transparent;
-}
-.right-card-scroll::-webkit-scrollbar { width:4px; }
-.right-card-scroll::-webkit-scrollbar-track { background:transparent; }
-.right-card-scroll::-webkit-scrollbar-thumb { background:hsl(var(--border)); border-radius:2px; }
+
 
 /* ── Tabs ── */
 .content-tabs {
@@ -347,7 +336,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .invention-item.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
 .tp-card.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
 .event-dot {
-  flex-shrink:0; width:6px; height:6px; border-radius:50%;
+  flex-shrink:0; width:6px; height:12px; padding:0 2px; border-radius:50%;
   background:hsl(var(--primary)); box-shadow:0 0 8px hsl(var(--primary) / 0.5);
   margin-top:7px;
 }
@@ -404,7 +393,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 .detail-panel::before {
   content:''; display:block; height:3px;
   background:linear-gradient(90deg, transparent, hsl(var(--primary) / .5), hsl(var(--primary)), hsl(var(--primary) / .5), transparent);
-  border-radius:16px 16px 0 0; position:sticky; top:0; z-index:2;
+  border-radius:16px 16px 0 0; position:relative; z-index:2;
 }
 .detail-panel-inner { padding:24px 28px 28px; }
 .detail-panel h3 {
@@ -526,7 +515,6 @@ footer {
   .detail-panel { max-width:94vw; } .detail-panel-inner { padding:20px 16px; }
   .timeline-card { padding:16px; }
   .timeline-header { flex-direction:column; gap:12px; align-items:flex-start; }
-  .right-card-scroll { max-height:55vh; }
 }
 </style>
 </head>
@@ -1178,7 +1166,7 @@ function renderContent() {
       </div>
     </div>
 
-    <div class="col right-col" style="animation:slideInRight .5s ease-out;">
+    <div class="col" style="animation:slideInRight .5s ease-out;">
       <div class="card">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:12px;">
@@ -1200,7 +1188,6 @@ function renderContent() {
           <button class="content-tab" data-tab="turning" data-group="right">转折点</button>
         </div>
 
-        <div class="right-card-scroll">
         <div id="tabRightEvents" class="tab-panel" data-group="right">
           <div class="event-list">
             ${era.events.map((ev,i) => `
@@ -1230,7 +1217,6 @@ function renderContent() {
               <div class="tp-sig">${t.s}</div>
             </div>
           `).join('') : '<p style="color:hsl(var(--muted-foreground));font-size:13px;">暂无数据</p>'}
-        </div>
         </div>
       </div>
     </div>
