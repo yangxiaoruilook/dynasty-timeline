@@ -394,9 +394,6 @@ header .subtitle {
       <div class="era-preview" id="tlPreview"></div>
     </div>
 
-    <!-- Era Cards -->
-    <div class="era-grid" id="eraGrid"></div>
-
     <!-- Inline Content -->
     <div class="main-content" id="mainContent"></div>
   </div>
@@ -727,16 +724,6 @@ function renderMain() {
   buildEraPills();
   updateEraPreview();
   renderInlineContent();
-
-  // Era cards
-  document.getElementById('eraGrid').innerHTML = eras.map((e,i) => `
-    <div class="era-card" onclick="selectTimelineEra(${i});window.scrollTo({top:document.getElementById('mainContent').offsetTop-80,behavior:'smooth'});">
-      <div class="era-bar" style="background:${e.color};"></div>
-      <div class="era-name">${e.name}</div>
-      <div class="era-period">${e.period}</div>
-      <div class="era-desc">${e.desc}</div>
-    </div>
-  `).join('');
 }
 
 // ── Detail ──
