@@ -168,9 +168,9 @@ header .subtitle {
 
 /* ── Era info preview ── */
 .era-preview {
-  padding:20px; border-radius:12px;
-  background:linear-gradient(135deg, hsl(var(--muted) / 0.5), hsl(var(--muted) / 0.3));
-  border:2px solid hsl(var(--primary) / 0.2); margin-bottom:16px;
+  padding:16px 20px; border-radius:10px; margin-bottom:12px;
+  background:hsl(var(--muted) / 0.3);
+  border:1px solid hsl(var(--primary) / 0.15);
   position:relative; z-index:1;
 }
 .era-preview h4 {
@@ -180,62 +180,68 @@ header .subtitle {
   margin-bottom:4px;
 }
 .era-preview .era-preview-period {
-  font-size:14px; color:hsl(var(--muted-foreground)); font-weight:500;
-  padding:4px 12px; border-radius:9999px; background:hsl(var(--background) / 0.5);
+  font-size:12px; color:hsl(var(--muted-foreground)); font-weight:500;
+  padding:3px 10px; border-radius:9999px; background:hsl(var(--background) / 0.5);
   display:inline-block; margin-bottom:8px;
 }
-.era-preview p { font-size:14px; color:hsl(var(--muted-foreground)); line-height:1.6; }
+.era-preview p { font-size:13px; color:hsl(var(--muted-foreground)); line-height:1.6; }
 
 /* ── Slider ── */
 input[type=range] {
-  -webkit-appearance:none; width:100%; height:4px;
-  border-radius:2px;
+  -webkit-appearance:none; width:100%; height:6px;
+  border-radius:3px;
   background:linear-gradient(90deg,
-    hsl(35 50% 40%), hsl(35 55% 45%), hsl(38 60% 48%), hsl(40 65% 50%),
-    hsl(42 70% 50%), hsl(44 80% 52%), hsl(45 85% 54%), hsl(45 90% 55%),
-    hsl(44 80% 52%), hsl(42 70% 50%), hsl(40 65% 50%), hsl(38 60% 48%),
-    hsl(35 55% 45%), hsl(35 50% 40%), hsl(38 55% 46%), hsl(40 65% 50%),
-    hsl(42 75% 52%), hsl(44 85% 54%), hsl(45 90% 55%)
+    hsl(38 45% 38%), hsl(40 55% 45%), hsl(42 60% 48%), hsl(43 65% 50%),
+    hsl(44 75% 52%), hsl(45 85% 54%), hsl(45 90% 55%), hsl(45 92% 57%),
+    hsl(45 90% 55%), hsl(44 80% 52%), hsl(43 70% 50%), hsl(42 60% 48%),
+    hsl(40 50% 44%), hsl(38 45% 38%), hsl(40 52% 44%), hsl(42 62% 48%),
+    hsl(43 72% 50%), hsl(44 82% 53%), hsl(45 90% 55%)
   );
   outline:none; cursor:pointer; position:relative; z-index:1;
+  margin:4px 0;
 }
 input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
+  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 12px hsl(var(--primary) / 0.5); cursor:pointer;
+  box-shadow:0 0 16px hsl(var(--primary) / 0.5), 0 0 0 4px hsl(var(--background) / 0.6); cursor:pointer;
   border:2px solid hsl(var(--primary-foreground));
+  transition:transform 0.15s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  transform:scale(1.15);
 }
 
 /* ── Era Bars ── */
 .era-bars {
-  position:relative; height:40px; margin:12px 0; border-radius:8px;
-  background:linear-gradient(90deg, hsl(var(--background)), hsl(var(--muted) / 0.2), hsl(var(--background)));
-  padding:8px; position:relative; z-index:1; overflow:hidden;
+  position:relative; height:32px; margin:8px 0 14px; border-radius:8px;
+  background:hsl(var(--muted) / 0.25);
+  padding:6px; position:relative; z-index:1; overflow:hidden;
 }
 .era-bar {
-  position:absolute; height:14px; border-radius:7px; cursor:pointer;
+  position:absolute; height:10px; border-radius:5px; cursor:pointer;
   top:50%; transform:translateY(-50%);
-  transition:all 0.2s ease; opacity:.85;
+  transition:all 0.2s ease; opacity:.82;
+  min-width:3px;
 }
-.era-bar:hover { height:20px; border-radius:10px; opacity:1; box-shadow:0 0 12px currentColor; }
-.era-bar.active { height:20px; border-radius:10px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
+.era-bar:hover { height:16px; border-radius:8px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
+.era-bar.active { height:16px; border-radius:8px; opacity:1; box-shadow:0 0 18px currentColor; z-index:2; }
 
 /* ── Era Pills ── */
 .era-pills {
-  display:flex; flex-wrap:wrap; gap:8px; position:relative; z-index:1;
+  display:flex; flex-wrap:wrap; gap:6px; position:relative; z-index:1;
 }
 .era-pill {
-  padding:8px 16px; border-radius:9999px; font-size:12px; font-weight:600;
-  cursor:pointer; border:1px solid hsl(var(--border));
-  background:hsl(var(--muted) / 0.5); color:hsl(var(--muted-foreground));
-  transition:all 0.25s ease; white-space:nowrap;
+  padding:6px 14px; border-radius:9999px; font-size:11px; font-weight:600;
+  cursor:pointer; border:1px solid hsl(var(--border) / 0.6);
+  background:hsl(var(--muted) / 0.4); color:hsl(var(--muted-foreground));
+  transition:all 0.25s ease; white-space:nowrap; letter-spacing:.02em;
 }
-.era-pill:hover { background:hsl(var(--muted)); color:hsl(var(--foreground)); }
+.era-pill:hover { background:hsl(var(--muted)); color:hsl(var(--foreground)); border-color:hsl(var(--primary) / 0.3); }
 .era-pill.active {
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
   color:hsl(var(--primary-foreground)); border-color:transparent;
   box-shadow:0 0 20px hsl(var(--primary) / 0.5);
-  transform:scale(1.05);
+  transform:scale(1.06);
 }
 
 /* ── Content Grid ── */
