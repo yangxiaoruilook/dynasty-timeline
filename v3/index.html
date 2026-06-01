@@ -247,11 +247,22 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* ── Content Grid ── */
 .main-grid {
   display:grid; grid-template-columns:1fr; gap:24px;
+  align-items:stretch;
 }
 @media (min-width:1280px) {
   .main-grid { grid-template-columns:1fr 1fr; }
 }
-.col { display:flex; flex-direction:column; gap:24px; }
+.col { display:flex; flex-direction:column; gap:24px; min-height:0; }
+.col > .card {
+  flex:1; display:flex; flex-direction:column; min-height:0;
+}
+.right-card-scroll {
+  flex:1; overflow-y:auto; min-height:0;
+  scrollbar-width:thin; scrollbar-color:hsl(var(--border)) transparent;
+}
+.right-card-scroll::-webkit-scrollbar { width:4px; }
+.right-card-scroll::-webkit-scrollbar-track { background:transparent; }
+.right-card-scroll::-webkit-scrollbar-thumb { background:hsl(var(--border)); border-radius:2px; }
 
 /* ── Tabs ── */
 .content-tabs {
@@ -511,6 +522,8 @@ footer {
   .detail-panel { max-width:94vw; } .detail-panel-inner { padding:20px 16px; }
   .timeline-card { padding:16px; }
   .timeline-header { flex-direction:column; gap:12px; align-items:flex-start; }
+  .right-card-scroll { max-height:60vh; }
+  .col > .card { flex:0 0 auto; }
 }
 </style>
 </head>
@@ -1184,6 +1197,7 @@ function renderContent() {
           <button class="content-tab" data-tab="turning" data-group="right">转折点</button>
         </div>
 
+        <div class="right-card-scroll">
         <div id="tabRightEvents" class="tab-panel" data-group="right">
           <div class="event-list">
             ${era.events.map((ev,i) => `
@@ -1213,6 +1227,7 @@ function renderContent() {
               <div class="tp-sig">${t.s}</div>
             </div>
           `).join('') : '<p style="color:hsl(var(--muted-foreground));font-size:13px;">暂无数据</p>'}
+        </div>
         </div>
       </div>
     </div>
