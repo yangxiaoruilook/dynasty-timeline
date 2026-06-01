@@ -239,46 +239,51 @@ header .subtitle {
 
 /* ── Inline Content ── */
 .main-content {
-  display:none; margin-top:32px;
+  display:none; margin-top:24px;
   animation: fadeIn .4s ease;
 }
 .main-content.visible { display:block; }
 
-.content-hero {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:32px; margin-bottom:24px;
-  position:relative; overflow:hidden;
+.content-grid {
+  display:grid; grid-template-columns:1fr 1fr; gap:24px;
 }
-.content-hero::before {
-  content:''; position:absolute; inset:0;
-  background:linear-gradient(135deg, hsl(var(--primary) / .04) 0%, transparent 50%);
-  pointer-events:none;
+.content-col {
+  display:flex; flex-direction:column; gap:24px;
 }
-.content-hero h1 { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
-.content-hero .ch-period {
-  font-size:13px; color:var(--text-muted); margin-top:4px;
-  padding:4px 14px; background:hsl(var(--primary) / .06); border-radius:20px;
-  display:inline-block; margin-bottom:16px;
-}
-.content-hero .ch-desc { font-size:15px; color:var(--text-secondary); line-height:1.9; }
-
-.content-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
 .content-card {
-  background:var(--card-bg); border:1px solid var(--border); border-radius:var(--radius);
-  padding:24px;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:var(--radius); padding:24px 28px;
+  box-shadow:var(--shadow-card);
+}
+.content-card .card-label {
+  display:inline-block; font-size:12px; color:hsl(var(--primary));
+  background:hsl(var(--primary) / .08); padding:4px 14px;
+  border-radius:9999px; margin-bottom:12px; font-weight:600; letter-spacing:.04em;
+}
+.content-card h2 {
+  font-size:22px; font-weight:800; margin-bottom:4px;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.content-card .card-desc {
+  font-size:14px; line-height:1.9; color:hsl(var(--muted-foreground));
+  margin-top:12px;
 }
 .content-card h3 {
-  font-size:15px; font-weight:700; margin-bottom:14px;
-  display:flex; align-items:center; gap:8px; color:hsl(var(--primary));
+  font-size:15px; font-weight:700; margin:20px 0 12px;
+  display:flex; align-items:center; gap:8px; color:var(--text);
 }
-.content-card h3::before { content:''; width:3px; height:14px; border-radius:2px; background:hsl(var(--primary)); flex-shrink:0; }
+.content-card h3::before {
+  content:''; width:3px; height:16px; border-radius:2px;
+  background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  flex-shrink:0; box-shadow:0 0 8px hsl(var(--primary) / .4);
+}
 
 @media (max-width:1024px) {
   .content-grid { grid-template-columns:1fr; }
 }
 @media (max-width:640px) {
-  .content-hero { padding:20px; }
-  .content-card { padding:16px; }
+  .content-card { padding:18px; }
 }
 
 /* ── Detail Page ── */
@@ -641,42 +646,43 @@ function renderInlineContent() {
   const tp = e.turningPoints || [];
   const mc = document.getElementById('mainContent');
   mc.innerHTML = `
-    <div class="content-hero">
-      <h1>${e.name}</h1>
-      <span class="ch-period">${e.period}</span>
-      <p class="ch-desc">${e.desc}</p>
-      <button onclick="navigate('detail',${timelineEraIdx})" style="margin-top:16px;padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;background:hsl(var(--primary) / .1);border:1px solid hsl(var(--primary) / .3);color:hsl(var(--primary));cursor:pointer;transition:var(--transition);">查看完整详情 →</button>
-    </div>
     <div class="content-grid">
-      <div class="content-card">
-        <h3>重大事件</h3>
-        <div class="event-list">
-          ${e.events.map(ev => `<div class="event-item"><span class="event-dot"></span><span>${ev}</span></div>`).join('')}
-        </div>
-      </div>
-      <div class="content-card">
-        <h3>著名人物</h3>
-        <div class="tag-row">
-          ${e.figures.map(f => `<span class="tag-item">${f}</span>`).join('')}
-        </div>
-        <h3 style="margin-top:24px;">重要成就</h3>
-        <div class="invention-grid">
-          ${e.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
-        </div>
-      </div>
-      ${tp.length > 0 ? `
-      <div class="content-card" style="grid-column:1/-1;">
-        <h3>历史转折点</h3>
-        ${tp.map(t => `
-          <div class="tp-card">
-            <div class="tpc-year">${t.y}</div>
-            <div class="tpc-event">${t.e}</div>
-            <div class="tpc-desc">${t.d}</div>
-            <div class="tpc-sig">${t.s}</div>
+      <div class="content-col">
+        <div class="content-card">
+          <span class="card-label">${e.period}</span>
+          <h2>${e.name}</h2>
+          <p class="card-desc">${e.desc}</p>
+          <h3>重大事件</h3>
+          <div class="event-list">
+            ${e.events.map(ev => `<div class="event-item"><span class="event-dot"></span><span>${ev}</span></div>`).join('')}
           </div>
-        `).join('')}
+        </div>
       </div>
-      ` : ''}
+      <div class="content-col">
+        <div class="content-card">
+          <h3 style="margin-top:0;">著名人物</h3>
+          <div class="tag-row">
+            ${e.figures.map(f => `<span class="tag-item">${f}</span>`).join('')}
+          </div>
+          <h3>重要成就</h3>
+          <div class="invention-grid">
+            ${e.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
+          </div>
+        </div>
+        ${tp.length > 0 ? `
+        <div class="content-card">
+          <h3 style="margin-top:0;">历史转折点</h3>
+          ${tp.map(t => `
+            <div class="tp-card">
+              <div class="tpc-year">${t.y}</div>
+              <div class="tpc-event">${t.e}</div>
+              <div class="tpc-desc">${t.d}</div>
+              <div class="tpc-sig">${t.s}</div>
+            </div>
+          `).join('')}
+        </div>
+        ` : ''}
+      </div>
     </div>
   `;
   mc.classList.add('visible');
