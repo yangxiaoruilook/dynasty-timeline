@@ -712,9 +712,12 @@ function renderContent() {
       <div class="card">
         <span class="period-label">${era.period}</span>
         <h2>${era.name}</h2>
-        <p class="era-desc">${era.desc}</p>
+        <div style="margin-top:16px;">
+          <h3 style="font-size:16px;color:hsl(var(--primary));margin-bottom:12px;">时期概述</h3>
+          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));">${era.desc}</p>
+        </div>
 
-        <div class="stat-cards" style="margin-top:20px;">
+        <div class="stat-cards" style="margin-top:24px;padding-top:20px;border-top:1px solid hsl(var(--border) / .5);">
           <div class="stat-item">
             <div class="stat-icon">&#128211;</div>
             <div class="stat-num">${era.events.length}</div>
@@ -735,11 +738,6 @@ function renderContent() {
             <div class="stat-num">${tp.length}</div>
             <div class="stat-label">历史转折</div>
           </div>
-        </div>
-
-        <div style="margin-top:24px;padding-top:20px;border-top:1px solid hsl(var(--border) / .5);">
-          <h3 style="font-size:16px;color:hsl(var(--primary));margin-bottom:12px;">时期概述</h3>
-          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));">${era.desc}</p>
         </div>
       </div>
     </div>
