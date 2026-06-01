@@ -6,24 +6,23 @@
 <title>中国全历史网</title>
 <style>
 :root {
-  --bg: #1a1814;
-  --card-bg: #24211a;
-  --card-hover: #2d2920;
+  --bg: #1c1915;
+  --card-bg: #24201a;
+  --card-hover: #2d2820;
   --text: #e8dfcf;
   --text-secondary: #a09880;
   --text-muted: #6b6258;
-  --border: #3a3428;
+  --border: #3d3528;
   --primary: 45 90% 55%;
-  --primary-glow: 45 100% 65%;
+  --primary-glow: 45 95% 62%;
   --primary-hex: #e6c444;
   --muted: 30 20% 22%;
   --muted-foreground: 40 20% 70%;
   --radius: 16px;
-  --shadow-card: 0 8px 32px rgba(0,0,0,.4);
-  --shadow-elegant: 0 20px 60px -20px hsl(var(--bg) / 0.9);
-  --shadow-glow: 0 0 40px hsl(45 90% 55% / .25);
+  --shadow-card: 0 8px 32px rgba(0,0,0,.5);
+  --shadow-elegant: 0 20px 60px -20px rgba(0,0,0,.9);
+  --shadow-glow: 0 0 40px hsl(45 90% 55% / .2);
   --transition: all .3s cubic-bezier(.4,0,.2,1);
-  --era-colors: #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A #D4AF6A #8B7355 #A0826D #B8956A #C9A86A;
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body {
@@ -31,17 +30,29 @@ body {
   background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh;
 }
 
-/* Background */
-body::before {
-  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-  background-image:
-    linear-gradient(hsl(var(--primary) / .03) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--primary) / .03) 1px, transparent 1px);
-  background-size: 60px 60px;
+/* Background — grid + architecture pattern + warm glow */
+.bg-layer {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
 }
-body::after {
-  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
-  background: radial-gradient(ellipse 60% 50% at 50% 0%, hsl(var(--primary) / .05) 0%, transparent 60%);
+.bg-layer.grid {
+  background-image:
+    linear-gradient(hsl(var(--primary) / .04) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / .04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+.bg-layer.pattern {
+  background-image:
+    /* roof tile pattern */
+    repeating-linear-gradient(0deg, transparent, transparent 4px, hsl(var(--primary) / .015) 4px, hsl(var(--primary) / .015) 5px),
+    /* vertical columns */
+    repeating-linear-gradient(90deg, transparent, transparent 80px, hsl(var(--primary) / .02) 80px, hsl(var(--primary) / .02) 81px);
+  opacity:0.7;
+}
+.bg-layer.glow {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, hsl(42 70% 45% / .07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 30% 70%, hsl(35 50% 35% / .04) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 70% 70%, hsl(35 50% 35% / .04) 0%, transparent 50%);
 }
 
 /* ── Header ── */
@@ -157,31 +168,38 @@ header .subtitle {
 
 /* ── Slider ── */
 .timeline-card input[type=range] {
-  -webkit-appearance:none; width:100%; height:6px;
-  border-radius:3px; background:var(--border);
+  -webkit-appearance:none; width:100%; height:4px;
+  border-radius:2px;
+  background:linear-gradient(90deg,
+    hsl(35 50% 40%), hsl(35 55% 45%), hsl(38 60% 48%), hsl(40 65% 50%),
+    hsl(42 70% 50%), hsl(44 80% 52%), hsl(45 85% 54%), hsl(45 90% 55%),
+    hsl(44 80% 52%), hsl(42 70% 50%), hsl(40 65% 50%), hsl(38 60% 48%),
+    hsl(35 55% 45%), hsl(35 50% 40%), hsl(38 55% 46%), hsl(40 65% 50%),
+    hsl(42 75% 52%), hsl(44 85% 54%), hsl(45 90% 55%)
+  );
   outline:none; cursor:pointer; position:relative; z-index:1;
   margin-bottom:4px;
 }
 .timeline-card input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:22px; height:22px; border-radius:50%;
+  -webkit-appearance:none; width:16px; height:16px; border-radius:50%;
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 20px hsl(var(--primary) / .5); cursor:pointer;
-  border:2px solid #1a1814;
+  box-shadow:0 0 12px hsl(var(--primary) / .5); cursor:pointer;
+  border:2px solid #1c1915;
 }
 
 /* ── Era Bars ── */
 .era-bars {
-  position:relative; height:52px; margin:8px 0 16px; border-radius:8px;
-  background:linear-gradient(90deg, hsl(var(--bg)), hsl(var(--muted) / .2), hsl(var(--bg)));
+  position:relative; height:40px; margin:6px 0 14px; border-radius:8px;
+  background:linear-gradient(90deg, hsl(var(--muted) / .15), hsl(var(--muted) / .3), hsl(var(--muted) / .15));
   padding:8px; z-index:1; overflow:hidden;
 }
 .era-bar {
-  position:absolute; height:22px; border-radius:4px; cursor:pointer;
+  position:absolute; height:14px; border-radius:3px; cursor:pointer;
   top:50%; transform:translateY(-50%);
-  transition:all .25s ease; opacity:.85;
+  transition:all .2s ease; opacity:.8;
 }
-.era-bar:hover { height:30px; opacity:1; box-shadow:0 0 16px currentColor; }
-.era-bar.active { height:30px; opacity:1; box-shadow:0 0 20px currentColor; z-index:1; }
+.era-bar:hover { height:20px; opacity:1; box-shadow:0 0 12px currentColor; }
+.era-bar.active { height:20px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
 
 /* ── Era Pills ── */
 .era-pills {
@@ -288,6 +306,10 @@ header .subtitle {
 </style>
 </head>
 <body>
+
+<div class="bg-layer grid"></div>
+<div class="bg-layer pattern"></div>
+<div class="bg-layer glow"></div>
 
 <!-- Header -->
 <header>
