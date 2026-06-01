@@ -247,17 +247,20 @@ input[type=range]::-webkit-slider-thumb:hover {
 /* ── Content Grid ── */
 .main-grid {
   display:grid; grid-template-columns:1fr; gap:24px;
-  align-items:stretch;
 }
 @media (min-width:1280px) {
-  .main-grid { grid-template-columns:1fr 1fr; }
+  .main-grid {
+    grid-template-columns:1fr 1fr;
+    height:calc(100vh - 460px);
+    overflow:hidden;
+  }
 }
-.col { display:flex; flex-direction:column; gap:24px; min-height:0; }
+.col { display:flex; flex-direction:column; gap:24px; min-height:0; overflow:hidden; }
 .col > .card {
-  flex:1; display:flex; flex-direction:column; min-height:0;
+  flex:1; display:flex; flex-direction:column; min-height:0; overflow:hidden;
 }
 .right-card-scroll {
-  flex:1; overflow-y:auto; min-height:0;
+  flex:1; overflow-y:auto; overflow-x:hidden; min-height:0;
   scrollbar-width:thin; scrollbar-color:hsl(var(--border)) transparent;
 }
 .right-card-scroll::-webkit-scrollbar { width:4px; }
@@ -524,7 +527,8 @@ footer {
   .timeline-card { padding:16px; }
   .timeline-header { flex-direction:column; gap:12px; align-items:flex-start; }
   .right-card-scroll { max-height:60vh; }
-  .col > .card { flex:0 0 auto; }
+  .col { overflow:visible; }
+  .col > .card { flex:0 0 auto; overflow:visible; }
 }
 </style>
 </head>
