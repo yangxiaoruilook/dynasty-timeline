@@ -705,7 +705,7 @@ function renderContent() {
   const tp = era.turningPoints || [];
 
   const duration = Math.abs(era.end - era.start);
-  const totalRange = 5026; // -3000 to 2026
+  const totalRange = 5026;
   const progress = Math.round(((era.end - era.start) / totalRange) * 100);
   document.getElementById('mainContent').innerHTML = `
     <div class="col">
@@ -737,42 +737,9 @@ function renderContent() {
           </div>
         </div>
 
-        <div class="content-tabs" data-group="left">
-          <button class="content-tab active" data-tab="events" data-group="left">重大事件</button>
-          <button class="content-tab" data-tab="figures" data-group="left">著名人物</button>
-          <button class="content-tab" data-tab="inventions" data-group="left">发明创造</button>
-          <button class="content-tab" data-tab="turning" data-group="left">历史转折</button>
-        </div>
-
-        <div id="tabLeftEvents" class="tab-panel">
-          <div class="event-list">
-            ${era.events.map((ev,i) => `
-              <div class="event-item" data-event-idx="${i}">
-                <span class="event-dot"></span>
-                <span>${ev}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-        <div id="tabLeftFigures" class="tab-panel" style="display:none;">
-          <div class="tag-list">
-            ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
-          </div>
-        </div>
-        <div id="tabLeftInventions" class="tab-panel" style="display:none;">
-          <div class="invention-grid">
-            ${era.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
-          </div>
-        </div>
-        <div id="tabLeftTurning" class="tab-panel" style="display:none;">
-          ${tp.length > 0 ? tp.map(t => `
-            <div class="tp-card">
-              <div class="tp-year">${t.y}</div>
-              <div class="tp-event">${t.e}</div>
-              <div class="tp-desc">${t.d}</div>
-              <div class="tp-sig">${t.s}</div>
-            </div>
-          `).join('') : '<p style="color:hsl(var(--muted-foreground));font-size:13px;">暂无数据</p>'}
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid hsl(var(--border) / .5);">
+          <h3 style="font-size:16px;color:hsl(var(--primary));margin-bottom:12px;">时期概述</h3>
+          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));">${era.desc}</p>
         </div>
       </div>
     </div>
@@ -792,17 +759,13 @@ function renderContent() {
         </div>
 
         <div class="content-tabs" data-group="right">
-          <button class="content-tab active" data-tab="overview" data-group="right">时期概述</button>
-          <button class="content-tab" data-tab="events" data-group="right">重大事件</button>
+          <button class="content-tab active" data-tab="events" data-group="right">重大事件</button>
           <button class="content-tab" data-tab="figures" data-group="right">著名人物</button>
           <button class="content-tab" data-tab="inventions" data-group="right">发明创造</button>
           <button class="content-tab" data-tab="turning" data-group="right">转折点</button>
         </div>
 
-        <div id="tabRightOverview" class="tab-panel">
-          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));">${era.desc}</p>
-        </div>
-        <div id="tabRightEvents" class="tab-panel" style="display:none;">
+        <div id="tabRightEvents" class="tab-panel" data-group="right">
           <div class="event-list">
             ${era.events.map((ev,i) => `
               <div class="event-item" data-event-idx="${i}">
@@ -812,17 +775,17 @@ function renderContent() {
             `).join('')}
           </div>
         </div>
-        <div id="tabRightFigures" class="tab-panel" style="display:none;">
+        <div id="tabRightFigures" class="tab-panel" style="display:none;" data-group="right">
           <div class="tag-list">
             ${era.figures.map(f => `<span class="tag">${f}</span>`).join('')}
           </div>
         </div>
-        <div id="tabRightInventions" class="tab-panel" style="display:none;">
+        <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
           <div class="invention-grid">
             ${era.inventions.map(inv => `<div class="invention-item">${inv}</div>`).join('')}
           </div>
         </div>
-        <div id="tabRightTurning" class="tab-panel" style="display:none;">
+        <div id="tabRightTurning" class="tab-panel" style="display:none;" data-group="right">
           ${tp.length > 0 ? tp.map(t => `
             <div class="tp-card">
               <div class="tp-year">${t.y}</div>
@@ -900,12 +863,16 @@ document.getElementById('eraPills').addEventListener('click', function(e) {
 document.getElementById('mainContent').addEventListener('click', function(e) {
   const tab = e.target.closest('.content-tab');
   if (tab) {
-    document.querySelectorAll('.content-tab').forEach(t => t.classList.remove('active'));
+    const group = tab.dataset.group;
+    // Deactivate all tabs in this group
+    document.querySelectorAll(`.content-tab[data-group="${group}"]`).forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    const panelId = tab.dataset.tab;
-    document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
-    const panelMap = { events:'tabContentEvents', figures:'tabContentFigures', inventions:'tabContentInventions', turning:'tabContentTurning' };
-    const target = document.getElementById(panelMap[panelId]);
+    // Hide all panels in this group
+    document.querySelectorAll(`.tab-panel[data-group="${group}"]`).forEach(p => p.style.display = 'none');
+    // Show the target panel
+    const cap = tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1);
+    const targetId = 'tabRight' + cap;
+    const target = document.getElementById(targetId);
     if (target) target.style.display = 'block';
     return;
   }
