@@ -472,6 +472,10 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 .detail-impact-text { font-size:14px; color:hsl(38 20% 76%); line-height:1.9; margin:0; }
 .detail-impact-text strong { color:hsl(var(--primary)); margin-right:8px; font-weight:700; }
+.event-section { position:relative; padding-left:16px; margin-bottom:18px; border-left:2px solid hsl(var(--primary) / .25); }
+.event-section:last-child { margin-bottom:0; }
+.event-section-label { font-size:12px; font-weight:700; color:hsl(var(--primary)); letter-spacing:0.05em; margin-bottom:6px; }
+.event-section-text { font-size:14px; line-height:2; color:hsl(38 22% 78%); margin:0; }
 
 /* ── Footer ── */
 footer {
@@ -741,7 +745,7 @@ const eras = [
   { id:'three-kingdoms', name:'三国时期', period:'220年 - 280年', start:220, end:280, founder:'曹丕/刘备/孙权',
     desc:'三国时期是中国历史上的著名分裂时期，魏、蜀、吴三国鼎立。这一时期虽战争频繁，但也涌现出诸葛亮、曹操、关羽等一大批杰出的政治家、军事家和文学家。三国故事被后世演绎成《三国演义》，成为中国文学瑰宝，在世界范围内都有广泛影响。',
     events:[
-      {name:'曹丕称帝建立魏国',desc:'公元220年，曹操病逝后其子曹丕逼迫汉献帝禅让，于洛阳称帝建立魏国，东汉正式灭亡。曹丕推行九品中正制选拔人才，这一制度后来被士族门阀利用，影响了此后数百年的政治格局。'},
+      {name:'曹丕称帝建立魏国',desc:'公元220年，曹操病逝后其子曹丕逼迫汉献帝禅让，于洛阳称帝建立魏国，东汉正式灭亡。',background:'建安二十五年（220年）正月，曹操病逝于洛阳，其子曹丕继位为魏王、丞相。曹操生前已统一北方，实际掌握东汉朝廷大权，"挟天子以令诸侯"多年，曹魏代汉的政治基础已经成熟。',process:'曹丕继位后，华歆、贾诩等大臣多次上表劝汉献帝禅让。汉献帝四次下诏禅让帝位，曹丕按礼制三次推辞。同年十月，曹丕在洛阳南郊繁阳亭筑坛，接受汉献帝的禅让诏书和传国玉玺，即皇帝位，改元黄初，定都洛阳。',result:'东汉正式灭亡，立国195年。曹丕追尊曹操为魏武帝，封汉献帝刘协为山阳公，给予优厚待遇。魏国建立后，曹丕推行九品中正制，将选官权集中到中央。',evaluation:'曹丕以"禅让"形式完成政权更替，避免了大规模流血冲突，是古代政权过渡中较为平稳的一次。九品中正制在初期打破了世族垄断，但后来逐渐被士族门阀操控，"上品无寒门，下品无世族"。',impact:'曹丕称帝标志着三国时代的正式开启。次年（221年）刘备在成都称帝建立蜀汉，229年孙权在建业称帝建立东吴，天下三分格局正式形成。九品中正制影响了此后近四百年的政治生态，直至隋唐科举制兴起才被取代。'},
       {name:'刘备称帝建立蜀汉',desc:'公元221年，刘备在成都称帝继承汉统，国号"汉"（史称蜀汉）。刘备以"兴复汉室"为旗帜，任用诸葛亮为丞相，在益州建立了相对稳定的政权。'},
       {name:'孙权称帝建立吴国',desc:'公元229年，孙权在武昌称帝后迁都建业（今南京），正式建立吴国。孙权派卫温、诸葛直率船队到达夷洲（今台湾），是中国有史记载最早的中央政权经略台湾的行动。'},
       {name:'诸葛亮北伐',desc:'公元228至234年，蜀汉丞相诸葛亮为"北定中原、兴复汉室"六次从汉中出兵北伐曹魏，其中最著名的是第一次出祁山和第五次在五丈原与司马懿对峙。234年诸葛亮病逝于五丈原军中，临终上呈《出师表》，"鞠躬尽瘁，死而后已"成为千古名句。'},
@@ -1212,10 +1216,29 @@ function showDetail(era, type, idx) {
   if (type === 'event') {
     const ev = era.events[idx];
     title = ev.name;
-    bodyContent = `
-      <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
-      <p class="detail-desc">${ev.desc}</p>
-    `;
+    if (ev.background || ev.process || ev.result || ev.evaluation || ev.impact) {
+      const sections = [
+        {label:'背景', text:ev.background},
+        {label:'经过', text:ev.process},
+        {label:'结果', text:ev.result},
+        {label:'评价', text:ev.evaluation},
+        {label:'影响', text:ev.impact}
+      ].filter(s => s.text);
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        ${sections.map(s => `
+          <div class="event-section">
+            <p class="event-section-label">${s.label}</p>
+            <p class="event-section-text">${s.text}</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <p class="detail-desc">${ev.desc}</p>
+      `;
+    }
   } else if (type === 'figure') {
     const fig = era.figures[idx];
     const figName = typeof fig === 'object' ? fig.name : fig;
