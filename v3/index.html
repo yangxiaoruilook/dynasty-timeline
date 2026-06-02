@@ -281,7 +281,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 }
 .stat-item {
   text-align:center; padding:20px 16px; border-radius:12px;
-  background:hsl(var(--card)); border:1px solid hsl(var(--border));
+  background:hsl(var(--card) / 0.9); border:1px solid hsl(var(--border) / 0.6);
   transition:all .25s ease;
 }
 .stat-item:hover { border-color:hsl(var(--primary) / 0.85); box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28); transform:translateY(-4px); }
@@ -291,12 +291,12 @@ input[type=range]::-webkit-slider-thumb:hover {
 
 /* ── Left panel content boxes ── */
 .content-box {
-  background:hsl(var(--muted) / 0.25); border:1px solid transparent;
+  background:hsl(var(--muted) / 0.85); border:1px solid transparent;
   border-radius:10px; padding:16px 20px;
   transition:all 0.3s ease;
 }
 .content-box:hover {
-  background:hsl(var(--muted) / 0.75); border-color:hsl(var(--primary) / 0.75);
+  background:hsl(var(--muted) / 0.85); border-color:hsl(var(--primary) / 0.75);
   transform:translateX(6px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 36px hsl(var(--primary) / 0.2);
 }
 
@@ -313,11 +313,12 @@ input[type=range]::-webkit-slider-thumb:hover {
   transform:translateY(-4px);
 }
 .card.has-bg {
-  background-size:92% 88% !important;
-  transition:background-size 0.4s cubic-bezier(0.4,0,0.2,1),border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease;
+  background-size:125% auto !important;
+  background-position:center !important;
+  transition:background-size 1.4s cubic-bezier(0.16,0,0.13,1),border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease;
 }
 .card.has-bg:hover {
-  background-size:105% 105% !important;
+  background-size:142% auto !important;
 }
 .card h2 {
   font-size:22px; font-weight:800; margin-bottom:4px;
@@ -743,7 +744,7 @@ function renderContent() {
   const progress = Math.round(((era.end - era.start) / totalRange) * 100);
   document.getElementById('mainContent').innerHTML = `
     <div class="col">
-      <div class="card${era.bgImage ? ' has-bg' : ''}"${era.bgImage ? ' style="background:linear-gradient(rgba(18,18,22,0.55),rgba(18,18,22,0.55)),url(\''+era.bgImage+'\') center no-repeat;"' : ''}>
+      <div class="card${era.bgImage ? ' has-bg' : ''}"${era.bgImage ? ' style="background:linear-gradient(rgba(18,18,22,0.08),rgba(18,18,22,0.08)),url(\''+era.bgImage+'\') center no-repeat;"' : ''}>
         <div class="content-box">
           <span class="period-label">${era.period}</span>
           <h2>${eraIconHtml}${era.name}</h2>
