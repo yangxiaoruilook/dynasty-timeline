@@ -751,7 +751,7 @@ function renderContent() {
         </div>
         <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
           <div class="invention-grid">
-            ${era.inventions.map((inv,i) => `<div class="invention-item clickable-item" data-invention-idx="${i}">${inv}</div>`).join('')}
+            ${era.inventions.map((inv,i) => `<div class="invention-item clickable-item" data-invention-idx="${i}">${typeof inv === 'object' ? inv.name : inv}</div>`).join('')}
           </div>
         </div>
         <div id="tabRightTurning" class="tab-panel" style="display:none;" data-group="right">
