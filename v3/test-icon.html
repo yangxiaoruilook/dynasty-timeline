@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>icon test</title>
+<style>
+body { background:#1a1a2e; color:#eee; font-family:sans-serif; padding:40px; }
+h2 { color:#d4af6a; }
+.test { margin:16px 0; padding:16px; border:1px solid #333; }
+</style>
+</head>
+<body>
+<h2>Test 1: span with inline color</h2>
+<div class="test"><span style="color:#8B7355">🗿 秦朝</span></div>
+
+<h2>Test 2: emoji in colored h2 with span override</h2>
+<h2><span style="color:#8B7355">🗿</span> 秦朝</h2>
+
+<h2>Test 3: emoji directly (no span)</h2>
+<h2>🗿 秦朝</h2>
+
+<h2>Test 4: plain text with color span</h2>
+<div class="test"><span style="color:#8B7355">◆ 秦朝</span></div>
+
+<h2>Test 5: emoji without any color</h2>
+<div class="test">🗿 秦朝</div>
+</body>
+</html>

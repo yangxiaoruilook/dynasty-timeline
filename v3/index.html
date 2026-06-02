@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>中国全历史网</title>
+<title>中国历史图鉴</title>
 <style>
 :root {
   --background: 30 15% 12%;
@@ -42,20 +42,6 @@ body {
   font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",ui-sans-serif,system-ui,-apple-system,sans-serif;
   background: hsl(var(--background)); color: hsl(var(--foreground)); line-height: 1.6;
   min-height: 100vh;
-}
-
-/* ── Background ── */
-.bg-grid {
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-  background-image:
-    linear-gradient(hsl(var(--primary) / 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, hsl(var(--primary) / 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-.bg-gradient-overlay {
-  position:fixed; inset:0; z-index:0; pointer-events:none;
-  background: radial-gradient(ellipse 80% 60% at 50% 0%, hsl(var(--primary) / 0.06) 0%, transparent 60%),
-              linear-gradient(180deg, hsl(var(--primary) / 0.03) 0%, transparent 40%);
 }
 
 /* ── Animations ── */
@@ -126,7 +112,7 @@ header .subtitle {
 /* ── Main Container ── */
 .container {
   position:relative; z-index:1;
-  max-width:1400px; margin:0 auto; padding:24px 32px 80px;
+  max-width:1400px; margin:0 auto; padding:24px 32px 160px;
 }
 
 /* ── Timeline Card ── */
@@ -134,7 +120,12 @@ header .subtitle {
   background:hsl(var(--card) / 0.95); border:1px solid hsl(var(--border));
   border-radius:var(--radius); box-shadow:var(--shadow-card), 0 0 0 1px hsl(var(--primary) / 0.15), 0 0 20px hsl(var(--primary) / 0.1);
   padding:24px; margin-bottom:24px;
-  transition:var(--transition-smooth); position:relative; overflow:hidden;  
+  transition:all 0.3s ease; position:relative; overflow:hidden;
+}
+.timeline-card:hover {
+  border-color:hsl(var(--primary) / 0.85);
+  box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28);
+  transform:translateY(-4px);
 }
 .timeline-card::before {
   content:''; position:absolute; inset:0;
@@ -188,7 +179,7 @@ header .subtitle {
 
 /* ── Slider ── */
 input[type=range] {
-  -webkit-appearance:none; width:100%; height:12px; padding:0 2px;
+  -webkit-appearance:none; width:100%; height:5px; padding:0;
   border-radius:3px;
   background:linear-gradient(90deg,
     hsl(38 45% 38%), hsl(40 55% 45%), hsl(42 60% 48%), hsl(43 65% 50%),
@@ -201,10 +192,10 @@ input[type=range] {
   margin:4px 0;
 }
 input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-  box-shadow:0 0 16px hsl(var(--primary) / 0.5), 0 0 0 4px hsl(var(--background) / 0.6); cursor:pointer;
-  border:2px solid hsl(var(--primary-foreground));
+  box-shadow:0 0 12px hsl(var(--primary) / 0.5), 0 0 0 3px hsl(var(--background) / 0.6); cursor:pointer;
+  border:1.5px solid hsl(var(--primary-foreground));
   transition:transform 0.15s ease;
 }
 input[type=range]::-webkit-slider-thumb:hover {
@@ -223,8 +214,8 @@ input[type=range]::-webkit-slider-thumb:hover {
   transition:all 0.2s ease; opacity:.82;
   min-width:3px;
 }
-.era-bar:hover { height:16px; border-radius:8px; opacity:1; box-shadow:0 0 14px currentColor; z-index:1; }
-.era-bar.active { height:16px; border-radius:8px; opacity:1; box-shadow:0 0 18px currentColor; z-index:2; }
+.era-bar:hover { height:14px; border-radius:7px; opacity:1; box-shadow:0 0 8px currentColor; z-index:1; }
+.era-bar.active { height:14px; border-radius:7px; opacity:1; box-shadow:0 0 10px currentColor; z-index:2; }
 
 /* ── Era Pills ── */
 .era-pills {
@@ -240,8 +231,8 @@ input[type=range]::-webkit-slider-thumb:hover {
 .era-pill.active {
   background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
   color:hsl(var(--primary-foreground)); border-color:transparent;
-  box-shadow:0 0 20px hsl(var(--primary) / 0.5);
-  transform:scale(1.06);
+  box-shadow:0 0 10px hsl(var(--primary) / 0.35);
+  transform:scale(1.03);
 }
 
 /* ── Content Grid ── */
@@ -293,16 +284,40 @@ input[type=range]::-webkit-slider-thumb:hover {
   background:hsl(var(--card)); border:1px solid hsl(var(--border));
   transition:all .25s ease;
 }
-.stat-item:hover { border-color:hsl(var(--primary) / .3); box-shadow:0 0 20px hsl(var(--primary) / .1); }
+.stat-item:hover { border-color:hsl(var(--primary) / 0.85); box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28); transform:translateY(-4px); }
 .stat-item .stat-icon { font-size:24px; margin-bottom:6px; }
 .stat-item .stat-num { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
 .stat-item .stat-label { font-size:11px; color:hsl(var(--muted-foreground)); margin-top:2px; }
+
+/* ── Left panel content boxes ── */
+.content-box {
+  background:hsl(var(--muted) / 0.25); border:1px solid transparent;
+  border-radius:10px; padding:16px 20px;
+  transition:all 0.3s ease;
+}
+.content-box:hover {
+  background:hsl(var(--muted) / 0.75); border-color:hsl(var(--primary) / 0.75);
+  transform:translateX(6px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 36px hsl(var(--primary) / 0.2);
+}
 
 /* ── Cards ── */
 .card {
   background:hsl(var(--card)); border:1px solid hsl(var(--border));
   border-radius:var(--radius); padding:24px 28px;
   box-shadow:var(--shadow-card);
+  transition:all 0.3s ease;
+}
+.card:hover {
+  border-color:hsl(var(--primary) / 0.85);
+  box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28);
+  transform:translateY(-4px);
+}
+.card.has-bg {
+  background-size:92% 88% !important;
+  transition:background-size 0.4s cubic-bezier(0.4,0,0.2,1),border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease;
+}
+.card.has-bg:hover {
+  background-size:105% 105% !important;
 }
 .card h2 {
   font-size:22px; font-weight:800; margin-bottom:4px;
@@ -334,18 +349,18 @@ input[type=range]::-webkit-slider-thumb:hover {
 .event-list { display:flex; flex-direction:column; gap:4px; }
 .event-item {
   display:flex; align-items:flex-start; gap:10px;
-  padding:9px 12px; border-radius:8px; border:1px solid transparent;
-  background:hsl(var(--muted) / 0.3); font-size:13px;
+  padding:9px 12px; border-radius:8px; border:1px solid hsl(var(--border) / 0.35);
+  background:hsl(var(--muted) / 0.35); font-size:13px;
   cursor:pointer; transition:all 0.25s ease; line-height:1.5;
 }
 .event-item:hover {
-  background:hsl(var(--muted)); border-color:hsl(var(--primary) / 0.3);
+  background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5);
   transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3);
 }
 .clickable-item { cursor:pointer; }
-.tag.clickable-item:hover { background:hsl(var(--primary) / 0.12); border-color:hsl(var(--primary) / 0.4); }
-.invention-item.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
-.tp-card.clickable-item:hover { border-color:hsl(var(--primary) / 0.5); box-shadow:0 0 20px hsl(var(--primary) / 0.15); }
+.tag.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.invention-item.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.tp-card.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
 .event-dot {
   flex-shrink:0; width:6px; height:12px; padding:0 2px; border-radius:50%;
   background:hsl(var(--primary)); box-shadow:0 0 8px hsl(var(--primary) / 0.5);
@@ -357,30 +372,66 @@ input[type=range]::-webkit-slider-thumb:hover {
 .tag {
   display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px;
   font-size:13px; font-weight:500;
-  background:hsl(var(--muted) / 0.15); color:hsl(var(--foreground));
-  border:1px solid transparent; transition:all 0.25s ease;
+  background:hsl(var(--muted) / 0.35); color:hsl(var(--foreground));
+  border:1px solid hsl(var(--border) / 0.35); transition:all 0.25s ease;
 }
-.tag::before { content:''; flex-shrink:0; width:5px; height:5px; border-radius:50%; background:hsl(var(--primary) / 0.6); }
-.tag:hover { background:hsl(var(--muted) / 0.3); border-color:hsl(var(--border)); }
+.tag:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); }
 
 /* ── Invention list ── */
 .invention-grid { display:flex; flex-direction:column; gap:4px; }
 .invention-item {
   display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px;
   font-size:13px; font-weight:500;
-  background:hsl(var(--muted) / 0.15); color:hsl(var(--foreground));
-  border:1px solid transparent; transition:all 0.25s ease;
+  background:hsl(var(--muted) / 0.35); color:hsl(var(--foreground));
+  border:1px solid hsl(var(--border) / 0.35); transition:all 0.25s ease;
 }
 .invention-item::before { content:'\2726'; flex-shrink:0; font-size:10px; color:hsl(var(--primary) / 0.6); }
-.invention-item:hover { background:hsl(var(--muted) / 0.3); border-color:hsl(var(--border)); }
+.invention-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); }
+.invention-highlight {
+  background:linear-gradient(135deg, hsl(45 60% 18% / 0.55), hsl(35 50% 15% / 0.45));
+  border-color:hsl(45 70% 50% / 0.45);
+  box-shadow:0 0 14px hsl(45 70% 50% / 0.12);
+}
+.invention-highlight::before { color:hsl(var(--primary)); }
+.invention-badge {
+  margin-left:auto; font-size:10px; font-weight:700; letter-spacing:.04em;
+  padding:3px 8px; border-radius:4px;
+  background:linear-gradient(135deg, hsl(45 80% 55% / 0.18), hsl(35 70% 50% / 0.12));
+  color:hsl(var(--primary)); border:1px solid hsl(var(--primary) / 0.35);
+  white-space:nowrap;
+}
+
+/* ── Footer ── */
+.site-footer {
+  position:relative; z-index:10;
+  background:linear-gradient(180deg, hsl(var(--card)), hsl(var(--background)));
+  border-top:1px solid hsl(var(--border) / 0.5);
+  border-bottom:1px solid hsl(var(--primary) / 0.15);
+  box-shadow:0 -8px 32px rgba(0,0,0,0.3);
+  padding:20px 0;
+  text-align:center;
+}
+.site-footer-inner {
+  max-width:1400px; margin:0 auto; padding:0 32px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.site-footer-inner .footer-line {
+  flex:1; height:1px; max-width:120px;
+  background:linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent);
+}
+.site-footer-inner p {
+  margin:0; font-size:13px; letter-spacing:.08em; font-weight:500;
+  color:hsl(var(--muted-foreground)); white-space:nowrap;
+}
+.site-footer-inner p span { color:hsl(var(--primary)); font-weight:700; }
 
 /* ── Turning points ── */
 .tp-card {
-  background:hsl(var(--muted) / 0.2); border:1px solid hsl(var(--border));
-  border-radius:12px; padding:14px; transition:all 0.3s ease; margin-bottom:8px;
-  border-left:3px solid hsl(var(--primary));
+  background:hsl(var(--muted) / 0.35); border:1px solid hsl(var(--border) / 0.35);
+  border-radius:10px; padding:14px; transition:all 0.25s ease; margin-bottom:8px;
+  border-left:3px solid hsl(var(--primary) / 0.6);
 }
-.tp-card:hover { border-color:hsl(var(--primary) / 0.4); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.tp-card:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); border-left-color:hsl(var(--primary)); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
 .tp-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; letter-spacing:.05em; }
 .tp-event { font-size:14px; font-weight:700; margin-bottom:4px; }
 .tp-desc { font-size:13px; color:hsl(var(--muted-foreground)); margin-bottom:4px; line-height:1.5; }
@@ -531,14 +582,11 @@ footer {
 </head>
 <body>
 
-<div class="bg-grid"></div>
-<div class="bg-gradient-overlay"></div>
-
 <header>
   <div class="header-inner animate-fade-in-up">
     <div class="header-deco">
       <span class="header-bar"></span>
-      <h1>中 国 全 历 史</h1>
+      <h1>中 国 历 史 图 鉴</h1>
       <span class="header-bar"></span>
     </div>
     <p class="subtitle">穿越五千年历史长河，探索中华文明的璀璨轨迹</p>
@@ -578,7 +626,6 @@ footer {
   <div class="main-grid" id="mainContent"></div>
 </div>
 
-<footer>数据来源：百度百科 · 中国历史年表 &nbsp;|&nbsp; 基于中国全历史网架构重建</footer>
 
 <div class="detail-overlay" id="detailOverlay" style="display:none;"></div>
 
@@ -587,7 +634,8 @@ footer {
 <script src="data-3.js"></script>
 <script src="data-4.js"></script>
 <script src="data-5.js"></script>
-<script>const eras = [...eras_part1, ...eras_part2, ...eras_part3, ...eras_part4, ...eras_part5];</script>
+<script src="data-6.js"></script>
+<script>const eras = [...eras_part1, ...eras_part2, ...eras_part3, ...eras_part4, ...eras_part5, ...eras_part6];</script>
 <script>
 
 // ── Time helpers ──
@@ -633,7 +681,7 @@ function buildEraPills() {
   document.getElementById('eraPills').innerHTML = eras.map((e, i) => {
     const isActive = i === activeIdx;
     return `<span class="era-pill${isActive ? ' active' : ''}"
-      data-idx="${i}" style="${isActive ? `box-shadow:0 0 20px ${e.color}80` : ''}">${e.name}</span>`;
+      data-idx="${i}" style="${isActive ? `box-shadow:0 0 10px ${e.color}40` : ''}">${e.icon ? '<span class="era-icon" style="color:'+e.color+'">'+e.icon+'</span>' : ''}${e.name}</span>`;
   }).join('');
 }
 
@@ -642,8 +690,9 @@ function updateEraPreview() {
   const preview = document.getElementById('eraPreview');
   if (era) {
     preview.style.display = 'block';
+    const prevIcon = era.icon ? '<span style="color:'+era.color+';-webkit-text-fill-color:'+era.color+'">'+era.icon+'</span> ' : '';
     preview.innerHTML = `
-      <h4>${era.name}</h4>
+      <h4>${prevIcon}${era.name}</h4>
       <span class="era-preview-period">${era.period}</span>
       ${era.founder ? `<span style="display:inline-block;margin-top:4px;font-size:11px;color:hsl(var(--primary));">${era.founder}</span>` : ''}
       <p>${era.desc}</p>
@@ -667,43 +716,61 @@ function selectEra(idx) {
   renderContent();
 }
 
+function getFigureIcon(fig) {
+  const id = (fig.basicInfo || '').slice(0, 100).replace(/帝王之术/g,''); // first 100 chars, strip false triggers
+  const info = id + (fig.lifeStory||'') + (fig.evaluation||'');
+  if (/皇帝|帝王|天子|君主|可汗|单于|大汗|女皇/.test(id)) return '👑';
+  if (/名将|将军|大将|武将|军事|元帅|都督|帅/.test(info)) return '⚔️';
+  if (/诗人|词人|文学家|史学家|书法家|画家|文人|文豪|诗仙|诗圣|词中|唐宋八大家|小说家/.test(info)) return '✍️';
+  if (/宰相|丞相|相国|首辅|大臣|尚书|阁老|政治家|改革家|变法|为政|摄政|权臣|能臣/.test(info)) return '🏛';
+  if (/科学|发明|医|药王|本草|工匠|工程|建筑|天文学|数学|农学|地理学家/.test(info)) return '🔬';
+  if (/外交|使臣|探险|出使|凿空|西域|东渡|西行|取经|翻译|航海/.test(info)) return '🌏';
+  if (/思想|哲学|理学|心学|道家|法家|儒家|墨家|兵家|纵横/.test(info)) return '💡';
+  if (/僧|佛|法师|高僧|禅师|译经|和尚/.test(info)) return '🛕';
+  if (/起义|领袖|革命|造反|起事|农民/.test(info)) return '🔥';
+  return '';
+}
+
 // ── Render content ──
 function renderContent() {
   const era = eras[activeIdx];
   if (!era) return;
   const tp = era.turningPoints || [];
+  const eraIconHtml = era.icon ? '<span style="color:'+era.color+';-webkit-text-fill-color:'+era.color+'">'+era.icon+'</span> ' : '';
 
   const duration = Math.abs(era.end - era.start);
   const totalRange = 5026;
   const progress = Math.round(((era.end - era.start) / totalRange) * 100);
   document.getElementById('mainContent').innerHTML = `
     <div class="col">
-      <div class="card">
-        <span class="period-label">${era.period}</span>
-        <h2>${era.name}</h2>
-        <div style="margin-top:16px;">
-          <h3 style="font-size:16px;color:hsl(var(--primary));margin-bottom:12px;">时期概述</h3>
-          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));">${era.desc}</p>
+      <div class="card${era.bgImage ? ' has-bg' : ''}"${era.bgImage ? ' style="background:linear-gradient(rgba(18,18,22,0.55),rgba(18,18,22,0.55)),url(\''+era.bgImage+'\') center no-repeat;"' : ''}>
+        <div class="content-box">
+          <span class="period-label">${era.period}</span>
+          <h2>${eraIconHtml}${era.name}</h2>
+        </div>
+        <div class="content-box" style="margin-top:16px;">
+          <h3 style="font-size:15px;color:hsl(var(--primary));margin:0 0 10px 0;">时期概述</h3>
+          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));margin:0;">${era.desc}</p>
         </div>
 
-        <div class="stat-cards" style="margin-top:24px;padding-top:20px;border-top:1px solid hsl(var(--border) / .5);">
+        <div class="stat-cards" style="margin-top:16px;">
           <div class="stat-item">
-            <div class="stat-icon">&#128211;</div>
+            <div class="stat-icon">&#9876;</div>
             <div class="stat-num">${era.events.length}</div>
             <div class="stat-label">重大事件</div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">&#128100;</div>
+            <div class="stat-icon">&#9819;</div>
             <div class="stat-num">${era.figures.length}</div>
             <div class="stat-label">著名人物</div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">&#128161;</div>
+            <div class="stat-icon">&#9881;</div>
             <div class="stat-num">${era.inventions.length}</div>
             <div class="stat-label">发明创造</div>
           </div>
           <div class="stat-item">
-            <div class="stat-icon">&#128260;</div>
+            <div class="stat-icon">&#9203;</div>
             <div class="stat-num">${tp.length}</div>
             <div class="stat-label">历史转折</div>
           </div>
@@ -716,7 +783,7 @@ function renderContent() {
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
           <div style="display:flex;align-items:center;gap:12px;">
             <span style="width:3px;height:36px;border-radius:2px;background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));box-shadow:0 0 12px hsl(var(--primary) / .4);flex-shrink:0;"></span>
-            <h2 style="margin:0;font-size:24px;">${era.name}</h2>
+            <h2 style="margin:0;font-size:24px;">${eraIconHtml}${era.name}</h2>
           </div>
           <span style="padding:6px 16px;border-radius:9999px;background:${era.color};color:#fff;font-size:12px;font-weight:700;">占比 ${progress}%</span>
         </div>
@@ -746,12 +813,17 @@ function renderContent() {
         </div>
         <div id="tabRightFigures" class="tab-panel" style="display:none;" data-group="right">
           <div class="tag-list">
-            ${era.figures.map((f,i) => `<span class="tag clickable-item" data-figure-idx="${i}">${typeof f==='object'?f.name:f}</span>`).join('')}
+            ${era.figures.map((f,i) => { const icon = typeof f==='object' ? getFigureIcon(f) : ''; return `<span class="tag clickable-item" data-figure-idx="${i}">${icon ? icon+' ' : ''}${typeof f==='object'?f.name:f}</span>`; }).join('')}
           </div>
         </div>
         <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
           <div class="invention-grid">
-            ${era.inventions.map((inv,i) => `<div class="invention-item clickable-item" data-invention-idx="${i}">${typeof inv === 'object' ? inv.name : inv}</div>`).join('')}
+            ${era.inventions.map((inv,i) => {
+    const invName = typeof inv === 'object' ? inv.name : inv;
+    const invBadge = (typeof inv === 'object' && inv.badge) ? `<span class="invention-badge">${inv.badge}</span>` : '';
+    const invClass = (typeof inv === 'object' && inv.badge) ? 'invention-item clickable-item invention-highlight' : 'invention-item clickable-item';
+    return `<div class="${invClass}" data-invention-idx="${i}">${invName}${invBadge}</div>`;
+  }).join('')}
           </div>
         </div>
         <div id="tabRightTurning" class="tab-panel" style="display:none;" data-group="right">
@@ -780,6 +852,13 @@ function showDetail(era, type, idx) {
   if (type === 'event') {
     const ev = era.events[idx];
     title = ev.name;
+    const evTime = (() => {
+      if (ev.desc) {
+        const m = ev.desc.match(/^(距今[^，。]+?前|公元前[^，。]*?\d年|公元[^，。]*?\d年|\d+年(?:[至和、]\d+年)*)/);
+        if (m) return m[1];
+      }
+      return era.period;
+    })();
     if (ev.background || ev.process || ev.result || ev.evaluation || ev.impact) {
       const sections = [
         {label:'背景', text:ev.background},
@@ -789,7 +868,7 @@ function showDetail(era, type, idx) {
         {label:'影响', text:ev.impact}
       ].filter(s => s.text);
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${evTime}</span></div>
         ${sections.map(s => `
           <div class="event-section">
             <p class="event-section-label">${s.label}</p>
@@ -799,7 +878,7 @@ function showDetail(era, type, idx) {
       `;
     } else {
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${evTime}</span></div>
         <p class="detail-desc">${ev.desc}</p>
       `;
     }
@@ -823,8 +902,15 @@ function showDetail(era, type, idx) {
       allKeys.forEach(({key, label}) => {
         if (fig[key]) sections.push({label, text: fig[key]});
       });
+      const figLifeYears = (() => {
+        if (fig.basicInfo) {
+          const m = fig.basicInfo.match(/[（(]([^）)]+?年?)[）)]/);
+          if (m) return m[1].replace(/年$/,'') + '年';
+        }
+        return era.period;
+      })();
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${figLifeYears}</span></div>
         ${sections.map(s => `
           <div class="event-section">
             <p class="event-section-label">${s.label}</p>
@@ -838,8 +924,15 @@ function showDetail(era, type, idx) {
         const en = typeof ev === 'object' ? ev.name : ev;
         return en.includes(figName);
       });
+      const figLifeYears2 = (() => {
+        if (fig.basicInfo) {
+          const m = fig.basicInfo.match(/[（(]([^）)]+?年?)[）)]/);
+          if (m) return m[1].replace(/年$/,'') + '年';
+        }
+        return era.period;
+      })();
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${figLifeYears2}</span></div>
         ${figDesc ? `<p class="detail-desc">${figDesc}</p>` : ''}
         ${relatedEvents.length > 0 ? `
           <p class="detail-section-title">相关重大事件</p>
@@ -861,8 +954,10 @@ function showDetail(era, type, idx) {
         {label:'评价', text:inv.evaluation},
         {label:'影响', text:inv.impact}
       ].filter(s => s.text);
+      const invMetaEra = inv.inventor || era.name;
+      const invMetaPeriod = inv.inventorPeriod || era.period;
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${invMetaEra}</span><span class="detail-period">${invMetaPeriod}</span></div>
         ${sections.map(s => `
           <div class="event-section">
             <p class="event-section-label">${s.label}</p>
@@ -872,8 +967,10 @@ function showDetail(era, type, idx) {
       `;
     } else {
       const invDesc = typeof inv === 'object' ? inv.desc : '';
+      const invMetaEra2 = (typeof inv === 'object' && inv.inventor) ? inv.inventor : era.name;
+      const invMetaPeriod2 = (typeof inv === 'object' && inv.inventorPeriod) ? inv.inventorPeriod : era.period;
       bodyContent = `
-        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        <div class="detail-meta"><span class="detail-era-tag">${invMetaEra2}</span><span class="detail-period">${invMetaPeriod2}</span></div>
         ${invDesc ? `<p class="detail-desc">${invDesc}</p>` : `<p class="detail-desc">「${invName}」是${era.name}时期的重要发明创造与文明成果，代表了当时社会的科技水平和创造力。</p>`}
       `;
     }
@@ -999,4 +1096,5 @@ function init() {
 
 init();
 </script>
+<footer class="site-footer"><div class="site-footer-inner"><span class="footer-line"></span><p>纵横五千年 &middot; <span>中国历史图鉴</span></p><span class="footer-line"></span></div></footer>
 </body></html>
