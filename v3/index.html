@@ -852,12 +852,31 @@ function showDetail(era, type, idx) {
   } else if (type === 'invention') {
     const inv = era.inventions[idx];
     const invName = typeof inv === 'object' ? inv.name : inv;
-    const invDesc = typeof inv === 'object' ? inv.desc : '';
     title = invName;
-    bodyContent = `
-      <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
-      ${invDesc ? `<p class="detail-desc">${invDesc}</p>` : `<p class="detail-desc">「${invName}」是${era.name}时期的重要发明创造与文明成果，代表了当时社会的科技水平和创造力。</p>`}
-    `;
+    if (typeof inv === 'object' && (inv.background || inv.process || inv.result || inv.evaluation || inv.impact)) {
+      const sections = [
+        {label:'背景', text:inv.background},
+        {label:'经过', text:inv.process},
+        {label:'结果', text:inv.result},
+        {label:'评价', text:inv.evaluation},
+        {label:'影响', text:inv.impact}
+      ].filter(s => s.text);
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        ${sections.map(s => `
+          <div class="event-section">
+            <p class="event-section-label">${s.label}</p>
+            <p class="event-section-text">${s.text}</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      const invDesc = typeof inv === 'object' ? inv.desc : '';
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${era.period}</span></div>
+        ${invDesc ? `<p class="detail-desc">${invDesc}</p>` : `<p class="detail-desc">「${invName}」是${era.name}时期的重要发明创造与文明成果，代表了当时社会的科技水平和创造力。</p>`}
+      `;
+    }
   } else if (type === 'turning') {
     const t = tp[idx];
     title = t.e;
