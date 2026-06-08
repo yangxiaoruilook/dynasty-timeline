@@ -570,6 +570,32 @@ footer {
 .card::-webkit-scrollbar-track { background:transparent; }
 .card::-webkit-scrollbar-thumb { background:hsl(var(--border)); border-radius:2px; }
 
+/* ── App Splash ── */
+.app-splash {
+  position:fixed; inset:0; z-index:99999;
+  display:grid; place-items:center;
+  background:#130d07;
+  overflow:hidden;
+  opacity:1; visibility:visible;
+  transition:opacity .65s ease, visibility .65s ease;
+}
+.app-splash::before {
+  content:''; position:absolute; inset:-32px;
+  background:url('images/app-splash-clean.png') center / cover no-repeat;
+  filter:blur(18px) brightness(.72);
+  transform:scale(1.08);
+}
+.app-splash img {
+  position:relative; z-index:1;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center;
+  background:#ead2a1;
+}
+.app-splash.is-hidden {
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+
 @media (max-width:768px) {
   .header-inner { padding:20px 16px; }
   .container { padding:16px 16px 60px; }
@@ -582,6 +608,10 @@ footer {
 </style>
 </head>
 <body>
+
+<div class="app-splash" id="appSplash" aria-hidden="true">
+  <img src="images/app-splash-clean.png" alt="">
+</div>
 
 <header>
   <div class="header-inner animate-fade-in-up">
@@ -1117,6 +1147,14 @@ function init() {
 }
 
 init();
+window.addEventListener('load', function() {
+  const splash = document.getElementById('appSplash');
+  if (!splash) return;
+  setTimeout(function() {
+    splash.classList.add('is-hidden');
+    setTimeout(function() { splash.remove(); }, 700);
+  }, 1400);
+});
 </script>
 <footer class="site-footer"><div class="site-footer-inner"><span class="footer-line"></span><p>纵横五千年 &middot; <span>中国历史图鉴</span></p><span class="footer-line"></span></div></footer>
 </body></html>
