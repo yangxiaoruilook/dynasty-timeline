@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>中国历史图鉴</title>
+<script>
+if (location.protocol === 'capacitor:') {
+  document.documentElement.classList.add('native-app');
+}
+</script>
 <style>
 :root {
   --background: 30 15% 12%;
@@ -602,6 +607,9 @@ footer {
 .app-splash.is-hidden {
   opacity:0; visibility:hidden; pointer-events:none;
 }
+.native-app .app-splash {
+  display:none;
+}
 
 @media (max-width:768px) {
   .header-inner { padding:20px 16px; }
@@ -1155,6 +1163,7 @@ function init() {
 
 init();
 window.addEventListener('load', function() {
+  if (document.documentElement.classList.contains('native-app')) return;
   const splash = document.getElementById('appSplash');
   if (!splash) return;
   setTimeout(function() {

@@ -1,8 +1,10 @@
 {
   "appId": "com.yangxiaorui.dynastytimeline",
   "appName": "中国历史图鉴",
+  "backgroundColor": "#ead2a1",
   "webDir": "www",
   "ios": {
+    "backgroundColor": "#ead2a1",
     "contentInset": "never"
   }
 }
