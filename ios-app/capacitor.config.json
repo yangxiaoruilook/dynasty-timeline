@@ -1,0 +1,8 @@
+{
+  "appId": "com.yangxiaorui.dynastytimeline",
+  "appName": "中国历史图鉴",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "always"
+  }
+}

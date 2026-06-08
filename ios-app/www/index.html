@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中国历史图鉴</title>
+<style>
+:root {
+  --background: 30 15% 12%;
+  --foreground: 40 25% 92%;
+  --card: 30 18% 16%;
+  --card-foreground: 40 25% 92%;
+  --primary: 45 90% 55%;
+  --primary-foreground: 30 15% 12%;
+  --primary-glow: 45 100% 65%;
+  --secondary: 30 35% 35%;
+  --secondary-foreground: 40 25% 92%;
+  --muted: 30 20% 22%;
+  --muted-foreground: 40 20% 70%;
+  --accent: 35 80% 50%;
+  --accent-foreground: 30 15% 12%;
+  --border: 30 25% 25%;
+  --ring: 45 90% 55%;
+  --radius: 0.75rem;
+
+  --period-ancient: 35 60% 45%;
+  --period-classical: 30 70% 40%;
+  --period-medieval: 40 65% 50%;
+  --period-imperial: 25 55% 35%;
+  --period-modern: 35 75% 45%;
+
+  --shadow-elegant: 0 20px 60px -20px hsl(var(--background) / 0.9);
+  --shadow-glow: 0 0 40px hsl(var(--primary) / 0.3);
+  --shadow-card: 0 10px 30px -10px hsl(var(--background) / 0.8);
+
+  --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-history: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  background: hsl(var(--background)); color: hsl(var(--foreground)); line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+@keyframes slideInRight {
+  from { opacity:0; transform:translateX(30px); }
+  to { opacity:1; transform:translateX(0); }
+}
+@keyframes pulseGlow {
+  0%,100% { box-shadow:0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow:0 0 40px hsl(var(--primary) / 0.6); }
+}
+@keyframes slideUp {
+  from { opacity:0; transform:translateY(32px); }
+  to { opacity:1; transform:translateY(0); }
+}
+.animate-fade-in-up { animation: fadeInUp 0.6s ease-out; }
+.animate-slide-in-right { animation: slideInRight 0.5s ease-out; }
+.animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+
+/* ── Header ── */
+header {
+  position:relative; z-index:100;
+  background:linear-gradient(180deg, hsl(var(--background)), hsl(var(--card)));
+  border-bottom:1px solid hsl(var(--border) / 0.5);
+  box-shadow:var(--shadow-elegant);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+}
+.header-inner {
+  max-width:1400px; margin:0 auto; padding:24px 32px;
+  text-align:center;
+}
+.header-deco {
+  display:flex; align-items:center; justify-content:center; gap:16px;
+  margin-bottom:8px;
+}
+.header-bar {
+  width:4px; height:48px; border-radius:2px;
+  background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  box-shadow:0 0 16px hsl(var(--primary) / 0.5);
+}
+header h1 {
+  font-size:clamp(28px,4.5vw,42px); font-weight:800; letter-spacing:.12em;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  filter:drop-shadow(0 0 20px hsl(var(--primary) / 0.5)) drop-shadow(0 0 40px hsl(var(--primary) / 0.3));
+  text-indent:.05em;
+}
+header .subtitle {
+  color:hsl(var(--muted-foreground)); font-size:14px; margin-top:6px;
+  max-width:672px; margin-left:auto; margin-right:auto;
+}
+.header-stats {
+  display:flex; align-items:center; justify-content:center; gap:12px; margin-top:12px;
+}
+.header-stats .pill {
+  padding:4px 16px; border-radius:9999px;
+  background:hsl(var(--primary) / 0.1); border:1px solid hsl(var(--primary) / 0.2);
+  font-size:12px; color:hsl(var(--muted-foreground));
+}
+.header-stats .pill strong {
+  color:hsl(var(--primary)); font-weight:700;
+}
+
+/* ── Main Container ── */
+.container {
+  position:relative; z-index:1;
+  max-width:1400px; margin:0 auto; padding:24px 32px 160px;
+}
+
+/* ── Timeline Card ── */
+.timeline-card {
+  background:hsl(var(--card) / 0.95); border:1px solid hsl(var(--border));
+  border-radius:var(--radius); box-shadow:var(--shadow-card), 0 0 0 1px hsl(var(--primary) / 0.15), 0 0 20px hsl(var(--primary) / 0.1);
+  padding:24px; margin-bottom:24px;
+  transition:all 0.3s ease; position:relative; overflow:hidden;
+}
+.timeline-card:hover {
+  border-color:hsl(var(--primary) / 0.85);
+  box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28);
+  transform:translateY(-4px);
+}
+.timeline-card::before {
+  content:''; position:absolute; inset:0;
+  background-image:
+    linear-gradient(hsl(var(--primary) / 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / 0.03) 1px, transparent 1px);
+  background-size:50px 50px; pointer-events:none; opacity:0.4;
+}
+.timeline-header {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px; position:relative; z-index:1;
+}
+.timeline-title-group {
+  display:flex; align-items:center; gap:12px;
+}
+.timeline-icon {
+  padding:8px; border-radius:8px;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  box-shadow:0 0 20px hsl(var(--primary) / 0.4);
+}
+.timeline-icon svg { display:block; width:20px; height:20px; color:hsl(var(--primary-foreground)); }
+.timeline-title-group h3 { font-size:20px; font-weight:700; }
+.timeline-title-group p { font-size:12px; color:hsl(var(--muted-foreground)); margin-top:2px; }
+.timeline-year-badge {
+  padding:6px 16px; border-radius:9999px;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  color:hsl(var(--primary-foreground)); font-weight:700; font-size:14px;
+  box-shadow:0 0 20px hsl(var(--primary) / 0.4);
+  position:relative; z-index:1;
+}
+
+/* ── Era info preview ── */
+.era-preview {
+  padding:16px 20px; border-radius:10px; margin-bottom:12px;
+  background:hsl(var(--muted) / 0.3);
+  border:1px solid hsl(var(--primary) / 0.15);
+  position:relative; z-index:1;
+}
+.era-preview h4 {
+  font-size:18px; font-weight:700;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  margin-bottom:4px;
+}
+.era-preview .era-preview-period {
+  font-size:12px; color:hsl(var(--muted-foreground)); font-weight:500;
+  padding:3px 10px; border-radius:9999px; background:hsl(var(--background) / 0.5);
+  display:inline-block; margin-bottom:8px;
+}
+.era-preview p { font-size:13px; color:hsl(var(--muted-foreground)); line-height:1.6; }
+
+/* ── Slider ── */
+input[type=range] {
+  -webkit-appearance:none; width:100%; height:5px; padding:0;
+  border-radius:3px;
+  background:linear-gradient(90deg,
+    hsl(38 45% 38%), hsl(40 55% 45%), hsl(42 60% 48%), hsl(43 65% 50%),
+    hsl(44 75% 52%), hsl(45 85% 54%), hsl(45 90% 55%), hsl(45 92% 57%),
+    hsl(45 90% 55%), hsl(44 80% 52%), hsl(43 70% 50%), hsl(42 60% 48%),
+    hsl(40 50% 44%), hsl(38 45% 38%), hsl(40 52% 44%), hsl(42 62% 48%),
+    hsl(43 72% 50%), hsl(44 82% 53%), hsl(45 90% 55%)
+  );
+  outline:none; cursor:pointer; position:relative; z-index:1;
+  margin:4px 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  box-shadow:0 0 12px hsl(var(--primary) / 0.5), 0 0 0 3px hsl(var(--background) / 0.6); cursor:pointer;
+  border:1.5px solid hsl(var(--primary-foreground));
+  transition:transform 0.15s ease;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  transform:scale(1.15);
+}
+
+/* ── Era Bars ── */
+.era-bars {
+  position:relative; height:32px; margin:8px 0 14px; border-radius:8px;
+  background:hsl(var(--muted) / 0.25);
+  padding:6px; position:relative; z-index:1; overflow:hidden;  
+}
+.era-bar {
+  position:absolute; height:10px; border-radius:5px; cursor:pointer;
+  top:50%; transform:translateY(-50%);
+  transition:all 0.2s ease; opacity:.82;
+  min-width:3px;
+}
+.era-bar:hover { height:14px; border-radius:7px; opacity:1; box-shadow:0 0 8px currentColor; z-index:1; }
+.era-bar.active { height:14px; border-radius:7px; opacity:1; box-shadow:0 0 10px currentColor; z-index:2; }
+
+/* ── Era Pills ── */
+.era-pills {
+  display:flex; flex-wrap:wrap; gap:6px; position:relative; z-index:1;
+}
+.era-pill {
+  padding:6px 14px; border-radius:9999px; font-size:11px; font-weight:600;
+  cursor:pointer; border:1px solid hsl(var(--border) / 0.6);
+  background:hsl(var(--muted) / 0.4); color:hsl(var(--muted-foreground));
+  transition:all 0.25s ease; white-space:nowrap; letter-spacing:.02em;
+}
+.era-pill:hover { background:hsl(var(--muted)); color:hsl(var(--foreground)); border-color:hsl(var(--primary) / 0.3); }
+.era-pill.active {
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  color:hsl(var(--primary-foreground)); border-color:transparent;
+  box-shadow:0 0 10px hsl(var(--primary) / 0.35);
+  transform:scale(1.03);
+}
+
+/* ── Content Grid ── */
+.main-grid {
+  display:grid; grid-template-columns:1fr; gap:24px;
+}
+@media (min-width:1280px) {
+  .main-grid {
+    grid-template-columns:1fr 1fr;
+    height:calc(100vh - 340px);
+  }
+}
+.col { display:flex; flex-direction:column; gap:24px; }
+.right-col { min-height:0; }
+.right-col > .card {
+  flex:1; display:flex; flex-direction:column; min-height:0;
+}
+.right-card-scroll {
+  flex:1; overflow-y:auto; overflow-x:hidden; min-height:0;
+  scrollbar-width:thin; scrollbar-color:hsl(var(--border)) transparent;
+}
+.right-card-scroll::-webkit-scrollbar { width:4px; }
+.right-card-scroll::-webkit-scrollbar-track { background:transparent; }
+.right-card-scroll::-webkit-scrollbar-thumb { background:hsl(var(--border)); border-radius:2px; }
+
+/* ── Tabs ── */
+.content-tabs {
+  display:flex; gap:4px; background:hsl(var(--muted) / .5);
+  padding:4px; border-radius:10px; margin-bottom:16px;
+}
+.content-tab {
+  flex:1; padding:10px 8px; border-radius:8px; font-size:12px; font-weight:600;
+  text-align:center; cursor:pointer; color:hsl(var(--muted-foreground));
+  transition:all .25s ease; border:none; background:none;
+  white-space:nowrap;
+}
+.content-tab:hover { color:hsl(var(--foreground)); background:hsl(var(--muted)); }
+.content-tab.active {
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  color:hsl(var(--primary-foreground)); box-shadow:0 0 16px hsl(var(--primary) / .4);
+}
+
+/* ── Stat cards ── */
+.stat-cards {
+  display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px;
+}
+.stat-item {
+  text-align:center; padding:20px 16px; border-radius:12px;
+  background:hsl(var(--card) / 0.9); border:1px solid hsl(var(--border) / 0.6);
+  transition:all .25s ease;
+}
+.stat-item:hover { border-color:hsl(var(--primary) / 0.85); box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28); transform:translateY(-4px); cursor:pointer; }
+.stat-item .stat-icon { font-size:24px; margin-bottom:6px; }
+.stat-item .stat-num { font-size:28px; font-weight:800; color:hsl(var(--primary)); }
+.stat-item .stat-label { font-size:11px; color:hsl(var(--muted-foreground)); margin-top:2px; }
+
+/* ── Left panel content boxes ── */
+.content-box {
+  background:hsl(var(--muted) / 0.85); border:1px solid transparent;
+  border-radius:10px; padding:16px 20px;
+  transition:all 0.3s ease;
+}
+.content-box:hover {
+  background:hsl(var(--muted) / 0.85); border-color:hsl(var(--primary) / 0.75);
+  transform:translateX(6px); box-shadow:0 10px 36px rgba(0,0,0,0.5),0 0 36px hsl(var(--primary) / 0.2);
+}
+
+/* ── Cards ── */
+.card {
+  background:hsl(var(--card)); border:1px solid hsl(var(--border));
+  border-radius:var(--radius); padding:24px 28px;
+  box-shadow:var(--shadow-card);
+  transition:all 0.3s ease;
+}
+.card:hover {
+  border-color:hsl(var(--primary) / 0.85);
+  box-shadow:0 16px 56px rgba(0,0,0,0.55),0 0 64px hsl(var(--primary) / 0.28);
+  transform:translateY(-4px);
+}
+.card.has-bg {
+  background-size:125% auto !important;
+  background-position:center !important;
+  transition:background-size 1.4s cubic-bezier(0.16,0,0.13,1),border-color 0.3s ease,box-shadow 0.3s ease,transform 0.3s ease;
+}
+.card.has-bg:hover {
+  background-size:142% auto !important;
+}
+.card h2 {
+  font-size:22px; font-weight:800; margin-bottom:4px;
+  background:linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.card .period-label {
+  display:inline-block; font-size:12px; color:hsl(var(--primary));
+  background:hsl(var(--primary) / 0.08); padding:4px 14px;
+  border-radius:9999px; margin-bottom:12px; font-weight:600; letter-spacing:.04em;
+}
+.era-desc {
+  font-size:14px; line-height:1.9; color:hsl(var(--muted-foreground));
+  margin-top:12px;
+}
+
+/* ── Section titles ── */
+.section-title {
+  font-size:15px; font-weight:700; margin-bottom:12px; margin-top:20px;
+  display:flex; align-items:center; gap:8px; color:hsl(var(--foreground));
+}
+.section-title::before {
+  content:''; display:inline-block; width:3px; height:16px; border-radius:2px;
+  background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));
+  flex-shrink:0; box-shadow:0 0 8px hsl(var(--primary) / 0.4);
+}
+
+/* ── Event list ── */
+.event-list { display:flex; flex-direction:column; gap:4px; }
+.event-item {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 12px; border-radius:8px; border:1px solid hsl(var(--border) / 0.35);
+  background:hsl(var(--muted) / 0.35); font-size:13px;
+  cursor:pointer; transition:all 0.25s ease; line-height:1.5;
+}
+.event-item:hover {
+  background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5);
+  transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3);
+}
+.clickable-item { cursor:pointer; }
+.tag.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.invention-item.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.tp-card.clickable-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); transform:translateX(4px); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.event-dot {
+  flex-shrink:0; width:6px; height:12px; padding:0 2px; border-radius:50%;
+  background:hsl(var(--primary)); box-shadow:0 0 8px hsl(var(--primary) / 0.5);
+  margin-top:7px;
+}
+
+/* ── Tags / Figure list ── */
+.tag-list { display:flex; flex-direction:column; gap:4px; }
+.tag {
+  display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px;
+  font-size:13px; font-weight:500;
+  background:hsl(var(--muted) / 0.35); color:hsl(var(--foreground));
+  border:1px solid hsl(var(--border) / 0.35); transition:all 0.25s ease;
+}
+.tag:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); }
+
+/* ── Invention list ── */
+.invention-grid { display:flex; flex-direction:column; gap:4px; }
+.invention-item {
+  display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px;
+  font-size:13px; font-weight:500;
+  background:hsl(var(--muted) / 0.35); color:hsl(var(--foreground));
+  border:1px solid hsl(var(--border) / 0.35); transition:all 0.25s ease;
+}
+.invention-item::before { content:'\2726'; flex-shrink:0; font-size:10px; color:hsl(var(--primary) / 0.6); }
+.invention-item:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); }
+.invention-highlight {
+  background:linear-gradient(135deg, hsl(45 60% 18% / 0.55), hsl(35 50% 15% / 0.45));
+  border-color:hsl(45 70% 50% / 0.45);
+  box-shadow:0 0 14px hsl(45 70% 50% / 0.12);
+}
+.invention-highlight::before { color:hsl(var(--primary)); }
+.invention-badge {
+  margin-left:auto; font-size:10px; font-weight:700; letter-spacing:.04em;
+  padding:3px 8px; border-radius:4px;
+  background:linear-gradient(135deg, hsl(45 80% 55% / 0.18), hsl(35 70% 50% / 0.12));
+  color:hsl(var(--primary)); border:1px solid hsl(var(--primary) / 0.35);
+  white-space:nowrap;
+}
+
+/* ── Footer ── */
+.site-footer {
+  position:relative; z-index:10;
+  background:linear-gradient(180deg, hsl(var(--card)), hsl(var(--background)));
+  border-top:1px solid hsl(var(--border) / 0.5);
+  border-bottom:1px solid hsl(var(--primary) / 0.15);
+  box-shadow:0 -8px 32px rgba(0,0,0,0.3);
+  padding:20px 0;
+  text-align:center;
+}
+.site-footer-inner {
+  max-width:1400px; margin:0 auto; padding:0 32px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.site-footer-inner .footer-line {
+  flex:1; height:1px; max-width:120px;
+  background:linear-gradient(90deg, transparent, hsl(var(--primary) / 0.3), transparent);
+}
+.site-footer-inner p {
+  margin:0; font-size:13px; letter-spacing:.08em; font-weight:500;
+  color:hsl(var(--muted-foreground)); white-space:nowrap;
+}
+.site-footer-inner p span { color:hsl(var(--primary)); font-weight:700; }
+
+/* ── Turning points ── */
+.tp-card {
+  background:hsl(var(--muted) / 0.35); border:1px solid hsl(var(--border) / 0.35);
+  border-radius:10px; padding:14px; transition:all 0.25s ease; margin-bottom:8px;
+  border-left:3px solid hsl(var(--primary) / 0.6);
+}
+.tp-card:hover { background:hsl(var(--muted) / 0.7); border-color:hsl(var(--primary) / 0.5); border-left-color:hsl(var(--primary)); box-shadow:0 4px 16px rgba(0,0,0,0.3); }
+.tp-year { font-size:11px; font-weight:700; color:hsl(var(--primary)); margin-bottom:4px; letter-spacing:.05em; }
+.tp-event { font-size:14px; font-weight:700; margin-bottom:4px; }
+.tp-desc { font-size:13px; color:hsl(var(--muted-foreground)); margin-bottom:4px; line-height:1.5; }
+.tp-sig { font-size:12px; color:hsl(var(--muted-foreground) / 0.7); font-style:italic; }
+
+/* ── Detail overlay ── */
+.detail-overlay {
+  position:fixed; inset:0; z-index:200;
+  background:rgba(0,0,0,0.78); backdrop-filter:blur(12px);
+  display:flex; align-items:center; justify-content:center; padding:24px;
+}
+.detail-panel {
+  position:relative;
+  background:linear-gradient(160deg, hsl(32 18% 18%), hsl(28 16% 13%));
+  border:1px solid hsl(var(--border) / .6);
+  border-radius:16px; padding:0;
+  max-width:540px; width:100%; max-height:84vh; overflow-y:auto;
+  box-shadow:0 24px 80px rgba(0,0,0,.55), 0 0 0 1px hsl(var(--primary) / .06) inset, 0 0 40px hsl(var(--primary) / .06);
+  animation:slideUp 0.3s ease-out;
+}
+.detail-panel::before {
+  content:''; display:block; height:3px;
+  background:linear-gradient(90deg, transparent, hsl(var(--primary) / .5), hsl(var(--primary)), hsl(var(--primary) / .5), transparent);
+  border-radius:16px 16px 0 0; position:relative; z-index:2;
+}
+.detail-panel-inner { padding:24px 28px 28px; }
+.detail-panel h3 {
+  display:inline-block;
+  font-size:18px; font-weight:700; margin:0 0 14px;
+  color:hsl(42 45% 82%);
+  letter-spacing:0.03em;
+  padding:8px 22px; border-radius:9999px;
+  background:linear-gradient(135deg, hsl(var(--primary) / .14), hsl(var(--primary) / .07));
+  border:1px solid hsl(var(--primary) / .32);
+  box-shadow:0 0 20px hsl(var(--primary) / .12), inset 0 1px 0 hsl(var(--primary) / .1);
+}
+.detail-panel .period-label {
+  display:inline-block; margin-bottom:14px;
+  font-size:11px; letter-spacing:0.05em;
+  padding:4px 14px; border-radius:9999px;
+  background:hsl(var(--primary) / .08); color:hsl(var(--primary));
+  border:1px solid hsl(var(--primary) / .15);
+  font-weight:600;
+}
+.detail-close {
+  position:sticky; top:12px; float:right; margin-right:16px;
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid hsl(var(--border) / .5); background:hsl(var(--muted) / .6);
+  color:hsl(var(--muted-foreground)); font-size:18px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:all 0.25s ease; z-index:3; backdrop-filter:blur(6px);
+}
+.detail-close:hover {
+  border-color:hsl(var(--primary) / .5); color:hsl(var(--primary));
+  background:hsl(var(--primary) / .1); transform:rotate(90deg);
+}
+.detail-body {
+  font-size:14px; line-height:2; color:hsl(38 18% 72%);
+}
+.detail-meta {
+  display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;
+}
+.detail-era-tag {
+  display:inline-block; padding:5px 16px; border-radius:9999px;
+  font-size:11px; font-weight:600; letter-spacing:0.05em;
+  background:hsl(var(--primary) / .1); color:hsl(43 55% 72%);
+  border:1px solid hsl(var(--primary) / .2);
+  box-shadow:0 0 10px hsl(var(--primary) / .06);
+}
+.detail-period {
+  display:inline-block;
+  font-size:11px; color:hsl(43 55% 72%); letter-spacing:0.03em; font-weight:500;
+  padding:5px 16px; border-radius:9999px;
+  background:hsl(var(--primary) / .1);
+  border:1px solid hsl(var(--primary) / .2);
+  box-shadow:0 0 10px hsl(var(--primary) / .06);
+}
+.detail-year-badge {
+  display:inline-block; padding:5px 16px; border-radius:9999px;
+  font-size:13px; font-weight:700; letter-spacing:0.03em;
+  background:hsl(var(--primary) / .1); color:hsl(var(--primary));
+  border:1px solid hsl(var(--primary) / .18);
+}
+.detail-desc {
+  font-size:14.5px; line-height:2; color:hsl(38 22% 78%);
+  margin:0 0 16px;
+}
+.detail-section-title {
+  margin-top:24px; margin-bottom:10px;
+  font-size:13px; font-weight:700; letter-spacing:0.04em;
+  color:hsl(var(--primary));
+  display:flex; align-items:center; gap:8px;
+}
+.detail-section-title::after {
+  content:''; flex:1; height:1px;
+  background:hsl(var(--primary) / .15);
+}
+.detail-related-item {
+  margin-bottom:6px; padding:10px 16px;
+  background:hsl(30 18% 18%); border-radius:10px;
+  font-size:13.5px; color:hsl(38 18% 72%);
+  border:1px solid hsl(var(--border) / .25);
+  transition:all 0.2s ease;
+}
+.detail-related-item:hover { border-color:hsl(var(--primary) / .2); background:hsl(30 18% 20%); }
+.detail-impact-box {
+  margin-top:18px; padding:16px 18px;
+  background:hsl(var(--primary) / .05); border-radius:12px;
+  border-left:3px solid hsl(var(--primary) / .5);
+}
+.detail-impact-text { font-size:14px; color:hsl(38 20% 76%); line-height:1.9; margin:0; }
+.detail-impact-text strong { color:hsl(var(--primary)); margin-right:8px; font-weight:700; }
+.event-section { position:relative; margin-bottom:18px; }
+.event-section:last-child { margin-bottom:0; }
+.event-section-label {
+  display:inline-block;
+  font-size:11px; font-weight:700; color:hsl(43 55% 72%);
+  letter-spacing:0.06em; margin-bottom:10px;
+  padding:5px 16px; border-radius:9999px;
+  background:hsl(var(--primary) / .08);
+  border:1px solid hsl(var(--primary) / .2);
+  box-shadow:0 0 12px hsl(var(--primary) / .06);
+}
+.event-section-text { font-size:14px; line-height:2; color:hsl(38 22% 78%); margin:0; padding-left:4px; }
+
+/* ── Footer ── */
+footer {
+  position:relative; z-index:1; text-align:center; padding:24px;
+  color:hsl(var(--muted-foreground)); font-size:12px;
+  border-top:1px solid hsl(var(--border));
+}
+
+/* ── Scrollbar ── */
+.card::-webkit-scrollbar { width:4px; }
+.card::-webkit-scrollbar-track { background:transparent; }
+.card::-webkit-scrollbar-thumb { background:hsl(var(--border)); border-radius:2px; }
+
+/* ── App Splash ── */
+.app-splash {
+  position:fixed; inset:0; z-index:99999;
+  display:grid; place-items:center;
+  background:#130d07;
+  overflow:hidden;
+  opacity:1; visibility:visible;
+  transition:opacity .65s ease, visibility .65s ease;
+}
+.app-splash::before {
+  content:''; position:absolute; inset:-32px;
+  background:url('images/app-splash-clean.png') center / cover no-repeat;
+  filter:blur(18px) brightness(.72);
+  transform:scale(1.08);
+}
+.app-splash img {
+  position:relative; z-index:1;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:center;
+  background:#ead2a1;
+}
+.app-splash.is-hidden {
+  opacity:0; visibility:hidden; pointer-events:none;
+}
+
+@media (max-width:768px) {
+  .header-inner { padding:20px 16px; }
+  .container { padding:16px 16px 60px; }
+  .card { padding:18px 16px; height:auto; min-height:500px; }
+  .card h2 { font-size:20px; }
+  .detail-panel { max-width:94vw; } .detail-panel-inner { padding:20px 16px; }
+  .timeline-card { padding:16px; }
+  .timeline-header { flex-direction:column; gap:12px; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="app-splash" id="appSplash" aria-hidden="true">
+  <img src="images/app-splash-clean.png" alt="">
+</div>
+
+<header>
+  <div class="header-inner animate-fade-in-up">
+    <div class="header-deco">
+      <span class="header-bar"></span>
+      <h1>中 国 历 史 图 鉴</h1>
+      <span class="header-bar"></span>
+    </div>
+    <p class="subtitle">穿越五千年历史长河，探索中华文明的璀璨轨迹</p>
+    <div class="header-stats">
+      <span class="pill"><strong>19</strong> 个历史时期</span>
+      <span class="pill"><strong>5000+</strong> 年历史跨度</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <!-- Timeline -->
+  <div class="timeline-card animate-fade-in-up" id="timelineCard">
+    <div class="timeline-header">
+      <div class="timeline-title-group">
+        <div class="timeline-icon animate-pulse-glow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div>
+          <h3>历史时间轴</h3>
+          <p>拖动滑块探索五千年历史</p>
+        </div>
+      </div>
+      <span class="timeline-year-badge" id="yearBadge">公元220年</span>
+    </div>
+
+    <div id="eraPreview" class="era-preview" style="display:none;"></div>
+
+    <input type="range" id="timeSlider" min="0" max="100" step="0.1" value="50">
+
+    <div class="era-bars" id="eraBars"></div>
+
+    <div class="era-pills" id="eraPills"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="main-grid" id="mainContent"></div>
+</div>
+
+
+<div class="detail-overlay" id="detailOverlay" style="display:none;"></div>
+
+<script src="data-1.js"></script>
+<script src="data-2.js"></script>
+<script src="data-3.js"></script>
+<script src="data-4.js"></script>
+<script src="data-5.js"></script>
+<script src="data-6.js"></script>
+<script>const eras = [...eras_part1, ...eras_part2, ...eras_part3, ...eras_part4, ...eras_part5, ...eras_part6];</script>
+<script>
+
+// ── Time helpers ──
+const minYear = -3000, maxYear = 2026;
+function yearToPercent(y) {
+  return ((y - minYear) / (maxYear - minYear)) * 100;
+}
+function percentToYear(p) {
+  return Math.round(minYear + (p / 100) * (maxYear - minYear));
+}
+function formatYear(y) {
+  if (y < 0) return `公元前${Math.abs(y)}年`;
+  return `公元${y}年`;
+}
+function getEraForYear(y) {
+  for (let i = eras.length - 1; i >= 0; i--) {
+    if (y >= eras[i].start && y <= eras[i].end) return i;
+  }
+  return y < 0 ? 0 : eras.length - 1;
+}
+
+// ── State ──
+let sliderVal = 50;
+let activeIdx = getEraForYear(percentToYear(sliderVal));
+
+// ── Build timeline ──
+function buildEraBars() {
+  const totalRange = maxYear - minYear;
+  document.getElementById('eraBars').innerHTML = eras.map((e, i) => {
+    const left = ((e.start - minYear) / totalRange) * 100;
+    const width = ((e.end - e.start) / totalRange) * 100;
+    const isActive = i === activeIdx;
+    return `<span class="era-bar${isActive ? ' active' : ''}"
+      style="left:${left}%;width:${Math.max(width,0.4)}%;background:${e.color};"
+      title="${e.name} (${e.period})"
+      data-idx="${i}"
+      data-start="${e.start}"
+      data-end="${e.end}"></span>`;
+  }).join('');
+}
+
+function buildEraPills() {
+  document.getElementById('eraPills').innerHTML = eras.map((e, i) => {
+    const isActive = i === activeIdx;
+    return `<span class="era-pill${isActive ? ' active' : ''}"
+      data-idx="${i}" style="${isActive ? `box-shadow:0 0 10px ${e.color}40` : ''}">${e.icon ? '<span class="era-icon" style="color:'+e.color+'">'+e.icon+'</span>' : ''}${e.name}</span>`;
+  }).join('');
+}
+
+function updateEraPreview() {
+  const era = eras[activeIdx];
+  const preview = document.getElementById('eraPreview');
+  if (era) {
+    preview.style.display = 'block';
+    const prevIcon = era.icon ? '<span style="color:'+era.color+';-webkit-text-fill-color:'+era.color+'">'+era.icon+'</span> ' : '';
+    preview.innerHTML = `
+      <h4>${prevIcon}${era.name}</h4>
+      <span class="era-preview-period">${era.period}</span>
+      ${era.founder ? `<span style="display:inline-block;margin-top:4px;font-size:11px;color:hsl(var(--primary));">${era.founder}</span>` : ''}
+      <p>${era.desc}</p>
+    `;
+  }
+}
+
+function updateYearBadge() {
+  document.getElementById('yearBadge').textContent = formatYear(percentToYear(sliderVal));
+}
+
+function selectEra(idx) {
+  activeIdx = idx;
+  const era = eras[idx];
+  sliderVal = yearToPercent(Math.round((era.start + era.end) / 2));
+  document.getElementById('timeSlider').value = sliderVal;
+  updateYearBadge();
+  buildEraBars();
+  buildEraPills();
+  updateEraPreview();
+  renderContent();
+}
+
+function getFigureIcon(fig) {
+  const id = (fig.basicInfo || '').slice(0, 100).replace(/帝王之术/g,''); // first 100 chars, strip false triggers
+  const info = id + (fig.lifeStory||'') + (fig.evaluation||'');
+  if (/皇帝|帝王|天子|君主|可汗|单于|大汗|女皇/.test(id)) return '👑';
+  if (/名将|将军|大将|武将|军事|元帅|都督|帅/.test(info)) return '⚔️';
+  if (/诗人|词人|文学家|史学家|书法家|画家|文人|文豪|诗仙|诗圣|词中|唐宋八大家|小说家/.test(info)) return '✍️';
+  if (/宰相|丞相|相国|首辅|大臣|尚书|阁老|政治家|改革家|变法|为政|摄政|权臣|能臣/.test(info)) return '🏛';
+  if (/科学|发明|医|药王|本草|工匠|工程|建筑|天文学|数学|农学|地理学家/.test(info)) return '🔬';
+  if (/外交|使臣|探险|出使|凿空|西域|东渡|西行|取经|翻译|航海/.test(info)) return '🌏';
+  if (/思想|哲学|理学|心学|道家|法家|儒家|墨家|兵家|纵横/.test(info)) return '💡';
+  if (/僧|佛|法师|高僧|禅师|译经|和尚/.test(info)) return '🛕';
+  if (/起义|领袖|革命|造反|起事|农民/.test(info)) return '🔥';
+  return '';
+}
+
+// ── Render content ──
+function renderContent() {
+  const era = eras[activeIdx];
+  if (!era) return;
+  const tp = era.turningPoints || [];
+  const eraIconHtml = era.icon ? '<span style="color:'+era.color+';-webkit-text-fill-color:'+era.color+'">'+era.icon+'</span> ' : '';
+
+  const duration = Math.abs(era.end - era.start);
+  const totalRange = 5026;
+  const progress = Math.round(((era.end - era.start) / totalRange) * 100);
+  document.getElementById('mainContent').innerHTML = `
+    <div class="col">
+      <div class="card${era.bgImage ? ' has-bg' : ''}"${era.bgImage ? ' style="background:linear-gradient(rgba(18,18,22,0.08),rgba(18,18,22,0.08)),url(\''+era.bgImage+'\') center no-repeat;"' : ''}>
+        <div class="content-box">
+          <span class="period-label">${era.period}</span>
+          <h2>${eraIconHtml}${era.name}</h2>
+        </div>
+        <div class="content-box" style="margin-top:16px;">
+          <h3 style="font-size:15px;color:hsl(var(--primary));margin:0 0 10px 0;">时期概述</h3>
+          <p style="font-size:14px;line-height:1.9;color:hsl(var(--muted-foreground));margin:0;">${era.desc}</p>
+        </div>
+
+        <div class="stat-cards" style="margin-top:16px;">
+          <div class="stat-item" onclick="jumpToTab('events')">
+            <div class="stat-icon">&#9876;</div>
+            <div class="stat-num">${era.events.length}</div>
+            <div class="stat-label">重大事件</div>
+          </div>
+          <div class="stat-item" onclick="jumpToTab('figures')">
+            <div class="stat-icon">&#9819;</div>
+            <div class="stat-num">${era.figures.length}</div>
+            <div class="stat-label">著名人物</div>
+          </div>
+          <div class="stat-item" onclick="jumpToTab('inventions')">
+            <div class="stat-icon">&#9881;</div>
+            <div class="stat-num">${era.inventions.length}</div>
+            <div class="stat-label">发明创造</div>
+          </div>
+          <div class="stat-item" onclick="jumpToTab('turning')">
+            <div class="stat-icon">&#9203;</div>
+            <div class="stat-num">${tp.length}</div>
+            <div class="stat-label">历史转折</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col right-col" style="animation:slideInRight .5s ease-out;">
+      <div class="card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="width:3px;height:36px;border-radius:2px;background:linear-gradient(180deg, hsl(var(--primary)), hsl(var(--primary-glow)));box-shadow:0 0 12px hsl(var(--primary) / .4);flex-shrink:0;"></span>
+            <h2 style="margin:0;font-size:24px;">${eraIconHtml}${era.name}</h2>
+          </div>
+          <span style="padding:6px 16px;border-radius:9999px;background:${era.color};color:#fff;font-size:12px;font-weight:700;">占比 ${progress}%</span>
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--background) / .5);border:1px solid hsl(var(--primary) / .2);color:hsl(var(--muted-foreground));">${era.period}</span>
+          <span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--background) / .5);border:1px solid hsl(var(--primary) / .2);color:hsl(var(--muted-foreground));">历史跨度 ${duration} 年</span>
+          ${era.founder ? `<span style="padding:4px 14px;border-radius:9999px;font-size:12px;background:hsl(var(--primary) / .08);border:1px solid hsl(var(--primary) / .25);color:hsl(var(--primary));">${era.founder}</span>` : ''}
+        </div>
+
+        <div class="content-tabs" data-group="right">
+          <button class="content-tab active" data-tab="events" data-group="right">重大事件</button>
+          <button class="content-tab" data-tab="figures" data-group="right">著名人物</button>
+          <button class="content-tab" data-tab="inventions" data-group="right">发明创造</button>
+          <button class="content-tab" data-tab="turning" data-group="right">转折点</button>
+        </div>
+
+        <div class="right-card-scroll">
+        <div id="tabRightEvents" class="tab-panel" data-group="right">
+          <div class="event-list">
+            ${era.events.map((ev,i) => `
+              <div class="event-item" data-event-idx="${i}">
+                <span class="event-dot"></span>
+                <span>${ev.name}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div id="tabRightFigures" class="tab-panel" style="display:none;" data-group="right">
+          <div class="tag-list">
+            ${era.figures.map((f,i) => { const icon = typeof f==='object' ? getFigureIcon(f) : ''; return `<span class="tag clickable-item" data-figure-idx="${i}">${icon ? icon+' ' : ''}${typeof f==='object'?f.name:f}</span>`; }).join('')}
+          </div>
+        </div>
+        <div id="tabRightInventions" class="tab-panel" style="display:none;" data-group="right">
+          <div class="invention-grid">
+            ${era.inventions.map((inv,i) => {
+    const invName = typeof inv === 'object' ? inv.name : inv;
+    const invBadge = (typeof inv === 'object' && inv.badge) ? `<span class="invention-badge">${inv.badge}</span>` : '';
+    const invClass = (typeof inv === 'object' && inv.badge) ? 'invention-item clickable-item invention-highlight' : 'invention-item clickable-item';
+    return `<div class="${invClass}" data-invention-idx="${i}">${invName}${invBadge}</div>`;
+  }).join('')}
+          </div>
+        </div>
+        <div id="tabRightTurning" class="tab-panel" style="display:none;" data-group="right">
+          ${tp.length > 0 ? tp.map((t,i) => `
+            <div class="tp-card clickable-item" data-turning-idx="${i}">
+              <div class="tp-year">${t.y}</div>
+              <div class="tp-event">${t.e}</div>
+              <div class="tp-desc">${t.d}</div>
+              <div class="tp-sig">${t.s}</div>
+            </div>
+          `).join('') : '<p style="color:hsl(var(--muted-foreground));font-size:13px;">暂无数据</p>'}
+        </div>
+      </div>
+    </div>
+    `;
+}
+
+// ── Jump to tab (left panel stat cards → right panel) ──
+function jumpToTab(tabName) {
+  // Switch the right panel tab
+  const tabs = document.querySelectorAll('.content-tab[data-group="right"]');
+  tabs.forEach(t => t.classList.remove('active'));
+  const targetTab = document.querySelector('.content-tab[data-tab="'+tabName+'"][data-group="right"]');
+  if (targetTab) targetTab.classList.add('active');
+
+  // Show the corresponding panel
+  document.querySelectorAll('.tab-panel[data-group="right"]').forEach(p => p.style.display = 'none');
+  const cap = tabName.charAt(0).toUpperCase() + tabName.slice(1);
+  const targetPanel = document.getElementById('tabRight' + cap);
+  if (targetPanel) targetPanel.style.display = 'block';
+
+  // Scroll right column into view (especially mobile)
+  const rightCol = document.querySelector('.right-col');
+  if (rightCol) {
+    rightCol.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ── Detail overlay ──
+function showDetail(era, type, idx) {
+  const overlay = document.getElementById('detailOverlay');
+  overlay.style.display = 'flex';
+  const tp = era.turningPoints || [];
+
+  let title, bodyContent;
+
+  if (type === 'event') {
+    const ev = era.events[idx];
+    title = ev.name;
+    const evTime = (() => {
+      if (ev.desc) {
+        const m = ev.desc.match(/^(距今[^，。]+?前|公元前[^，。]*?\d年|公元[^，。]*?\d年|\d+年(?:[至和、]\d+年)*)/);
+        if (m) return m[1];
+      }
+      return era.period;
+    })();
+    if (ev.background || ev.process || ev.result || ev.evaluation || ev.impact) {
+      const sections = [
+        {label:'背景', text:ev.background},
+        {label:'经过', text:ev.process},
+        {label:'结果', text:ev.result},
+        {label:'评价', text:ev.evaluation},
+        {label:'影响', text:ev.impact}
+      ].filter(s => s.text);
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${evTime}</span></div>
+        ${sections.map(s => `
+          <div class="event-section">
+            <p class="event-section-label">${s.label}</p>
+            <p class="event-section-text">${s.text}</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${evTime}</span></div>
+        <p class="detail-desc">${ev.desc}</p>
+      `;
+    }
+  } else if (type === 'figure') {
+    const fig = era.figures[idx];
+    const figName = typeof fig === 'object' ? fig.name : fig;
+    title = figName;
+    // Check for structured figure data
+    if (typeof fig === 'object' && (fig.basicInfo || fig.lifeStory)) {
+      const sections = [];
+      const allKeys = [
+        {key:'basicInfo', label:'基本信息'},
+        {key:'lifeStory', label:'人物生平'},
+        {key:'governance', label:'为政举措'},
+        {key:'works', label:'个人作品'},
+        {key:'evaluation', label:'历史评价'},
+        {key:'relationships', label:'人际关系'},
+        {key:'anecdotes', label:'轶事典故'},
+        {key:'commemoration', label:'后世纪念'}
+      ];
+      allKeys.forEach(({key, label}) => {
+        if (fig[key]) sections.push({label, text: fig[key]});
+      });
+      const figLifeYears = (() => {
+        if (fig.basicInfo) {
+          const m = fig.basicInfo.match(/[（(]([^）)]+?年?)[）)]/);
+          if (m) return m[1].replace(/年$/,'') + '年';
+        }
+        return era.period;
+      })();
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${figLifeYears}</span></div>
+        ${sections.map(s => `
+          <div class="event-section">
+            <p class="event-section-label">${s.label}</p>
+            <p class="event-section-text">${s.text}</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      const figDesc = typeof fig === 'object' ? fig.desc : '';
+      const relatedEvents = era.events.filter(ev => {
+        const en = typeof ev === 'object' ? ev.name : ev;
+        return en.includes(figName);
+      });
+      const figLifeYears2 = (() => {
+        if (fig.basicInfo) {
+          const m = fig.basicInfo.match(/[（(]([^）)]+?年?)[）)]/);
+          if (m) return m[1].replace(/年$/,'') + '年';
+        }
+        return era.period;
+      })();
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${era.name}</span><span class="detail-period">${figLifeYears2}</span></div>
+        ${figDesc ? `<p class="detail-desc">${figDesc}</p>` : ''}
+        ${relatedEvents.length > 0 ? `
+          <p class="detail-section-title">相关重大事件</p>
+          ${relatedEvents.map(ev => `
+            <div class="detail-related-item">${typeof ev === 'object' ? ev.name : ev}</div>
+          `).join('')}
+        ` : ''}
+      `;
+    }
+  } else if (type === 'invention') {
+    const inv = era.inventions[idx];
+    const invName = typeof inv === 'object' ? inv.name : inv;
+    title = invName;
+    if (typeof inv === 'object' && (inv.background || inv.process || inv.result || inv.evaluation || inv.impact)) {
+      const sections = [
+        {label:'背景', text:inv.background},
+        {label:'经过', text:inv.process},
+        {label:'结果', text:inv.result},
+        {label:'评价', text:inv.evaluation},
+        {label:'影响', text:inv.impact}
+      ].filter(s => s.text);
+      const invMetaEra = inv.inventor || era.name;
+      const invMetaPeriod = inv.inventorPeriod || era.period;
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${invMetaEra}</span><span class="detail-period">${invMetaPeriod}</span></div>
+        ${sections.map(s => `
+          <div class="event-section">
+            <p class="event-section-label">${s.label}</p>
+            <p class="event-section-text">${s.text}</p>
+          </div>
+        `).join('')}
+      `;
+    } else {
+      const invDesc = typeof inv === 'object' ? inv.desc : '';
+      const invMetaEra2 = (typeof inv === 'object' && inv.inventor) ? inv.inventor : era.name;
+      const invMetaPeriod2 = (typeof inv === 'object' && inv.inventorPeriod) ? inv.inventorPeriod : era.period;
+      bodyContent = `
+        <div class="detail-meta"><span class="detail-era-tag">${invMetaEra2}</span><span class="detail-period">${invMetaPeriod2}</span></div>
+        ${invDesc ? `<p class="detail-desc">${invDesc}</p>` : `<p class="detail-desc">「${invName}」是${era.name}时期的重要发明创造与文明成果，代表了当时社会的科技水平和创造力。</p>`}
+      `;
+    }
+  } else if (type === 'turning') {
+    const t = tp[idx];
+    title = t.e;
+    bodyContent = `
+      <div class="detail-meta"><span class="detail-year-badge">${t.y}</span></div>
+      <p class="detail-desc">${t.d}</p>
+      <div class="detail-impact-box">
+        <p class="detail-impact-text"><strong>历史影响</strong>：${t.s}</p>
+      </div>
+    `;
+  }
+
+  overlay.innerHTML = `
+    <div class="detail-panel">
+      <button class="detail-close" onclick="closeDetail()">&times;</button>
+      <div class="detail-panel-inner">
+        <h3>${title}</h3>
+        <div class="detail-body">${bodyContent}</div>
+      </div>
+    </div>
+  `;
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').style.display = 'none';
+}
+
+// ── Event bindings ──
+// Slider
+document.getElementById('timeSlider').addEventListener('input', function() {
+  sliderVal = parseFloat(this.value);
+  const y = percentToYear(sliderVal);
+  const idx = getEraForYear(y);
+  if (idx !== activeIdx) {
+    activeIdx = idx;
+    buildEraBars();
+    buildEraPills();
+    updateEraPreview();
+    renderContent();
+  }
+  updateYearBadge();
+});
+
+// Era bars click
+document.getElementById('eraBars').addEventListener('click', function(e) {
+  const bar = e.target.closest('.era-bar');
+  if (!bar) return;
+  selectEra(parseInt(bar.dataset.idx));
+});
+
+// Era pills click
+document.getElementById('eraPills').addEventListener('click', function(e) {
+  const pill = e.target.closest('.era-pill');
+  if (!pill) return;
+  selectEra(parseInt(pill.dataset.idx));
+});
+
+// Item detail + tab switching
+document.getElementById('mainContent').addEventListener('click', function(e) {
+  const tab = e.target.closest('.content-tab');
+  if (tab) {
+    const group = tab.dataset.group;
+    document.querySelectorAll(`.content-tab[data-group="${group}"]`).forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll(`.tab-panel[data-group="${group}"]`).forEach(p => p.style.display = 'none');
+    const cap = tab.dataset.tab.charAt(0).toUpperCase() + tab.dataset.tab.slice(1);
+    const targetId = 'tabRight' + cap;
+    const target = document.getElementById(targetId);
+    if (target) target.style.display = 'block';
+    return;
+  }
+  const era = eras[activeIdx];
+  // Event click
+  const eventItem = e.target.closest('.event-item');
+  if (eventItem) {
+    const idx = parseInt(eventItem.dataset.eventIdx);
+    if (!isNaN(idx)) showDetail(era, 'event', idx);
+    return;
+  }
+  // Figure click
+  const figureItem = e.target.closest('[data-figure-idx]');
+  if (figureItem) {
+    const idx = parseInt(figureItem.dataset.figureIdx);
+    if (!isNaN(idx)) showDetail(era, 'figure', idx);
+    return;
+  }
+  // Invention click
+  const invItem = e.target.closest('[data-invention-idx]');
+  if (invItem) {
+    const idx = parseInt(invItem.dataset.inventionIdx);
+    if (!isNaN(idx)) showDetail(era, 'invention', idx);
+    return;
+  }
+  // Turning point click
+  const tpItem = e.target.closest('[data-turning-idx]');
+  if (tpItem) {
+    const idx = parseInt(tpItem.dataset.turningIdx);
+    if (!isNaN(idx)) showDetail(era, 'turning', idx);
+    return;
+  }
+});
+
+// Detail overlay close
+document.getElementById('detailOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeDetail();
+});
+
+// ── Init ──
+function init() {
+  // Default to showing 秦朝
+  activeIdx = 6; // 秦朝
+  sliderVal = yearToPercent(Math.round((eras[6].start + eras[6].end) / 2));
+  document.getElementById('timeSlider').value = sliderVal;
+  updateYearBadge();
+  buildEraBars();
+  buildEraPills();
+  updateEraPreview();
+  renderContent();
+}
+
+init();
+window.addEventListener('load', function() {
+  const splash = document.getElementById('appSplash');
+  if (!splash) return;
+  setTimeout(function() {
+    splash.classList.add('is-hidden');
+    setTimeout(function() { splash.remove(); }, 700);
+  }, 1400);
+});
+</script>
+<footer class="site-footer"><div class="site-footer-inner"><span class="footer-line"></span><p>纵横五千年 &middot; <span>中国历史图鉴</span></p><span class="footer-line"></span></div></footer>
+</body></html>
