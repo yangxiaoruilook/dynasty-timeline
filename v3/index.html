@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>中国历史图鉴</title>
 <style>
 :root {
@@ -38,10 +38,16 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
+html {
+  min-height:100%;
+  background:hsl(var(--background));
+}
 body {
   font-family: "PingFang SC","Noto Sans SC","Microsoft YaHei",ui-sans-serif,system-ui,-apple-system,sans-serif;
   background: hsl(var(--background)); color: hsl(var(--foreground)); line-height: 1.6;
   min-height: 100vh;
+  min-height: 100dvh;
+  overscroll-behavior:none;
 }
 
 /* ── Animations ── */
@@ -573,6 +579,7 @@ footer {
 /* ── App Splash ── */
 .app-splash {
   position:fixed; inset:0; z-index:99999;
+  width:100vw; height:100vh; height:100dvh;
   display:grid; place-items:center;
   background:#130d07;
   overflow:hidden;

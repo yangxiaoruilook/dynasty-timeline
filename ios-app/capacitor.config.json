@@ -3,6 +3,6 @@
   "appName": "中国历史图鉴",
   "webDir": "www",
   "ios": {
-    "contentInset": "always"
+    "contentInset": "never"
   }
 }
